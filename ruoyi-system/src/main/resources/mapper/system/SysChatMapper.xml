@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysChatMapper">
+    
+    <resultMap type="SysChat" id="SysChatResult">
+        <result property="chatId"    column="chat_id"    />
+        <result property="fromUserId"    column="from_user_id"    />
+        <result property="toUserId"    column="to_user_id"    />
+        <result property="content"    column="content"    />
+        <result property="isRead"    column="is_read"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectSysChatVo">
+        select chat_id, from_user_id, to_user_id, content, is_read, del_flag, create_by from sys_chat
+    </sql>
+
+    <select id="selectSysChatList" parameterType="SysChat" resultMap="SysChatResult">
+        <include refid="selectSysChatVo"/>
+        <where>  
+            <if test="fromUserId != null "> and from_user_id = #{fromUserId}</if>
+            <if test="toUserId != null "> and to_user_id = #{toUserId}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="isRead != null  and isRead != ''"> and is_read = #{isRead}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysChatByChatId" parameterType="Long" resultMap="SysChatResult">
+        <include refid="selectSysChatVo"/>
+        where chat_id = #{chatId}
+    </select>
+        
+    <insert id="insertSysChat" parameterType="SysChat" useGeneratedKeys="true" keyProperty="chatId">
+        insert into sys_chat(
+            <if test="fromUserId != null">from_user_id,</if>
+            <if test="toUserId != null">to_user_id,</if>
+            <if test="content != null">content,</if>
+            <if test="isRead != null">is_read,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            create_by
+        )values(
+            <if test="fromUserId != null">#{fromUserId},</if>
+            <if test="toUserId != null">#{toUserId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="isRead != null">#{isRead},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateSysChat" parameterType="SysChat">
+        update sys_chat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fromUserId != null">from_user_id = #{fromUserId},</if>
+            <if test="toUserId != null">to_user_id = #{toUserId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="isRead != null">is_read = #{isRead},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where chat_id = #{chatId}
+    </update>
+
+    <delete id="deleteSysChatByChatId" parameterType="Long">
+        delete from sys_chat where chat_id = #{chatId}
+    </delete>
+
+    <delete id="deleteSysChatByChatIds" parameterType="String">
+        delete from sys_chat where chat_id in 
+        <foreach item="chatId" collection="array" open="(" separator="," close=")">
+            #{chatId}
+        </foreach>
+    </delete>
+
+    <select id="historyList" resultMap="SysChatResult">
+        <include refid="selectSysChatVo"/>
+        where del_flag = '0'
+        AND (
+            (
+                from_user_id = #{chatFromUser} AND to_user_id = #{chatToUser}
+            )
+        OR
+            (
+                to_user_id = #{chatFromUser} AND from_user_id = #{chatToUser}
+            )
+        )
+        order by chatId desc
+        <if test="pageNumber != null">
+            limit #{pageNumber} , #{pageRowCount}
+        </if>
+    </select>
+
+
+</mapper>
