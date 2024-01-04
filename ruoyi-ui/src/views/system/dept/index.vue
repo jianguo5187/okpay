@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="部门名称" prop="deptName">
+      <el-form-item label="商户名称" prop="deptName">
         <el-input
           v-model="queryParams.deptName"
-          placeholder="请输入部门名称"
+          placeholder="请输入商户名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="部门状态" clearable>
+        <el-select v-model="queryParams.status" placeholder="商户状态" clearable>
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
             :key="dict.value"
@@ -56,7 +56,7 @@
       :default-expand-all="isExpandAll"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
+      <el-table-column prop="deptName" label="商户名称" width="260"></el-table-column>
       <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
       <el-table-column prop="status" label="状态" width="100">
         <template slot-scope="scope">
@@ -71,21 +71,22 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            v-if="scope.row.parentId == 100"
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:dept:edit']"
           >修改</el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-plus"-->
+<!--            @click="handleAdd(scope.row)"-->
+<!--            v-hasPermi="['system:dept:add']"-->
+<!--          >新增</el-button>-->
           <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-plus"
-            @click="handleAdd(scope.row)"
-            v-hasPermi="['system:dept:add']"
-          >新增</el-button>
-          <el-button
-            v-if="scope.row.parentId != 0"
+            v-if="scope.row.parentId == 100"
             size="mini"
             type="text"
             icon="el-icon-delete"
@@ -96,48 +97,72 @@
       </el-table-column>
     </el-table>
 
-    <!-- 添加或修改部门对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <!-- 添加或修改商户对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="24" v-if="form.parentId !== 0">
-            <el-form-item label="上级部门" prop="parentId">
-              <treeselect v-model="form.parentId" :options="deptOptions" :normalizer="normalizer" placeholder="选择上级部门" />
+<!--          <el-col :span="24" v-if="form.parentId !== 0">-->
+            <el-form-item label="上级商户" prop="parentId">
+              <treeselect v-model="form.parentId" :options="deptOptions" :normalizer="normalizer" placeholder="选择上级商户" :readOnly="true" disabled/>
+            </el-form-item>
+<!--          </el-col>-->
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="商户名称" prop="deptName">
+              <el-input v-model="form.deptName" placeholder="请输入商户名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="部门名称" prop="deptName">
-              <el-input v-model="form.deptName" placeholder="请输入部门名称" />
+            <el-form-item label="登录账号" prop="userName" >
+              <el-input v-model="form.userName" placeholder="请输入登录账号" maxlength="30" :readOnly="form.userId != undefined" :disabled="form.userId != undefined"/>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
+              <el-input v-model="form.password" placeholder="请输入用户密码" type="password" maxlength="20" show-password/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="加急手续费" prop="ungentCommission">
+              <el-input-number v-model="form.ungentCommission" controls-position="right" :min="0" :max="100" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="普通手续费" prop="normalCommission">
+              <el-input-number v-model="form.normalCommission" controls-position="right" :min="0" :max="100" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="负责人" prop="leader">-->
+<!--              <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="联系电话" prop="phone">-->
+<!--              <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+        <el-row>
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="邮箱" prop="email">-->
+<!--              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
           <el-col :span="12">
             <el-form-item label="显示排序" prop="orderNum">
               <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
-            <el-form-item label="负责人" prop="leader">
-              <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="联系电话" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="部门状态">
+            <el-form-item label="商户状态">
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in dict.type.sys_normal_disable"
@@ -174,7 +199,7 @@ export default {
       showSearch: true,
       // 表格树数据
       deptList: [],
-      // 部门树选项
+      // 商户树选项
       deptOptions: [],
       // 弹出层标题
       title: "",
@@ -189,18 +214,33 @@ export default {
         deptName: undefined,
         status: undefined
       },
+      // 默认密码
+      initPassword: undefined,
+      // 默认密码
+      userChangeFlg: false,
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         parentId: [
-          { required: true, message: "上级部门不能为空", trigger: "blur" }
+          { required: true, message: "上级商户不能为空", trigger: "blur" }
         ],
         deptName: [
-          { required: true, message: "部门名称不能为空", trigger: "blur" }
+          { required: true, message: "商户名称不能为空", trigger: "blur" }
         ],
-        orderNum: [
-          { required: true, message: "显示排序不能为空", trigger: "blur" }
+        userName: [
+          { required: true, message: "登录账号不能为空", trigger: "blur" },
+          { min: 2, max: 20, message: '登录账号长度必须介于 2 和 20 之间', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: "用户密码不能为空", trigger: "blur" },
+          { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' }
+        ],
+        ungentCommission: [
+          { required: true, message: "加急手续费不能为空", trigger: "blur" }
+        ],
+        normalCommission: [
+          { required: true, message: "普通手续费不能为空", trigger: "blur" }
         ],
         email: [
           {
@@ -221,9 +261,12 @@ export default {
   },
   created() {
     this.getList();
+    this.getConfigKey("sys.user.initPassword").then(response => {
+      this.initPassword = response.msg;
+    });
   },
   methods: {
-    /** 查询部门列表 */
+    /** 查询商户列表 */
     getList() {
       this.loading = true;
       listDept(this.queryParams).then(response => {
@@ -231,7 +274,7 @@ export default {
         this.loading = false;
       });
     },
-    /** 转换部门数据结构 */
+    /** 转换商户数据结构 */
     normalizer(node) {
       if (node.children && !node.children.length) {
         delete node.children;
@@ -251,13 +294,20 @@ export default {
     reset() {
       this.form = {
         deptId: undefined,
+        userId: undefined,
         parentId: undefined,
         deptName: undefined,
-        orderNum: undefined,
+        orderNum: 0,
         leader: undefined,
         phone: undefined,
         email: undefined,
-        status: "0"
+        status: "0",
+        // merchantUser:{
+          userName: undefined,
+          password: undefined,
+          ungentCommission: undefined,
+          normalCommission: undefined
+        // }
       };
       this.resetForm("form");
     },
@@ -272,12 +322,16 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd(row) {
-      this.reset();
+      this.reset();debugger;
       if (row != undefined) {
         this.form.parentId = row.deptId;
+        if(row.deptId == undefined){
+          this.form.parentId = 100;
+        }
+        this.form.password = this.initPassword;
       }
       this.open = true;
-      this.title = "添加部门";
+      this.title = "添加商户";
       listDept().then(response => {
         this.deptOptions = this.handleTree(response.data, "deptId");
       });
@@ -296,7 +350,10 @@ export default {
       getDept(row.deptId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改部门";
+        this.title = "修改商户";
+        if(row.userId == undefined){
+          this.form.password = this.initPassword;
+        }
         listDeptExcludeChild(row.deptId).then(response => {
           this.deptOptions = this.handleTree(response.data, "deptId");
           if (this.deptOptions.length == 0) {

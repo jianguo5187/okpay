@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="SysDept" id="SysDeptResult">
 		<id     property="deptId"     column="dept_id"     />
 		<result property="parentId"   column="parent_id"   />
+		<result property="userId"     column="user_id"   />
 		<result property="ancestors"  column="ancestors"   />
 		<result property="deptName"   column="dept_name"   />
 		<result property="orderNum"   column="order_num"   />
@@ -20,27 +21,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="create_time" />
 		<result property="updateBy"   column="update_by"   />
 		<result property="updateTime" column="update_time" />
+		<result property="password"     column="password"     />
+		<result property="userName"     column="user_name"    />
+		<result property="password"     column="password"     />
+		<result property="ungentCommission" column="ungent_commission"   />
+		<result property="normalCommission" column="normal_commission"   />
 	</resultMap>
 	
 	<sql id="selectDeptVo">
-        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time 
+        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission
         from sys_dept d
+		left join sys_user u on d.user_id = u.user_id
     </sql>
     
 	<select id="selectDeptList" parameterType="SysDept" resultMap="SysDeptResult">
         <include refid="selectDeptVo"/>
         where d.del_flag = '0'
 		<if test="deptId != null and deptId != 0">
-			AND dept_id = #{deptId}
+			AND d.dept_id = #{deptId}
 		</if>
         <if test="parentId != null and parentId != 0">
-			AND parent_id = #{parentId}
+			AND d.parent_id = #{parentId}
 		</if>
 		<if test="deptName != null and deptName != ''">
-			AND dept_name like concat('%', #{deptName}, '%')
+			AND d.dept_name like concat('%', #{deptName}, '%')
 		</if>
 		<if test="status != null and status != ''">
-			AND status = #{status}
+			AND d.status = #{status}
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
@@ -60,8 +67,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
 		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,
-			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name
+			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission
 		from sys_dept d
+		left join sys_user u on d.user_id = u.user_id
 		where d.dept_id = #{deptId}
 	</select>
     
@@ -84,13 +92,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="checkDeptNameUnique" resultMap="SysDeptResult">
 	    <include refid="selectDeptVo"/>
-		where dept_name=#{deptName} and parent_id = #{parentId} and del_flag = '0' limit 1
+		where d.dept_name=#{deptName} and d.parent_id = #{parentId} and d.del_flag = '0' limit 1
 	</select>
     
-    <insert id="insertDept" parameterType="SysDept">
+    <insert id="insertDept" parameterType="SysDept" useGeneratedKeys="true" keyProperty="deptId">
  		insert into sys_dept(
  			<if test="deptId != null and deptId != 0">dept_id,</if>
  			<if test="parentId != null and parentId != 0">parent_id,</if>
+			<if test="userId != null and userId != 0">user_id,</if>
  			<if test="deptName != null and deptName != ''">dept_name,</if>
  			<if test="ancestors != null and ancestors != ''">ancestors,</if>
  			<if test="orderNum != null">order_num,</if>
@@ -103,6 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		)values(
  			<if test="deptId != null and deptId != 0">#{deptId},</if>
  			<if test="parentId != null and parentId != 0">#{parentId},</if>
+			<if test="userId != null and userId != 0">#{userId},</if>
  			<if test="deptName != null and deptName != ''">#{deptName},</if>
  			<if test="ancestors != null and ancestors != ''">#{ancestors},</if>
  			<if test="orderNum != null">#{orderNum},</if>
@@ -119,6 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update sys_dept
  		<set>
  			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
+			<if test="userId != null and userId != 0">user_id = #{userId},</if>
  			<if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
  			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
  			<if test="orderNum != null">order_num = #{orderNum},</if>

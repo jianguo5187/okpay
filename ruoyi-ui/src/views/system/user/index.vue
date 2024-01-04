@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--部门数据-->
+      <!--商户数据-->
       <el-col :span="4" :xs="24">
         <div class="head-container">
           <el-input
             v-model="deptName"
-            placeholder="请输入部门名称"
+            placeholder="请输入商户名称"
             clearable
             size="small"
             prefix-icon="el-icon-search"
@@ -30,10 +30,10 @@
       <!--用户数据-->
       <el-col :span="20" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="登录账号" prop="userName">
             <el-input
               v-model="queryParams.userName"
-              placeholder="请输入用户名称"
+              placeholder="请输入登录账号"
               clearable
               style="width: 240px"
               @keyup.enter.native="handleQuery"
@@ -139,9 +139,9 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="登录账号" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="商户" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
@@ -161,7 +161,7 @@
           <el-table-column
             label="操作"
             align="center"
-            width="160"
+            width="230"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
@@ -179,15 +179,22 @@
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:user:remove']"
               >删除</el-button>
-              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
-                <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
-                    v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
-                  <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
-                    v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-key"
+                @click="handleResetPwd(scope.row)"
+                v-hasPermi="['system:user:resetPwd']"
+              >重置密码</el-button>
+<!--              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">-->
+<!--                <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>-->
+<!--                <el-dropdown-menu slot="dropdown">-->
+<!--                  <el-dropdown-item command="handleResetPwd" icon="el-icon-key"-->
+<!--                    v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>-->
+<!--                  <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"-->
+<!--                    v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>-->
+<!--                </el-dropdown-menu>-->
+<!--              </el-dropdown>-->
             </template>
           </el-table-column>
         </el-table>
@@ -203,8 +210,8 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户昵称" prop="nickName">
@@ -212,8 +219,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="归属部门" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
+            <el-form-item label="归属商户" prop="deptId">
+              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属商户" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -231,13 +238,73 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30" />
+            <el-form-item v-if="form.userId == undefined" label="登录账号" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入登录账号" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入用户密码" type="password" maxlength="20" show-password/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item v-if="form.userId != undefined" label="邀请码" prop="inviteCode">
+              <el-input v-model="form.inviteCode" readonly :disabled="true"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.userId != undefined" label="钱包地址" prop="walletAddress">
+              <el-input v-model="form.walletAddress" readonly :disabled="true"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="身份证名字" prop="realName">
+              <el-input v-model="form.realName" placeholder="请输入身份证名字" maxlength="30" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="身份证号码" prop="idcardNo">
+              <el-input v-model="form.idcardNo" placeholder="请输入身份证号码" maxlength="18" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="身份证正面" prop="idcardFrontImg">
+              <imageUpload v-model="form.idcardFrontImg" :imgUrl="form.idcardFrontImg" :limit="1"></imageUpload>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="身份证反面" prop="idcardBackImg">
+              <imageUpload v-model="form.idcardBackImg" :imgUrl="form.idcardBackImg" :limit="1"></imageUpload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="微信收款码" prop="wechatPayImg">
+              <imageUpload v-model="form.wechatPayImg" :imgUrl="form.wechatPayImg" :limit="1"></imageUpload>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="支付宝收款码" prop="alipayImg">
+              <imageUpload v-model="form.alipayImg" :imgUrl="form.alipayImg" :limit="1"></imageUpload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="银联收款户名" prop="unionpayAccount">
+              <el-input v-model="form.unionpayAccount" placeholder="请输入银联收款户名" maxlength="30" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="银联收款卡号" prop="unionpayCard">
+              <el-input v-model="form.unionpayCard" placeholder="请输入银联收款卡号" maxlength="20" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -267,22 +334,22 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="岗位">
-              <el-select v-model="form.postIds" multiple placeholder="请选择岗位">
-                <el-option
-                  v-for="item in postOptions"
-                  :key="item.postId"
-                  :label="item.postName"
-                  :value="item.postId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="岗位">-->
+<!--              <el-select v-model="form.postIds" multiple placeholder="请选择岗位">-->
+<!--                <el-option-->
+<!--                  v-for="item in postOptions"-->
+<!--                  :key="item.postId"-->
+<!--                  :label="item.postName"-->
+<!--                  :value="item.postId"-->
+<!--                  :disabled="item.status == 1"-->
+<!--                ></el-option>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
           <el-col :span="12">
             <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
+              <el-select v-model="form.roleIds" multiple placeholder="请选择角色" :readOnly="true" :disabled="true">
                 <el-option
                   v-for="item in roleOptions"
                   :key="item.roleId"
@@ -368,11 +435,11 @@ export default {
       userList: null,
       // 弹出层标题
       title: "",
-      // 部门树选项
+      // 商户树选项
       deptOptions: undefined,
       // 是否显示弹出层
       open: false,
-      // 部门名称
+      // 商户名称
       deptName: undefined,
       // 默认密码
       initPassword: undefined,
@@ -415,9 +482,9 @@ export default {
       // 列信息
       columns: [
         { key: 0, label: `用户编号`, visible: true },
-        { key: 1, label: `用户名称`, visible: true },
+        { key: 1, label: `登录账号`, visible: true },
         { key: 2, label: `用户昵称`, visible: true },
-        { key: 3, label: `部门`, visible: true },
+        { key: 3, label: `商户`, visible: true },
         { key: 4, label: `手机号码`, visible: true },
         { key: 5, label: `状态`, visible: true },
         { key: 6, label: `创建时间`, visible: true }
@@ -425,8 +492,8 @@ export default {
       // 表单校验
       rules: {
         userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" },
-          { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
+          { required: true, message: "登录账号不能为空", trigger: "blur" },
+          { min: 2, max: 20, message: '登录账号长度必须介于 2 和 20 之间', trigger: 'blur' }
         ],
         nickName: [
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
@@ -453,7 +520,7 @@ export default {
     };
   },
   watch: {
-    // 根据名称筛选部门树
+    // 根据名称筛选商户树
     deptName(val) {
       this.$refs.tree.filter(val);
     }
@@ -476,7 +543,7 @@ export default {
         }
       );
     },
-    /** 查询部门下拉树结构 */
+    /** 查询商户下拉树结构 */
     getDeptTree() {
       deptTreeSelect().then(response => {
         this.deptOptions = response.data;
@@ -518,7 +585,17 @@ export default {
         password: undefined,
         phonenumber: undefined,
         email: undefined,
+        inviteCode:undefined,
+        walletAddress:undefined,
         sex: undefined,
+        realName: undefined,
+        idcardNo: undefined,
+        idcardFrontImg: undefined,
+        idcardBackImg: undefined,
+        wechatPayImg: undefined,
+        alipayImg: undefined,
+        unionpayAccount: undefined,
+        unionpayCard: undefined,
         status: "0",
         remark: undefined,
         postIds: [],
@@ -567,6 +644,8 @@ export default {
         this.open = true;
         this.title = "添加用户";
         this.form.password = this.initPassword;
+        this.form.roleIds.push(3);
+        // this.form.roleIds
       });
     },
     /** 修改按钮操作 */

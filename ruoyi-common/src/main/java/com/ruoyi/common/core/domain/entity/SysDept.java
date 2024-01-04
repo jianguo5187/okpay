@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -24,6 +26,9 @@ public class SysDept extends BaseEntity
 
     /** 父部门ID */
     private Long parentId;
+
+    /** 商户用户ID */
+    private Long userId;
 
     /** 祖级列表 */
     private String ancestors;
@@ -51,9 +56,21 @@ public class SysDept extends BaseEntity
 
     /** 父部门名称 */
     private String parentName;
-    
+
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
+
+    /** 用户账号 */
+    private String userName;
+
+    /** 密码 */
+    private String password;
+
+    /** 加急手续费 */
+    private Integer ungentCommission;
+
+    /** 普通手续费 */
+    private Integer normalCommission;
 
     public Long getDeptId()
     {
@@ -73,6 +90,14 @@ public class SysDept extends BaseEntity
     public void setParentId(Long parentId)
     {
         this.parentId = parentId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getAncestors()
@@ -179,6 +204,38 @@ public class SysDept extends BaseEntity
     public void setChildren(List<SysDept> children)
     {
         this.children = children;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getUngentCommission() {
+        return ungentCommission;
+    }
+
+    public void setUngentCommission(Integer ungentCommission) {
+        this.ungentCommission = ungentCommission;
+    }
+
+    public Integer getNormalCommission() {
+        return normalCommission;
+    }
+
+    public void setNormalCommission(Integer normalCommission) {
+        this.normalCommission = normalCommission;
     }
 
     @Override

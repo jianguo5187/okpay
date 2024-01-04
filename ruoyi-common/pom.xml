@@ -126,6 +126,12 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
+        <!--Shiro核心框架 -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

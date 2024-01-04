@@ -213,6 +213,24 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 校验身份证号码是否唯一
+     *
+     * @param user 用户信息
+     * @return
+     */
+    @Override
+    public boolean checkIdcardUnique(SysUser user)
+    {
+        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
+        SysUser info = userMapper.checkIdcardUnique(user.getIdcardNo());
+        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
+    /**
      * 校验用户是否允许操作
      * 
      * @param user 用户信息

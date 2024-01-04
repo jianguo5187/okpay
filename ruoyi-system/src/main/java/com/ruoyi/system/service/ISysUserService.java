@@ -91,6 +91,14 @@ public interface ISysUserService
     public boolean checkEmailUnique(SysUser user);
 
     /**
+     * 校验身份证号码是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public boolean checkIdcardUnique(SysUser user);
+
+    /**
      * 校验用户是否允许操作
      * 
      * @param user 用户信息

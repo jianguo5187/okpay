@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.ShiroUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -136,6 +138,12 @@ public class SysUserController extends BaseController
         {
             return error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
+        else if (StringUtils.isNotEmpty(user.getIdcardNo()) && !userService.checkIdcardUnique(user))
+        {
+            return error("修改用户'" + user.getUserName() + "'失败，身份证号已存在");
+        }
+        user.setInviteCode(ShiroUtils.randomSalt());
+        user.setWalletAddress(ShiroUtils.randomPayAddress());
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         return toAjax(userService.insertUser(user));
@@ -162,6 +170,10 @@ public class SysUserController extends BaseController
         else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user))
         {
             return error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        else if (StringUtils.isNotEmpty(user.getIdcardNo()) && !userService.checkIdcardUnique(user))
+        {
+            return error("修改用户'" + user.getUserName() + "'失败，身份证号已存在");
         }
         user.setUpdateBy(getUsername());
         return toAjax(userService.updateUser(user));

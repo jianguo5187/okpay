@@ -55,6 +55,57 @@ public class SysUser extends BaseEntity
     /** 密码 */
     private String password;
 
+    /** 支付密码 */
+    private String payPassword;
+
+    /** 真实姓名 */
+    private String realName;
+
+    /** 身份证号码 */
+    private String idcardNo;
+
+    /** 身份证正面图片路径 */
+    private String idcardFrontImg;
+
+    /** 身份证反面图片路径 */
+    private String idcardBackImg;
+
+    /** 人脸图片路径 */
+    private String faceImg;
+
+    /** 钱包地址 */
+    private String walletAddress;
+
+    /** 余额 */
+    private Float amount;
+
+    /** 邀请码 */
+    private String inviteCode;
+
+    /** 微信收款码图片地址 */
+    private String wechatPayImg;
+
+    /** 支付宝收款码图片地址 */
+    private String alipayImg;
+
+    /** 银联收款户名 */
+    private String unionpayAccount;
+
+    /** 银联收款卡号 */
+    private String unionpayCard;
+
+    /** 用户类型（00系统用户,01平台管理员,02商户,03代理,04客户） */
+    private String userType;
+
+    /** 上级用户ID */
+    private Long parentUserId;
+
+    /** 加急手续费 */
+    private Integer ungentCommission;
+
+    /** 普通手续费 */
+    private Integer normalCommission;
+
     /** 帐号状态（0正常 1停用） */
     @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
     private String status;
@@ -88,6 +139,12 @@ public class SysUser extends BaseEntity
 
     /** 角色ID */
     private Long roleId;
+
+    /** 信息接收方用户ID */
+    private Long toUserId;
+
+    /** 未读消息件数 */
+    private Integer noReadMsgCount;
 
     public SysUser()
     {
@@ -207,6 +264,142 @@ public class SysUser extends BaseEntity
         this.password = password;
     }
 
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getIdcardNo() {
+        return idcardNo;
+    }
+
+    public void setIdcardNo(String idcardNo) {
+        this.idcardNo = idcardNo;
+    }
+
+    public String getIdcardFrontImg() {
+        return idcardFrontImg;
+    }
+
+    public void setIdcardFrontImg(String idcardFrontImg) {
+        this.idcardFrontImg = idcardFrontImg;
+    }
+
+    public String getIdcardBackImg() {
+        return idcardBackImg;
+    }
+
+    public void setIdcardBackImg(String idcardBackImg) {
+        this.idcardBackImg = idcardBackImg;
+    }
+
+    public String getFaceImg() {
+        return faceImg;
+    }
+
+    public void setFaceImg(String faceImg) {
+        this.faceImg = faceImg;
+    }
+
+    public String getWalletAddress() {
+        return walletAddress;
+    }
+
+    public void setWalletAddress(String walletAddress) {
+        this.walletAddress = walletAddress;
+    }
+
+    public Float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Float amount) {
+        this.amount = amount;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public String getWechatPayImg() {
+        return wechatPayImg;
+    }
+
+    public void setWechatPayImg(String wechatPayImg) {
+        this.wechatPayImg = wechatPayImg;
+    }
+
+    public String getAlipayImg() {
+        return alipayImg;
+    }
+
+    public void setAlipayImg(String alipayImg) {
+        this.alipayImg = alipayImg;
+    }
+
+    public String getUnionpayAccount() {
+        return unionpayAccount;
+    }
+
+    public void setUnionpayAccount(String unionpayAccount) {
+        this.unionpayAccount = unionpayAccount;
+    }
+
+    public String getUnionpayCard() {
+        return unionpayCard;
+    }
+
+    public void setUnionpayCard(String unionpayCard) {
+        this.unionpayCard = unionpayCard;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public Long getParentUserId() {
+        return parentUserId;
+    }
+
+    public void setParentUserId(Long parentUserId) {
+        this.parentUserId = parentUserId;
+    }
+
+    public Integer getUngentCommission() {
+        return ungentCommission;
+    }
+
+    public void setUngentCommission(Integer ungentCommission) {
+        this.ungentCommission = ungentCommission;
+    }
+
+    public Integer getNormalCommission() {
+        return normalCommission;
+    }
+
+    public void setNormalCommission(Integer normalCommission) {
+        this.normalCommission = normalCommission;
+    }
+
     public String getStatus()
     {
         return status;
@@ -295,6 +488,22 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public Integer getNoReadMsgCount() {
+        return noReadMsgCount;
+    }
+
+    public void setNoReadMsgCount(Integer noReadMsgCount) {
+        this.noReadMsgCount = noReadMsgCount;
+    }
+
+    public Long getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(Long toUserId) {
+        this.toUserId = toUserId;
     }
 
     @Override

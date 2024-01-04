@@ -124,4 +124,12 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    /**
+     * 校验身份证号码是否唯一
+     *
+     * @param idcardNo 身份证号码
+     * @return 结果
+     */
+    public SysUser checkIdcardUnique(String idcardNo);
 }
