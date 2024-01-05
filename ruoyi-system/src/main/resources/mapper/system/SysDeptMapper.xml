@@ -26,10 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="password"     column="password"     />
 		<result property="ungentCommission" column="ungent_commission"   />
 		<result property="normalCommission" column="normal_commission"   />
+		<result property="createAgentFlg" column="create_agent_flg"   />
 	</resultMap>
 	
 	<sql id="selectDeptVo">
-        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission
+        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg
         from sys_dept d
 		left join sys_user u on d.user_id = u.user_id
     </sql>
@@ -67,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
 		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,
-			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission
+			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg
 		from sys_dept d
 		left join sys_user u on d.user_id = u.user_id
 		where d.dept_id = #{deptId}
@@ -166,5 +167,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteDeptById" parameterType="Long">
 		update sys_dept set del_flag = '2' where dept_id = #{deptId}
 	</delete>
+
+	<select id="selectDeptByParentId" parameterType="Long" resultMap="SysDeptResult">
+		<include refid="selectDeptVo"/>
+		where d.parent_id = #{parentId} and d.del_flag = '0' limit 1
+	</select>
 
 </mapper> 

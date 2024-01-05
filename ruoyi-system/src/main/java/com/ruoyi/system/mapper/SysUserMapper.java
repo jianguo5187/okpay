@@ -132,4 +132,20 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkIdcardUnique(String idcardNo);
+
+    /**
+     * 根据邀请码查询用户
+     *
+     * @param inviteCode 邀请码
+     * @return 结果
+     */
+    public SysUser selectUserByInviteCode(String inviteCode);
+
+    /**
+     * 校验是否有代理用户
+     *
+     * @param userId 用户信ID
+     * @return 结果
+     */
+    public SysUser checkAgentUserExist(Long userId);
 }

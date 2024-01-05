@@ -115,4 +115,12 @@ public interface SysDeptMapper
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+
+    /**
+     * 根据父节点查询部门管理数据
+     *
+     * @param parentId 部门信息
+     * @return 部门信息
+     */
+    public SysDept selectDeptByParentId(Long parentId);
 }

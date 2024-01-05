@@ -81,16 +81,16 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="el-icon-plus"
-              size="mini"
-              @click="handleAdd"
-              v-hasPermi="['system:user:add']"
-            >新增</el-button>
-          </el-col>
+<!--          <el-col :span="1.5">-->
+<!--            <el-button-->
+<!--              type="primary"-->
+<!--              plain-->
+<!--              icon="el-icon-plus"-->
+<!--              size="mini"-->
+<!--              @click="handleAdd"-->
+<!--              v-hasPermi="['system:user:add']"-->
+<!--            >新增</el-button>-->
+<!--          </el-col>-->
           <el-col :span="1.5">
             <el-button
               type="success"
@@ -113,26 +113,26 @@
               v-hasPermi="['system:user:remove']"
             >删除</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="info"
-              plain
-              icon="el-icon-upload2"
-              size="mini"
-              @click="handleImport"
-              v-hasPermi="['system:user:import']"
-            >导入</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="mini"
-              @click="handleExport"
-              v-hasPermi="['system:user:export']"
-            >导出</el-button>
-          </el-col>
+<!--          <el-col :span="1.5">-->
+<!--            <el-button-->
+<!--              type="info"-->
+<!--              plain-->
+<!--              icon="el-icon-upload2"-->
+<!--              size="mini"-->
+<!--              @click="handleImport"-->
+<!--              v-hasPermi="['system:user:import']"-->
+<!--            >导入</el-button>-->
+<!--          </el-col>-->
+<!--          <el-col :span="1.5">-->
+<!--            <el-button-->
+<!--              type="warning"-->
+<!--              plain-->
+<!--              icon="el-icon-download"-->
+<!--              size="mini"-->
+<!--              @click="handleExport"-->
+<!--              v-hasPermi="['system:user:export']"-->
+<!--            >导出</el-button>-->
+<!--          </el-col>-->
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
 
@@ -220,7 +220,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="归属商户" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属商户" />
+              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属商户" :readOnly="true" disabled/>
             </el-form-item>
           </el-col>
         </el-row>

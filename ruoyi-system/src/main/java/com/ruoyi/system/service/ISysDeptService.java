@@ -121,4 +121,12 @@ public interface ISysDeptService
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+
+    /**
+     * 根据父部门ID查询信息
+     *
+     * @param parentId 父部门ID
+     * @return 部门信息
+     */
+    public SysDept selectDeptByParentId(Long parentId);
 }

@@ -57,7 +57,7 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="deptName" label="商户名称" width="260"></el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
+<!--      <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>-->
       <el-table-column prop="status" label="状态" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
@@ -99,7 +99,7 @@
 
     <!-- 添加或修改商户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-row>
 <!--          <el-col :span="24" v-if="form.parentId !== 0">-->
             <el-form-item label="上级商户" prop="parentId">
@@ -156,9 +156,16 @@
 <!--              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />-->
 <!--            </el-form-item>-->
 <!--          </el-col>-->
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="显示排序" prop="orderNum">-->
+<!--              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
           <el-col :span="12">
-            <el-form-item label="显示排序" prop="orderNum">
-              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
+            <el-form-item label="创建代理" prop="createAgentFlg">
+              <el-switch v-model="form.createAgentFlg"
+                         active-value="0"
+                         inactive-value="1"></el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -297,7 +304,7 @@ export default {
         userId: undefined,
         parentId: undefined,
         deptName: undefined,
-        orderNum: 0,
+        // orderNum: 0,
         leader: undefined,
         phone: undefined,
         email: undefined,
@@ -306,7 +313,8 @@ export default {
           userName: undefined,
           password: undefined,
           ungentCommission: undefined,
-          normalCommission: undefined
+          normalCommission: undefined,
+        createAgentFlg: "0"
         // }
       };
       this.resetForm("form");

@@ -99,6 +99,22 @@ public interface ISysUserService
     public boolean checkIdcardUnique(SysUser user);
 
     /**
+     * 根据邀请码查询用户
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public SysUser selectUserByInviteCode(SysUser user);
+
+    /**
+     * 校验是否有代理用户
+     *
+     * @param userId 用户信ID
+     * @return
+     */
+    public boolean checkAgentUserExist(Long userId);
+
+    /**
      * 校验用户是否允许操作
      * 
      * @param user 用户信息

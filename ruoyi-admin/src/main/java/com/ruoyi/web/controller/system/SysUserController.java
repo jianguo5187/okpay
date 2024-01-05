@@ -146,6 +146,7 @@ public class SysUserController extends BaseController
         user.setWalletAddress(ShiroUtils.randomPayAddress());
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        user.setPayPassword(SecurityUtils.encryptPassword(user.getPayPassword()));
         return toAjax(userService.insertUser(user));
     }
 
