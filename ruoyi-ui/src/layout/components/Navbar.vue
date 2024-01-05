@@ -6,8 +6,18 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
+      <div id="ruoyi-git" class="el-tooltip right-menu-item hover-effect">
+        <svg-icon icon-class="message" @click="openChat" />
+      </div>
+
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
+
+        <!-- <el-tooltip content="聊天" effect="dark" placement="bottom"> -->
+        <!-- <div class="avatar-wrapper">
+          <i class="message" />
+        </div> -->
+        <!-- </el-tooltip> -->
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
@@ -43,6 +53,49 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    
+    <el-dialog title="" :visible.sync="open" width="600px" append-to-body>
+      <!-- <div class="chatAppBody">
+          <div class="chatTitle">标题</div>
+          <div class="chatBox">
+              <div class="chatRow">
+                  <el-avatar class="chatAvatar" :size="30" src="https://goflychat.oss-cn-hangzhou.aliyuncs.com/static/upload/avator/2022June/32a988a3c2f8700119fa1f5da1b6a4bd.png"></el-avatar>
+                  <div class="chatMsgContent">
+                      <div class="chatUsername">唯一客服系统</div>
+                      <div class="chatContent">有什么可以帮您?</div>
+                  </div>
+              </div>
+              <div class="chatRow chatRowMe">
+                  <div class="chatContent">你好，这个客服系统多少钱？</div>
+              </div>
+          </div>
+          <div class="chatBottom">输入框区域</div>
+      </div> -->
+       <!--消息整体-->
+      <div class="chatAppBody">
+       <div :class="message.sender==='me'?'chat-message-me':'chat-message-other'"
+             :style="{'padding-bottom':messages.length-1===index?'2rem':'none'}"
+             v-for="(message, index) in messages"
+             :key="index">
+            <!--消息头像-->
+            <div :class="message.sender==='me'?'message-me-asWhole-headPortrait':'message-other-asWhole-headPortrait'">
+              <img src="/static/img/profile.473f5971.jpg" class="examineeFace_logo_style">
+            </div>
+            <!--消息-->
+            <div :class="message.sender==='me'?'message-me-asWhole-right':'message-other-asWhole-right'">
+              <!--消息上面-->
+              <div :class="message.sender==='me'?'message-me-asWhole-top':'message-other-asWhole-top'">
+                考生
+              </div>
+              <!--消息内容-->
+              <div :class="message.sender==='me'?'message-me':'message-other'">
+                {{ message.content }}
+              </div>
+            </div>
+        </div>
+      </div>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -68,6 +121,30 @@ export default {
     RuoYiGit,
     RuoYiDoc
   },
+  data() {
+    return {
+      // 是否显示弹出层
+      open: false,
+      // 弹出层标题
+      title: "",
+      baseUrl: process.env.VUE_APP_BASE_API,
+      messages: [
+        {sender: 'me', content: '你好！'},
+        {sender: 'other', content: '你好啊！'},
+        {sender: 'other', content: '请问有什么我可以帮助你的吗？'},
+        {sender: 'me', content: '我正在寻找一家好的餐厅。'},
+        {sender: 'other', content: '你在哪个城市？'},
+        {sender: 'me', content: '我在北京。'},
+        {sender: 'other', content: '好的，我可以为您推荐一些北京的餐厅。您需要什么类型的餐厅？'},
+        {sender: 'me', content: '我想要吃火锅。'},
+        {sender: 'other', content: '好的，以下是我为您推荐的北京火锅餐厅列表：[餐厅1，餐厅2，餐厅3]。您需要我帮您预约吗？'},
+        {sender: 'me', content: '不需要，我会自己预约。谢谢您的帮助！'},
+        {sender: 'other', content: '不客气，祝您用餐愉快！'},
+        {sender: 'me', content: '再见！'},
+        {sender: 'other', content: '再见！'}
+      ],
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -91,9 +168,62 @@ export default {
       }
     }
   },
+  created() {
+      this.initWebSocket();
+  },
+  destroyed() {
+    this.websock.close() //离开路由之后断开websocket连接
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
+    },
+    openChat() {
+      // window.open(this.url)
+      console.log("baseUrl : " + this.baseUrl);
+        this.open = true;
+        this.title = "添加用户";
+    },
+    initWebSocket(){
+      console.debug(this.$store.state.user.id);
+      const wsuri = "ws://localhost:8080/websocket/" + this.$store.state.user.id;
+      if(typeof(WebSocket) == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+      }else{
+        console.log(wsuri)
+        this.websock = new WebSocket(wsuri);
+        this.websock.onmessage = this.websocketonmessage;
+        this.websock.onopen = this.websocketonopen;
+        this.websock.onerror = this.websocketonerror;
+        this.websock.onclose = this.websocketclose;
+      }
+    },
+    //连接建立之后执行send方法发送数据
+    websocketonopen(){
+      // let actions = {"test":"我已在线"};
+      // this.websocketsend(JSON.stringify(actions));
+    },
+    //连接建立失败重连
+    websocketonerror(){
+      this.initWebSocket();
+    },
+    //数据接收
+    websocketonmessage(e){
+      // this.$modal.msg(e.data);
+      console.log(e.data);
+      // var audio = document.querySelector("audio");//用这种标签名称获取的方式就不会报错了，，，，
+      // audio.currentTime = 0;//从头开始播放
+      // audio.muted = false;//取消静音
+      // audio.play();//音频播放
+      // const redata = JSON.parse(e.data);
+    },
+    //数据发送
+    websocketsend(Data){
+      this.websock.send(Data);
+    },
+    //关闭
+    websocketclose(e){
+      console.log('断开连接',e);
     },
     async logout() {
       this.$confirm('确定注销并退出系统吗？', '提示', {
@@ -197,4 +327,132 @@ export default {
     }
   }
 }
+
+.chatAppBody{
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    background-color: #f1f5f8;
+    overflow-y: scroll;
+}
+.chatTitle{
+    background: #fff;
+}
+.chatBox{
+    flex: 1;
+    padding: 0 5px;
+}
+.chatBottom{
+    background: #fff;
+}
+.chatRow{
+    display: flex;
+    align-items: flex-end;
+    margin: 5px 0px;
+}
+.chatAvatar{
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+.chatUsername {
+    font-size: 12px;
+    white-space: nowrap;
+    color: #999;
+    margin-bottom: 2px;
+}
+.chatContent{
+    border-radius: 10px 10px 10px 0px;
+    padding: 10px;
+    background-color: rgb(255,255,255);
+    box-shadow: 0 5px 30px rgb(50 50 93 / 8%), 0 1px 3px rgb(0 0 0 / 5%);
+    font-size: 14px;
+    word-break: break-all;
+    line-height: 21px;
+}
+.chatRowMe{
+    justify-content: flex-end;
+}
+.chatRowMe .chatContent{
+    border-radius: 10px 10px 0px 10px;
+}
+.chat-message-other {
+  /*background-color: red;*/
+  display: flex;
+  padding-left: 1rem;
+  padding-top: 1rem;
+}
+
+.chat-message-me {
+  /*background-color: red;*/
+  display: flex;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  flex-direction: row-reverse; /* 将子div的顺序反转 */
+
+}
+
+.message-me-asWhole-headPortrait {
+  padding: 3px;
+}
+
+.message-other-asWhole-headPortrait {
+  padding: 3px;
+}
+
+.message-me-asWhole-right {
+  display: flex;
+  flex-direction: column; /* 设置子元素垂直排列 */
+  margin-left: 0.1rem;
+}
+
+.message-other-asWhole-right {
+  display: flex;
+  flex-direction: column; /* 设置子元素垂直排列 */
+  margin-left: 0.1rem;
+}
+
+.message-me-asWhole-top {
+  padding: 3px;
+  /* font-size: 12px; */
+  font-family: 微软雅黑;
+  padding: 3px;
+  color: rgba(134, 144, 156, 1);
+  text-align: right;
+}
+
+.message-other-asWhole-top {
+  padding: 3px;
+  /* font-size: 12px; */
+  font-family: 微软雅黑;
+  padding: 3px;
+  color: rgba(134, 144, 156, 1);
+}
+
+.message-me {
+  background-color: rgba(242, 243, 245, 1);
+  max-width: 280px;
+  word-wrap: break-word; /* 处理英文单词换行 */
+  word-break: break-all; /* 处理中文换行 */
+  display: inline-block; /*将div元素转换为行内块元素*/
+  width: auto; /* 宽度根据文本宽度自动调正*/
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.message-other {
+  background-color: rgba(242, 243, 245, 1);
+  max-width: 280px;
+  word-wrap: break-word; /* 处理英文单词换行 */
+  word-break: break-all; /* 处理中文换行 */
+  display: inline-block; /*将div元素转换为行内块元素*/
+  width: auto; /* 宽度根据文本宽度自动调正*/
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+
+.examineeFace_logo_style {
+  width: 30px;
+}
+
 </style>
