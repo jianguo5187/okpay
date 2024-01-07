@@ -147,7 +147,7 @@ public class WebSocketServer {
      * 2、然后解析其数据，找到消息要发送给谁
      * 3、最后将数据发送给相应的人
      *
-     * @param message 客户端发送过来的消息 数据格式：{"from":"user1","to":"admin","text":"你好呀"}
+     * @param message 客户端发送过来的消息 数据格式：{"chatFromUserId":"user1","chatToUserId":"admin","content":"你好呀","avatar":"xxxx"}
      */
     @OnMessage
     public void onMessage(String message, Session session, @PathParam("userId") String userId) {
@@ -164,9 +164,9 @@ public class WebSocketServer {
         JSONObject obj = JSON.parseObject(message);
 //        String status = (String) obj.get("status");
         // 获取消息的内容
-        String text = (String) obj.get("text");
+        String text = (String) obj.get("content");
         // 查看消息要发送给哪个用户
-        String to = (String) obj.get("to");
+        String to = obj.get("chatToUserId").toString();
 //        String fromToKey = userId + "-" + to;
 //        String toFromKey = to + "-" + userId;
 //        if (status != null) {
@@ -193,9 +193,9 @@ public class WebSocketServer {
 
                 JSONObject jsonObject = new JSONObject();
                 // 设置消息来源的用户名
-                jsonObject.put("from", userId);
+                jsonObject.put("chatFromUserId", userId);
                 // 设置消息内容
-                jsonObject.put("text", text);
+                jsonObject.put("content", text);
                 // 服务端发送消息给目标客户端
                 this.sendMessage(jsonObject.toString(), toSession);
                 log.info("发送消息给用户 {} ，消息内容是：{} ", toSession, jsonObject.toString());

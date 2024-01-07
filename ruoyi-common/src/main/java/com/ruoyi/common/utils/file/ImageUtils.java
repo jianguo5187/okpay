@@ -29,9 +29,7 @@ public class ImageUtils
 
     public static MultipartFile changeBaseToFile(String baseImage){
         try{
-//            File file = new File("C:\\Users\\Administrator\\Desktop\\身份证正面.png");
-            String base64 = Base64.encode(getImage("/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG"));
-
+//            String base64 = Base64.encode(getImage("/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG"));
             byte[] imageBytes = Base64.decode(baseImage);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             baos.write(imageBytes);

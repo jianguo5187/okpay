@@ -1,7 +1,10 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.domain.entity.SysChat;
+import com.ruoyi.common.core.vo.req.ChatContentReqVO;
 import com.ruoyi.common.core.vo.req.ChatHistoryReqVO;
+import com.ruoyi.common.core.vo.req.ChatUpdateReadedReqVO;
+import com.ruoyi.common.core.vo.resp.ChatUserListRespVO;
 
 import java.util.List;
 
@@ -51,7 +54,7 @@ public interface ISysChatService
      * @param chatIds 需要删除的聊天信息主键集合
      * @return 结果
      */
-    public int deleteSysChatByChatIds(String chatIds);
+    public int deleteSysChatByChatIds(Long[]  chatIds);
 
     /**
      * 删除聊天信息信息
@@ -61,6 +64,29 @@ public interface ISysChatService
      */
     public int deleteSysChatByChatId(Long chatId);
 
+
+    /**
+     * 查询聊天用户信息列表
+     *
+     * @param userId 聊天用户ID
+     * @return 聊天用户信息集合
+     */
+    public List<ChatUserListRespVO> selectChatUserListByUserId(Long userId,Long deptId,Long parentUserId);
+
+    /**
+     * 查询聊天信息列表
+     *
+     * @return 聊天信息集合
+     */
+    public List<ChatUserListRespVO> selectChatContentList(ChatContentReqVO vo);
+
+
+    /**
+     * 修改消息为已读
+     *
+     * @return 结果
+     */
+    public int updateChatReaded(ChatUpdateReadedReqVO vo);
     /**
      * 查询聊天历史信息列表
      *

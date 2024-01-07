@@ -3,7 +3,10 @@ package com.ruoyi.system.service.impl;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysChat;
+import com.ruoyi.common.core.vo.req.ChatContentReqVO;
 import com.ruoyi.common.core.vo.req.ChatHistoryReqVO;
+import com.ruoyi.common.core.vo.req.ChatUpdateReadedReqVO;
+import com.ruoyi.common.core.vo.resp.ChatUserListRespVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysChatMapper;
@@ -77,9 +80,9 @@ public class SysChatServiceImpl implements ISysChatService
      * @return 结果
      */
     @Override
-    public int deleteSysChatByChatIds(String chatIds)
+    public int deleteSysChatByChatIds(Long[]  chatIds)
     {
-        return sysChatMapper.deleteSysChatByChatIds(Convert.toStrArray(chatIds));
+        return sysChatMapper.deleteSysChatByChatIds(chatIds);
     }
 
     /**
@@ -94,6 +97,34 @@ public class SysChatServiceImpl implements ISysChatService
         return sysChatMapper.deleteSysChatByChatId(chatId);
     }
 
+
+
+    /**
+     * 查询聊天用户信息列表
+     *
+     * @param userId 聊天用户ID
+     * @return 聊天用户信息集合
+     */
+    public List<ChatUserListRespVO> selectChatUserListByUserId(Long userId,Long deptId,Long parentUserId){return sysChatMapper.selectChatUserListByUserId(userId,deptId,parentUserId);};
+
+
+    /**
+     * 查询聊天信息列表
+     *
+     * @return 聊天信息集合
+     */
+    public List<ChatUserListRespVO> selectChatContentList(ChatContentReqVO vo){
+        return sysChatMapper.selectChatContentList(vo.getChatFromUser(),vo.getChatToUser(), (vo.getPageNumber()-1)*20);
+    }
+
+    /**
+     * 修改消息为已读
+     *
+     * @return 结果
+     */
+    public int updateChatReaded(ChatUpdateReadedReqVO vo){
+        return sysChatMapper.updateChatReaded(vo.getChatFromUser(), vo.getChatToUser());
+    }
     /**
      * 查询聊天历史信息列表
      *

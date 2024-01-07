@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.common.core.domain.entity.SysChat;
+import com.ruoyi.common.core.vo.resp.ChatUserListRespVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -59,7 +60,32 @@ public interface SysChatMapper
      * @param chatIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteSysChatByChatIds(String[] chatIds);
+    public int deleteSysChatByChatIds(Long[]  chatIds);
+
+
+    /**
+     * 查询聊天用户信息列表
+     *
+     * @param userId 聊天用户ID
+     * @param deptId 聊天用户部门ID
+     * @return 聊天用户信息集合
+     */
+    public List<ChatUserListRespVO> selectChatUserListByUserId(@Param("userId")Long userId,@Param("deptId")Long deptId,@Param("parentUserId")Long parentUserId);
+
+
+    /**
+     * 查询聊天信息列表
+     *
+     * @return 聊天信息集合
+     */
+    public List<ChatUserListRespVO> selectChatContentList(@Param("chatFromUser")Long chatFromUser, @Param("chatToUser")Long chatToUser, @Param("pageNumber")Integer pageNumber);
+
+    /**
+     * 修改消息为已读
+     *
+     * @return 结果
+     */
+    public int updateChatReaded(@Param("chatFromUser")Long chatFromUser, @Param("chatToUser")Long chatToUser);
 
     /**
      * 查询聊天历史信息列表

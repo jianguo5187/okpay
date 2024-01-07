@@ -1,7 +1,5 @@
 package com.ruoyi.common.core.domain.model;
 
-import com.ruoyi.common.annotation.Excel;
-
 /**
  * 用户注册对象
  * 
