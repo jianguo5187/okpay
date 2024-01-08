@@ -72,6 +72,9 @@ public class SysDept extends BaseEntity
     /** 普通手续费 */
     private Integer normalCommission;
 
+    /** 是否可以创建代理（0可以 1不行） */
+    private String createAgentFlg;
+
     public Long getDeptId()
     {
         return deptId;
@@ -236,6 +239,14 @@ public class SysDept extends BaseEntity
 
     public void setNormalCommission(Integer normalCommission) {
         this.normalCommission = normalCommission;
+    }
+
+    public String getCreateAgentFlg() {
+        return createAgentFlg;
+    }
+
+    public void setCreateAgentFlg(String createAgentFlg) {
+        this.createAgentFlg = createAgentFlg;
     }
 
     @Override

@@ -230,6 +230,36 @@ public class SysUserServiceImpl implements ISysUserService
         return UserConstants.UNIQUE;
     }
 
+
+    /**
+     * 根据邀请码查询用户
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public SysUser selectUserByInviteCode(SysUser user)
+    {
+        SysUser info = userMapper.selectUserByInviteCode(user.getInviteCode());
+        return info;
+    }
+
+    /**
+     * 校验是否有代理用户
+     *
+     * @param userId 用户信ID
+     * @return
+     */
+    @Override
+    public boolean checkAgentUserExist(Long userId)
+    {
+        SysUser info = userMapper.checkAgentUserExist(userId);
+        if (StringUtils.isNotNull(info) && info.getParentUserId().longValue() == userId.longValue())
+        {
+            return UserConstants.UNIQUE;
+        }
+        return UserConstants.NOT_UNIQUE;
+    }
+
     /**
      * 校验用户是否允许操作
      * 

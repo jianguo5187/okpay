@@ -67,7 +67,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public List<TreeSelect> selectDeptTreeList(SysDept dept)
     {
-        List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept).stream().filter(r-> r.getParentId() == 0 || r.getParentId() == 100).collect(Collectors.toList());
+        List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);
         return buildDeptTreeSelect(depts);
     }
 
@@ -254,6 +254,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         merchantUser.setParentUserId(2L);
         merchantUser.setUngentCommission(dept.getUngentCommission());
         merchantUser.setNormalCommission(dept.getNormalCommission());
+        merchantUser.setCreateAgentFlg(dept.getCreateAgentFlg());
         merchantUser.setCreateBy(dept.getCreateBy());
 
         merchantUser.setRoleIds(new Long[]{3l});
@@ -299,6 +300,7 @@ public class SysDeptServiceImpl implements ISysDeptService
             merchantUser.setUserId(dept.getUserId());
             merchantUser.setUngentCommission(dept.getUngentCommission());
             merchantUser.setNormalCommission(dept.getNormalCommission());
+            merchantUser.setCreateAgentFlg(dept.getCreateAgentFlg());
             int updateUserRow = userMapper.updateUser(merchantUser);
         }
         return result;
@@ -346,6 +348,16 @@ public class SysDeptServiceImpl implements ISysDeptService
     public int deleteDeptById(Long deptId)
     {
         return deptMapper.deleteDeptById(deptId);
+    }
+
+    /**
+     * 根据父部门ID查询信息
+     *
+     * @param parentId 父部门ID
+     * @return 部门信息
+     */
+    public SysDept selectDeptByParentId(Long parentId){
+        return deptMapper.selectDeptByParentId(parentId);
     }
 
     /**

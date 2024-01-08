@@ -75,4 +75,10 @@ public class UserConstants
      */
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 20;
+
+    /** 创建代理正常状态 */
+    public static final String CREATE_AGENT_NORMAL = "0";
+
+    /** 创建代理停用状态 */
+    public static final String CREATE_AGENT__DISABLE = "1";
 }

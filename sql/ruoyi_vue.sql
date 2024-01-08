@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 04/01/2024 23:39:27
+ Date: 07/01/2024 19:08:16
 */
 
 SET NAMES utf8mb4;
@@ -322,12 +322,42 @@ CREATE TABLE `sys_chat`  (
   `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
   PRIMARY KEY (`chat_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_chat
 -- ----------------------------
-INSERT INTO `sys_chat` VALUES (1, 3, 1, '你好呀2', '0', '0', '2024-01-02 22:11:34');
+INSERT INTO `sys_chat` VALUES (1, 3, 1, '你好呀2', '1', '0', '2024-01-02 22:11:34');
+INSERT INTO `sys_chat` VALUES (2, 1, 3, '你好呀', '1', '0', '2024-01-02 22:11:35');
+INSERT INTO `sys_chat` VALUES (3, 1, 3, 'hello', '1', '0', '2024-01-07 13:08:51');
+INSERT INTO `sys_chat` VALUES (4, 2, 1, '你好呀', '1', '0', '2024-01-07 13:09:20');
+INSERT INTO `sys_chat` VALUES (5, 2, 1, '你好呀44', '1', '0', '2024-01-07 13:46:06');
+INSERT INTO `sys_chat` VALUES (6, 2, 1, '你好呀？', '1', '0', '2024-01-07 13:46:22');
+INSERT INTO `sys_chat` VALUES (7, 1, 2, '你好呀', '1', '0', '2024-01-07 14:02:21');
+INSERT INTO `sys_chat` VALUES (8, 2, 1, '你在干嘛', '1', '0', '2024-01-07 14:59:38');
+INSERT INTO `sys_chat` VALUES (9, 2, 1, '在干嘛', '1', '0', '2024-01-07 15:00:29');
+INSERT INTO `sys_chat` VALUES (10, 2, 1, '在干嘛？', '1', '0', '2024-01-07 15:01:22');
+INSERT INTO `sys_chat` VALUES (11, 2, 1, '在干嘛?？', '1', '0', '2024-01-07 15:02:27');
+INSERT INTO `sys_chat` VALUES (12, 1, 2, '在看书', '1', '0', '2024-01-07 15:04:04');
+INSERT INTO `sys_chat` VALUES (13, 2, 1, '吃饭咯', '1', '0', '2024-01-07 15:28:48');
+INSERT INTO `sys_chat` VALUES (14, 2, 1, '吃饭咯?', '1', '0', '2024-01-07 15:30:32');
+INSERT INTO `sys_chat` VALUES (15, 2, 1, '吃饭', '1', '0', '2024-01-07 15:31:35');
+INSERT INTO `sys_chat` VALUES (16, 1, 2, 'laile ', '1', '0', '2024-01-07 15:31:40');
+INSERT INTO `sys_chat` VALUES (17, 2, 1, '吃饭', '1', '0', '2024-01-07 15:53:16');
+INSERT INTO `sys_chat` VALUES (18, 2, 1, '吃饭?', '1', '0', '2024-01-07 15:53:37');
+INSERT INTO `sys_chat` VALUES (19, 2, 1, '吃饭?', '1', '0', '2024-01-07 15:55:07');
+INSERT INTO `sys_chat` VALUES (20, 2, 1, '吃?', '1', '0', '2024-01-07 15:56:17');
+INSERT INTO `sys_chat` VALUES (21, 2, 1, '吃??', '1', '0', '2024-01-07 15:56:41');
+INSERT INTO `sys_chat` VALUES (22, 2, 1, '吃1?', '1', '0', '2024-01-07 16:03:44');
+INSERT INTO `sys_chat` VALUES (23, 1, 2, 'buchile', '0', '0', '2024-01-07 16:03:49');
+INSERT INTO `sys_chat` VALUES (24, 2, 1, '吃1?', '1', '0', '2024-01-07 16:05:27');
+INSERT INTO `sys_chat` VALUES (25, 2, 1, '吃ba', '1', '0', '2024-01-07 16:07:02');
+INSERT INTO `sys_chat` VALUES (26, 2, 1, '吃', '1', '0', '2024-01-07 17:49:58');
+INSERT INTO `sys_chat` VALUES (27, 1, 2, 'ZOU ', '0', '0', '2024-01-07 17:50:04');
+INSERT INTO `sys_chat` VALUES (28, 2, 7, '你在干嘛', '1', '0', '2024-01-07 18:46:28');
+INSERT INTO `sys_chat` VALUES (29, 7, 2, '测试代码呀', '1', '0', '2024-01-07 18:46:35');
+INSERT INTO `sys_chat` VALUES (30, 7, 2, '你真厉害', '1', '0', '2024-01-07 18:46:46');
+INSERT INTO `sys_chat` VALUES (31, 7, 2, '牛呀', '1', '0', '2024-01-07 18:47:07');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -390,7 +420,7 @@ INSERT INTO `sys_dept` VALUES (202, 201, 0, '0,100,200,201', '测试商户1客�
 INSERT INTO `sys_dept` VALUES (207, 100, 4, '0,100', '测试商户2', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:05:25', '', NULL);
 INSERT INTO `sys_dept` VALUES (208, 207, 0, '0,100,207', '测试商户2代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:05:25', '', NULL);
 INSERT INTO `sys_dept` VALUES (209, 208, 0, '0,100,207,208', '测试商户2客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:05:25', '', NULL);
-INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '测试商户3', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', '', '2024-01-04 23:20:33');
+INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '测试商户3', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', 'admin', '2024-01-05 21:44:38');
 INSERT INTO `sys_dept` VALUES (217, 216, 0, '0,100,216', '测试商户3代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
 INSERT INTO `sys_dept` VALUES (218, 217, 0, '0,100,216,217', '测试商户3客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
 
@@ -546,7 +576,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 128 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 170 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -579,6 +609,48 @@ INSERT INTO `sys_logininfor` VALUES (124, 'testadmin', '127.0.0.1', '内网IP', 
 INSERT INTO `sys_logininfor` VALUES (125, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-03 00:12:06');
 INSERT INTO `sys_logininfor` VALUES (126, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-03 00:12:43');
 INSERT INTO `sys_logininfor` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-04 21:54:36');
+INSERT INTO `sys_logininfor` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-04 23:41:44');
+INSERT INTO `sys_logininfor` VALUES (129, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-04 23:41:51');
+INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-05 21:03:00');
+INSERT INTO `sys_logininfor` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-05 21:54:51');
+INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-05 23:06:47');
+INSERT INTO `sys_logininfor` VALUES (133, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '注册成功', '2024-01-05 23:38:31');
+INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-05 23:39:15');
+INSERT INTO `sys_logininfor` VALUES (135, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '注册成功', '2024-01-06 00:21:17');
+INSERT INTO `sys_logininfor` VALUES (136, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '注册成功', '2024-01-06 00:23:59');
+INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 00:24:03');
+INSERT INTO `sys_logininfor` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 19:42:13');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-06 19:42:33');
+INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 19:42:38');
+INSERT INTO `sys_logininfor` VALUES (141, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-06 19:57:11');
+INSERT INTO `sys_logininfor` VALUES (142, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '1', '用户不存在/密码错误', '2024-01-06 19:59:02');
+INSERT INTO `sys_logininfor` VALUES (143, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-06 19:59:19');
+INSERT INTO `sys_logininfor` VALUES (144, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-06 20:04:09');
+INSERT INTO `sys_logininfor` VALUES (145, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '退出成功', '2024-01-06 20:04:25');
+INSERT INTO `sys_logininfor` VALUES (146, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-06 20:11:59');
+INSERT INTO `sys_logininfor` VALUES (147, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-06 20:45:07');
+INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 20:45:32');
+INSERT INTO `sys_logininfor` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 21:17:51');
+INSERT INTO `sys_logininfor` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-06 23:59:23');
+INSERT INTO `sys_logininfor` VALUES (151, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-06 23:59:28');
+INSERT INTO `sys_logininfor` VALUES (152, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 00:07:38');
+INSERT INTO `sys_logininfor` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 09:44:21');
+INSERT INTO `sys_logininfor` VALUES (154, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 09:45:52');
+INSERT INTO `sys_logininfor` VALUES (155, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 09:46:00');
+INSERT INTO `sys_logininfor` VALUES (156, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 09:47:05');
+INSERT INTO `sys_logininfor` VALUES (157, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 09:47:18');
+INSERT INTO `sys_logininfor` VALUES (158, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 10:59:04');
+INSERT INTO `sys_logininfor` VALUES (159, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 10:59:08');
+INSERT INTO `sys_logininfor` VALUES (160, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 11:15:58');
+INSERT INTO `sys_logininfor` VALUES (161, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 11:16:06');
+INSERT INTO `sys_logininfor` VALUES (162, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 11:23:46');
+INSERT INTO `sys_logininfor` VALUES (163, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 11:23:49');
+INSERT INTO `sys_logininfor` VALUES (164, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 17:47:36');
+INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 17:50:56');
+INSERT INTO `sys_logininfor` VALUES (166, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 17:51:04');
+INSERT INTO `sys_logininfor` VALUES (167, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 17:58:58');
+INSERT INTO `sys_logininfor` VALUES (168, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-07 18:47:24');
+INSERT INTO `sys_logininfor` VALUES (169, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-07 18:47:29');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -746,7 +818,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 158 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 169 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -809,6 +881,17 @@ INSERT INTO `sys_oper_log` VALUES (154, '部门管理', 1, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (155, '部门管理', 1, 'com.ruoyi.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"deptId\":213,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\",\"ungentCommission\":10,\"userName\":\"liao3\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'6-3\' for key \'PRIMARY\'\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysUserRoleMapper.xml]\r\n### The error may involve defaultParameterMap\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_user_role(user_id, role_id) values         (?,?)\r\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'6-3\' for key \'PRIMARY\'\n; Duplicate entry \'6-3\' for key \'PRIMARY\'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'6-3\' for key \'PRIMARY\'', '2024-01-04 23:19:12', 1196);
 INSERT INTO `sys_oper_log` VALUES (156, '部门管理', 1, 'com.ruoyi.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\",\"ungentCommission\":10,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-04 23:20:33', 4155);
 INSERT INTO `sys_oper_log` VALUES (157, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":200,\"deptName\":\"测试商户1\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":15,\"updateBy\":\"admin\",\"userId\":3,\"userName\":\"liao1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-04 23:26:04', 516);
+INSERT INTO `sys_oper_log` VALUES (158, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"true\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-05 21:16:46', 267);
+INSERT INTO `sys_oper_log` VALUES (159, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"true\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', NULL, 1, '\r\n### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysUserMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysUserMapper.updateUser-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update sys_user     SET ungent_commission = ?,    normal_commission = ?,    create_agent_flg = ?,                              update_time = sysdate()     where user_id = ?\r\n### Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1\n; Data truncation: Data too long for column \'create_agent_flg\' at row 1; nested exception is com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1', '2024-01-05 21:18:26', 487);
+INSERT INTO `sys_oper_log` VALUES (160, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"true\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', NULL, 1, '\r\n### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysUserMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysUserMapper.updateUser-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update sys_user     SET ungent_commission = ?,    normal_commission = ?,    create_agent_flg = ?,                              update_time = sysdate()     where user_id = ?\r\n### Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1\n; Data truncation: Data too long for column \'create_agent_flg\' at row 1; nested exception is com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column \'create_agent_flg\' at row 1', '2024-01-05 21:19:34', 42777);
+INSERT INTO `sys_oper_log` VALUES (161, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"1\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-05 21:29:02', 8404);
+INSERT INTO `sys_oper_log` VALUES (162, '部门管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-05 21:29:07', 189);
+INSERT INTO `sys_oper_log` VALUES (163, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"1\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"该商户包含未停用的其他代理！\",\"code\":500}', 0, NULL, '2024-01-05 21:44:28', 23);
+INSERT INTO `sys_oper_log` VALUES (164, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"1\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"status\":\"0\",\"ungentCommission\":10,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-05 21:44:38', 196);
+INSERT INTO `sys_oper_log` VALUES (165, '个人信息', 2, 'com.ruoyi.web.controller.system.SysProfileController.updatePwd()', 'PUT', 1, 'admin', NULL, '/system/user/profile/updatePwd', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"新密码不能与旧密码相同\",\"code\":500}', 0, NULL, '2024-01-06 19:44:03', 25544);
+INSERT INTO `sys_oper_log` VALUES (166, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"sys_chat\"}', NULL, 0, NULL, '2024-01-06 23:40:36', 399);
+INSERT INTO `sys_oper_log` VALUES (167, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', NULL, '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2024/01/07/头像_20240107111226A001.png\",\"code\":200}', 0, NULL, '2024-01-07 11:12:26', 204);
+INSERT INTO `sys_oper_log` VALUES (168, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'okadmin', 'OKPAY平台', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2024/01/07/头像2_20240107111704A002.png\",\"code\":200}', 0, NULL, '2024-01-07 11:17:05', 716);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -933,7 +1016,7 @@ CREATE TABLE `sys_user`  (
   `sex` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
   `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '头像地址',
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '密码',
-  `pay_password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付密码',
+  `pay_password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付密码',
   `real_name` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
   `idcard_no` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号码',
   `idcard_front_img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证正面图片路径',
@@ -949,6 +1032,7 @@ CREATE TABLE `sys_user`  (
   `parent_user_id` bigint(20) NULL DEFAULT 0 COMMENT '上级用户ID',
   `ungent_commission` int(3) NULL DEFAULT 0 COMMENT '加急手续费',
   `normal_commission` int(3) NULL DEFAULT 0 COMMENT '普通手续费',
+  `create_agent_flg` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '是否可以创建代理（0可以 1不行）',
   `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
   `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `login_ip` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '最后登录IP',
@@ -959,16 +1043,17 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 'a12c', NULL, NULL, NULL, NULL, 0, 0, 0, '0', '0', '127.0.0.1', '2024-01-04 21:54:36', 'admin', '2024-01-02 21:22:09', '', '2024-01-04 21:54:36', '管理员');
-INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '00', 'r1@qq.com', '15666666666', '0', '', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, '789c', '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', '1231', '123', 0, 0, 0, '0', '0', '127.0.0.1', '2024-01-03 00:12:07', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-03 00:12:06', '测试员');
-INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '00', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 'e7afd6', NULL, NULL, NULL, NULL, 2, 15, 5, '0', '0', '', NULL, 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-01-04 23:26:04', NULL);
-INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, '52541b', NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '', NULL, 'admin', '2024-01-04 23:05:25', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 0.00, '506309', NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '', NULL, 'admin', '2024-01-04 23:20:30', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '/profile/avatar/2024/01/07/头像_20240107111226A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 'a12c', NULL, NULL, NULL, NULL, 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-07 18:47:29', 'admin', '2024-01-02 21:22:09', '', '2024-01-07 18:47:29', '管理员');
+INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '00', 'r1@qq.com', '15666666666', '0', '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, '789c', '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', '1231', '123', 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-07 17:51:05', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-07 17:51:05', '测试员');
+INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '02', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 'e7afd6', NULL, NULL, NULL, NULL, 2, 15, 5, '0', '0', '0', '', NULL, 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-01-04 23:26:04', NULL);
+INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, '52541b', NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '0', '127.0.0.1', '2024-01-04 23:41:52', 'admin', '2024-01-04 23:05:25', '', '2024-01-04 23:41:51', NULL);
+INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 0.00, '506309', NULL, NULL, NULL, NULL, 2, 10, 5, '1', '0', '0', '127.0.0.1', '2024-01-07 17:58:58', 'admin', '2024-01-04 23:20:30', '', '2024-01-07 17:58:58', NULL);
+INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', '', '$2a$10$aGG1i82MoMh2TZggFFh/e.ho8nRbFs3O4y9z/GMJHnK8DTHpHW3Hm', '$2a$10$UMHjQIZ9kGS/ZDESAO1DXuLR886dKJ6iK11X2I7vKhSQavvAvpwxa', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 0.00, '834d02', '/profile/upload/2024/01/06/image_20240106204519A001.jpeg', NULL, NULL, NULL, 7, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-06 20:12:00', '', '2024-01-06 00:23:59', '', '2024-01-06 20:45:19', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_post

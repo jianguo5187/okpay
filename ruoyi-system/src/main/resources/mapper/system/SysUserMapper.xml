@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="parentUserId"    column="parent_user_id"   />
 		<result property="ungentCommission" column="ungent_commission"   />
 		<result property="normalCommission" column="normal_commission"   />
+		<result property="createAgentFlg" column="create_agent_flg"   />
         <result property="status"       column="status"       />
         <result property="delFlag"      column="del_flag"     />
         <result property="loginIp"      column="login_ip"     />
@@ -65,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectUserVo">
-        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         from sys_user u
@@ -75,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
@@ -104,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission,  u.status, u.create_time
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg,  u.status, u.create_time
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
@@ -121,7 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission,  u.status, u.create_time
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_img, u.alipay_img, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg,  u.status, u.create_time
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
@@ -163,6 +164,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="checkIdcardUnique" parameterType="String" resultMap="SysUserResult">
 		select user_id, idcard_no from sys_user where idcard_no=#{idcardNo} and del_flag = '0' limit 1
 	</select>
+
+	<select id="checkAgentUserExist" parameterType="Long" resultMap="SysUserResult">
+		select user_id, parent_user_id from sys_user where parent_user_id=#{userId} and del_flag = '0' and user_type = '03' limit 1
+	</select>
+
+	<select id="selectUserByInviteCode" parameterType="String" resultMap="SysUserResult">
+		select user_id, invite_code, dept_id, user_type from sys_user where invite_code=#{inviteCode} and del_flag = '0' limit 1
+	</select>
 	
 	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
  		insert into sys_user(
@@ -192,6 +201,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">parent_user_id,</if>
 			<if test="ungentCommission != null and ungentCommission != 0">ungent_commission,</if>
 			<if test="normalCommission != null and normalCommission != 0">normal_commission,</if>
+			<if test="createAgentFlg != null and createAgentFlg != ''">create_agent_flg,</if>
  			<if test="status != null and status != ''">status,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
  			<if test="remark != null and remark != ''">remark,</if>
@@ -223,6 +233,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">#{parentUserId},</if>
 			<if test="ungentCommission != null and ungentCommission != 0">#{ungentCommission},</if>
 			<if test="normalCommission != null and normalCommission != 0">#{normalCommission},</if>
+			<if test="createAgentFlg != null and createAgentFlg != ''">#{createAgentFlg},</if>
  			<if test="status != null and status != ''">#{status},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
  			<if test="remark != null and remark != ''">#{remark},</if>
@@ -258,6 +269,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">parent_user_id = #{parentUserId},</if>
 			<if test="ungentCommission != null and ungentCommission != 0">ungent_commission = #{ungentCommission},</if>
 			<if test="normalCommission != null and normalCommission != 0">normal_commission = #{normalCommission},</if>
+			<if test="createAgentFlg != null and createAgentFlg != ''">create_agent_flg = #{createAgentFlg},</if>
  			<if test="status != null and status != ''">status = #{status},</if>
  			<if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
  			<if test="loginDate != null">login_date = #{loginDate},</if>
