@@ -1,5 +1,7 @@
 package com.ruoyi.common.core.vo.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class SaleDetailInfoRespVO {
@@ -11,6 +13,7 @@ public class SaleDetailInfoRespVO {
     private String saleNo;
 
     /** 卖币时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date saleTime;
 
     /** 卖币用户ID */

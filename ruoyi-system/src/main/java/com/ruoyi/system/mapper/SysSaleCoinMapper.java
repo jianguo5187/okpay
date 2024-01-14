@@ -2,6 +2,8 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
+import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 卖币Mapper接口
@@ -58,4 +60,8 @@ public interface SysSaleCoinMapper
      * @return 结果
      */
     public int deleteSysSaleCoinBySaleIds(Long[] saleIds);
+
+    public List<SaleDetailInfoRespVO> getSaleList(@Param("userId") Long userId, @Param("deptId") Long deptId,@Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+
+    public List<SaleDetailInfoRespVO> getMySaleList(@Param("userId") Long userId, @Param("status") String status, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 }
