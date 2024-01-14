@@ -208,4 +208,31 @@ public class SysAppController extends BaseController {
         ajax.put("saleInfo", sysAppService.getSaleDetailInfo(vo.getSaleId()));
         return ajax;
     }
+
+    /**
+     * 交易大厅卖币列表接口
+     */
+    @PostMapping("/getSaleList")
+    public AjaxResult getSaleList(@RequestBody GetSaleListReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("saleList", sysAppService.getSaleList(user.getUserId(), user.getDeptId(), vo));
+        return ajax;
+    }
+
+    /**
+     * 我的挂单接口
+     */
+    @PostMapping("/getMySaleList")
+    public AjaxResult getMySaleList(@RequestBody GetMySaleListReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("mySaleList", sysAppService.getMySaleList(user.getUserId(), vo));
+        return ajax;
+    }
 }
