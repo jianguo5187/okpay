@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysSaleCoinMapper">
+    
+    <resultMap type="SysSaleCoin" id="SysSaleCoinResult">
+        <result property="saleId"    column="sale_id"    />
+        <result property="saleNo"    column="sale_no"    />
+        <result property="saleTime"    column="sale_time"    />
+        <result property="saleUserId"    column="sale_user_id"    />
+        <result property="saleSplitType"    column="sale_split_type"    />
+        <result property="supportBuyType"    column="support_buy_type"    />
+        <result property="saleAmount"    column="sale_amount"    />
+        <result property="remainAmount"    column="remain_amount"    />
+        <result property="status"    column="status"    />
+        <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysSaleCoinVo">
+        select sale_id, sale_no, sale_time, sale_user_id, sale_split_type, support_buy_type, sale_amount, remain_amount, status, urgent_sale_flg, create_by, create_time, update_by, update_time, remark from sys_sale_coin
+    </sql>
+
+    <select id="selectSysSaleCoinList" parameterType="SysSaleCoin" resultMap="SysSaleCoinResult">
+        <include refid="selectSysSaleCoinVo"/>
+        <where>  
+            <if test="saleNo != null  and saleNo != ''"> and sale_no = #{saleNo}</if>
+            <if test="saleTime != null "> and sale_time = #{saleTime}</if>
+            <if test="saleUserId != null "> and sale_user_id = #{saleUserId}</if>
+            <if test="saleSplitType != null  and saleSplitType != ''"> and sale_split_type = #{saleSplitType}</if>
+            <if test="supportBuyType != null  and supportBuyType != ''"> and support_buy_type = #{supportBuyType}</if>
+            <if test="saleAmount != null "> and sale_amount = #{saleAmount}</if>
+            <if test="remainAmount != null "> and remain_amount = #{remainAmount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="urgentSaleFlg != null  and urgentSaleFlg != ''"> and urgent_sale_flg = #{urgentSaleFlg}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysSaleCoinBySaleId" parameterType="Long" resultMap="SysSaleCoinResult">
+        <include refid="selectSysSaleCoinVo"/>
+        where sale_id = #{saleId}
+    </select>
+        
+    <insert id="insertSysSaleCoin" parameterType="SysSaleCoin" useGeneratedKeys="true" keyProperty="saleId">
+        insert into sys_sale_coin(
+            <if test="saleNo != null">sale_no,</if>
+            <if test="saleUserId != null">sale_user_id,</if>
+            <if test="saleSplitType != null">sale_split_type,</if>
+            <if test="supportBuyType != null">support_buy_type,</if>
+            <if test="saleAmount != null">sale_amount,</if>
+            <if test="remainAmount != null">remain_amount,</if>
+            <if test="status != null">status,</if>
+            <if test="urgentSaleFlg != null">urgent_sale_flg,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            sale_time,
+            create_time
+        )values(
+            <if test="saleNo != null">#{saleNo},</if>
+            <if test="saleUserId != null">#{saleUserId},</if>
+            <if test="saleSplitType != null">#{saleSplitType},</if>
+            <if test="supportBuyType != null">#{supportBuyType},</if>
+            <if test="saleAmount != null">#{saleAmount},</if>
+            <if test="remainAmount != null">#{remainAmount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="urgentSaleFlg != null">#{urgentSaleFlg},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate(),
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateSysSaleCoin" parameterType="SysSaleCoin">
+        update sys_sale_coin
+        <set>
+            <if test="saleNo != null">sale_no = #{saleNo},</if>
+            <if test="saleUserId != null">sale_user_id = #{saleUserId},</if>
+            <if test="saleSplitType != null">sale_split_type = #{saleSplitType},</if>
+            <if test="supportBuyType != null">support_buy_type = #{supportBuyType},</if>
+            <if test="saleAmount != null">sale_amount = #{saleAmount},</if>
+            <if test="remainAmount != null">remain_amount = #{remainAmount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="urgentSaleFlg != null">urgent_sale_flg = #{urgentSaleFlg},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where sale_id = #{saleId}
+    </update>
+
+    <delete id="deleteSysSaleCoinBySaleId" parameterType="Long">
+        delete from sys_sale_coin where sale_id = #{saleId}
+    </delete>
+
+    <delete id="deleteSysSaleCoinBySaleIds" parameterType="String">
+        delete from sys_sale_coin where sale_id in 
+        <foreach item="saleId" collection="array" open="(" separator="," close=")">
+            #{saleId}
+        </foreach>
+    </delete>
+</mapper>

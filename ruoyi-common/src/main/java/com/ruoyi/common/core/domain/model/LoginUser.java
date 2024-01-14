@@ -126,6 +126,12 @@ public class LoginUser implements UserDetails
         return user.getPassword();
     }
 
+    @JSONField(serialize = false)
+    public String getPayPassword()
+    {
+        return user.getPayPassword();
+    }
+
     @Override
     public String getUsername()
     {

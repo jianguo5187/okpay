@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysRechargeMapper">
+    
+    <resultMap type="SysRecharge" id="SysRechargeResult">
+        <result property="rechargeId"    column="recharge_id"    />
+        <result property="fromUserId"    column="from_user_id"    />
+        <result property="toUserId"    column="to_user_id"    />
+        <result property="rechargeAmount"    column="recharge_amount"    />
+        <result property="rechargeTime"    column="recharge_time"    />
+        <result property="rechargeType"    column="recharge_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysRechargeVo">
+        select recharge_id, from_user_id, to_user_id, recharge_amount, recharge_time, recharge_type, create_by, create_time, remark from sys_recharge
+    </sql>
+
+    <select id="selectSysRechargeList" parameterType="SysRecharge" resultMap="SysRechargeResult">
+        <include refid="selectSysRechargeVo"/>
+        <where>  
+            <if test="fromUserId != null "> and from_user_id = #{fromUserId}</if>
+            <if test="toUserId != null "> and to_user_id = #{toUserId}</if>
+            <if test="rechargeAmount != null "> and recharge_amount = #{rechargeAmount}</if>
+            <if test="rechargeTime != null "> and recharge_time = #{rechargeTime}</if>
+            <if test="rechargeType != null  and rechargeType != ''"> and recharge_type = #{rechargeType}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysRechargeByRechargeId" parameterType="Long" resultMap="SysRechargeResult">
+        <include refid="selectSysRechargeVo"/>
+        where recharge_id = #{rechargeId}
+    </select>
+        
+    <insert id="insertSysRecharge" parameterType="SysRecharge" useGeneratedKeys="true" keyProperty="rechargeId">
+        insert into sys_recharge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fromUserId != null">from_user_id,</if>
+            <if test="toUserId != null">to_user_id,</if>
+            <if test="rechargeAmount != null">recharge_amount,</if>
+            <if test="rechargeTime != null">recharge_time,</if>
+            <if test="rechargeType != null">recharge_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fromUserId != null">#{fromUserId},</if>
+            <if test="toUserId != null">#{toUserId},</if>
+            <if test="rechargeAmount != null">#{rechargeAmount},</if>
+            <if test="rechargeTime != null">#{rechargeTime},</if>
+            <if test="rechargeType != null">#{rechargeType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRecharge" parameterType="SysRecharge">
+        update sys_recharge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fromUserId != null">from_user_id = #{fromUserId},</if>
+            <if test="toUserId != null">to_user_id = #{toUserId},</if>
+            <if test="rechargeAmount != null">recharge_amount = #{rechargeAmount},</if>
+            <if test="rechargeTime != null">recharge_time = #{rechargeTime},</if>
+            <if test="rechargeType != null">recharge_type = #{rechargeType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where recharge_id = #{rechargeId}
+    </update>
+
+    <delete id="deleteSysRechargeByRechargeId" parameterType="Long">
+        delete from sys_recharge where recharge_id = #{rechargeId}
+    </delete>
+
+    <delete id="deleteSysRechargeByRechargeIds" parameterType="String">
+        delete from sys_recharge where recharge_id in 
+        <foreach item="rechargeId" collection="array" open="(" separator="," close=")">
+            #{rechargeId}
+        </foreach>
+    </delete>
+</mapper>

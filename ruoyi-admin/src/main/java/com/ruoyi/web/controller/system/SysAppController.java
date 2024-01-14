@@ -2,15 +2,17 @@ package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.vo.req.ChangePwdReqVO;
-import com.ruoyi.common.core.vo.req.UpdatePayInfoReqVO;
+import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.framework.web.service.TokenService;
+import com.ruoyi.system.service.ISysAppService;
+import com.ruoyi.system.service.ISysSaleCoinService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +34,9 @@ public class SysAppController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private ISysAppService sysAppService;
 
     /**
      * 修改密码接口
@@ -59,6 +64,21 @@ public class SysAppController extends BaseController {
             return success();
         }
         return error("修改密码异常，请联系管理员");
+    }
+
+    /**
+     * 支付密码验证
+     */
+    @PostMapping("/checkPayPwd")
+    public AjaxResult checkPayPwd(@RequestBody CheckPayPwdReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        String payPassword = loginUser.getUser().getPayPassword();
+        if (!SecurityUtils.matchesPassword(vo.getPayPassword(), payPassword))
+        {
+            return error("支付密码错误");
+        }
+        return success();
     }
 
     /**
@@ -136,5 +156,56 @@ public class SysAppController extends BaseController {
             return success();
         }
         return error("修改失败，请联系管理员");
+    }
+
+    /**
+     * 卖币接口
+     */
+    @PostMapping("/saleCoin")
+    public AjaxResult saleCoin(@RequestBody SaleCoinReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Float reaminUserAmount = user.getAmount();
+
+        if(reaminUserAmount.compareTo(vo.getSaleAmount()) < 0){
+            return error("卖币失败，余额不足，请先充值");
+        }
+        vo.setCreateBy(getUsername());
+
+        Long saleId = sysAppService.addSaleCoin(user.getUserId(),vo);
+        if(saleId > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("saleInfo", sysAppService.getSaleDetailInfo(saleId));
+            return ajax;
+        }
+        return error("新增卖币失败，请联系管理员");
+    }
+
+    /**
+     * 更新卖币状态接口
+     */
+    @PostMapping("/updateSaleStatus")
+    public AjaxResult updateSaleStatus(@RequestBody UpdateSaleStatusReqVO vo)
+    {
+        vo.setUpdateBy(getUsername());
+        int insertRow = sysAppService.updateSaleStatus(vo);
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("saleInfo", sysAppService.getSaleDetailInfo(vo.getSaleId()));
+            return ajax;
+        }
+        return error("更新卖币状态失败，请联系管理员");
+    }
+
+    /**
+     * 卖币订单详情接口
+     */
+    @PostMapping("/getSaleDetailInfo")
+    public AjaxResult getSaleDetailInfo(@RequestBody GetSaleDetailInfoReqVO vo)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("saleInfo", sysAppService.getSaleDetailInfo(vo.getSaleId()));
+        return ajax;
     }
 }

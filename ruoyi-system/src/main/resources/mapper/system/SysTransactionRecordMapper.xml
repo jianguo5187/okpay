@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTransactionRecordMapper">
+    
+    <resultMap type="SysTransactionRecord" id="SysTransactionRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="recordTime"    column="record_time"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="recordAmount"    column="record_amount"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysTransactionRecordVo">
+        select record_id, user_id, record_time, record_type, record_amount, create_by, create_time, remark from sys_transaction_record
+    </sql>
+
+    <select id="selectSysTransactionRecordList" parameterType="SysTransactionRecord" resultMap="SysTransactionRecordResult">
+        <include refid="selectSysTransactionRecordVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="recordTime != null "> and record_time = #{recordTime}</if>
+            <if test="recordType != null  and recordType != ''"> and record_type = #{recordType}</if>
+            <if test="recordAmount != null "> and record_amount = #{recordAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysTransactionRecordByRecordId" parameterType="Long" resultMap="SysTransactionRecordResult">
+        <include refid="selectSysTransactionRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertSysTransactionRecord" parameterType="SysTransactionRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into sys_transaction_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="recordTime != null">record_time,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="recordAmount != null">record_amount,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="recordTime != null">#{recordTime},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="recordAmount != null">#{recordAmount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysTransactionRecord" parameterType="SysTransactionRecord">
+        update sys_transaction_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="recordTime != null">record_time = #{recordTime},</if>
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="recordAmount != null">record_amount = #{recordAmount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteSysTransactionRecordByRecordId" parameterType="Long">
+        delete from sys_transaction_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteSysTransactionRecordByRecordIds" parameterType="String">
+        delete from sys_transaction_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>
