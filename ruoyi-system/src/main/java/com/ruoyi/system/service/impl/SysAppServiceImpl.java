@@ -1,16 +1,15 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.core.domain.entity.SysBuyCoin;
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.vo.req.GetMySaleListReqVO;
-import com.ruoyi.common.core.vo.req.GetSaleListReqVO;
-import com.ruoyi.common.core.vo.req.SaleCoinReqVO;
-import com.ruoyi.common.core.vo.req.UpdateSaleStatusReqVO;
+import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
+import com.ruoyi.system.mapper.SysBuyCoinMapper;
 import com.ruoyi.system.mapper.SysSaleCoinMapper;
 import com.ruoyi.system.service.ISysAppService;
 import com.ruoyi.system.service.ISysSaleCoinService;
@@ -33,6 +32,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private SysSaleCoinMapper sysSaleCoinMapper;
+
+    @Autowired
+    private SysBuyCoinMapper sysBuyCoinMapper;
 
     @Override
     public Long addSaleCoin(Long userId, SaleCoinReqVO vo) {
@@ -110,7 +112,12 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNull(vo.getPageRowCount())){
             vo.setPageRowCount(20);
         }
-        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,deptId, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        String[] tableNames = new String[]{};
+        if(vo.getSupportBuyType() != null){
+            tableNames = vo.getSupportBuyType().split(",");
+        }
+
+        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), tableNames, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
         for(SaleDetailInfoRespVO respVO : saleList){
 
             if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
@@ -142,5 +149,47 @@ public class SysAppServiceImpl implements ISysAppService {
             }
         }
         return saleList;
+    }
+
+    @Override
+    public Long addBuyCoin(Long userId, BuyCoinReqVO vo) {
+
+        SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(vo.getSaleId());
+        if(sysSaleCoin == null){
+            throw new ServiceException("卖币信息不存在，请联系管理员");
+        }
+        // 订单不可拆分
+        if(StringUtils.equals(sysSaleCoin.getSaleSplitType(),"0")
+            && sysSaleCoin.getSaleAmount().compareTo(vo.getBuyAmount()) != 0){
+            throw new ServiceException("不可拆分购买，请全额购买");
+        }
+        //判断支付方式
+        if(sysSaleCoin.getSupportBuyType().indexOf(vo.getBuyType()) < 0){
+            throw new ServiceException("支付方式不支持，请重新选择");
+        }
+        //购买金额大于剩余金额
+        if(sysSaleCoin.getRemainAmount().compareTo(vo.getBuyAmount()) < 0){
+            throw new ServiceException("可购买金额不足，请重新选择");
+        }
+
+        SysBuyCoin sysBuyCoin = new SysBuyCoin();
+        sysBuyCoin.setSaleId(vo.getSaleId());
+        sysBuyCoin.setSaleUserId(sysSaleCoin.getSaleUserId());
+        sysBuyCoin.setBuyUserId(userId);
+        sysBuyCoin.setBuyType(vo.getBuyType());
+        sysBuyCoin.setBuyAmount(vo.getBuyAmount());
+        sysBuyCoin.setStatus("0");
+
+        Float remainAmount = sysSaleCoin.getRemainAmount() - vo.getBuyAmount();
+        if(remainAmount == 0){
+            sysSaleCoin.setStatus("9");
+        }
+        sysSaleCoin.setRemainAmount(remainAmount);
+        sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
+
+        int insertRow = sysBuyCoinMapper.insertSysBuyCoin(sysBuyCoin);
+
+        //todo 扣除用户余额
+        return sysBuyCoin.getBuyId();
     }
 }

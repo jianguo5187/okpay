@@ -235,4 +235,28 @@ public class SysAppController extends BaseController {
         ajax.put("mySaleList", sysAppService.getMySaleList(user.getUserId(), vo));
         return ajax;
     }
+
+    /**
+     * 买币接口
+     */
+    @PostMapping("/buyCoin")
+    public AjaxResult buyCoin(@RequestBody BuyCoinReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Float reaminUserAmount = user.getAmount();
+
+        if(reaminUserAmount.compareTo(vo.getBuyAmount()) < 0){
+            return error("买币失败，余额不足，请先充值");
+        }
+        vo.setCreateBy(getUsername());
+
+        Long buyId = sysAppService.addBuyCoin(user.getUserId(),vo);
+        if(buyId > 0){
+            AjaxResult ajax = AjaxResult.success();
+//            ajax.put("saleInfo", sysAppService.getSaleDetailInfo(saleId));
+            return ajax;
+        }
+        return error("新增卖币失败，请联系管理员");
+    }
 }

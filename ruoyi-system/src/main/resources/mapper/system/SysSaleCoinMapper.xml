@@ -162,6 +162,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             INNER JOIN sys_sale_coin s ON s.sale_user_id = u.parent_user_id
             WHERE u.user_id = #{userId}
             AND s.status = '1'
+            <if test="saleAmountFrom != null and saleAmountFrom != 0">
+                AND s.sale_amount >= #{saleAmountFrom}
+            </if>
+            <if test="saleAmountTo != null and saleAmountTo != 0">
+                AND s.sale_amount &lt;= #{saleAmountTo}
+            </if>
+            <if test="saleSplitType != null and saleSplitType != ''">
+                AND s.sale_split_type = #{saleSplitType}
+            </if>
+            <if test="supportBuyType != null and supportBuyType.length >0">
+                AND
+                <foreach collection="supportBuyType" item="dictCode" open="(" separator="OR" close=")">
+                    (s.support_buy_type LIKE CONCAT(CONCAT('%',#{dictCode}),'%'))
+                </foreach>
+            </if>
             UNION ALL
             SELECT
                 s.sale_id,
@@ -185,6 +200,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
             WHERE s.status = '1'
             AND d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+            <if test="saleAmountFrom != null and saleAmountFrom != 0">
+                AND s.sale_amount >= #{saleAmountFrom}
+            </if>
+            <if test="saleAmountTo != null and saleAmountTo != 0">
+                AND s.sale_amount &lt;= #{saleAmountTo}
+            </if>
+            <if test="saleSplitType != null and saleSplitType != ''">
+                AND s.sale_split_type = #{saleSplitType}
+            </if>
+            <if test="supportBuyType != null and supportBuyType.length >0">
+                AND
+                <foreach collection="supportBuyType" item="dictCode" open="(" separator="OR" close=")">
+                    (s.support_buy_type LIKE CONCAT(CONCAT('%',#{dictCode}),'%'))
+                </foreach>
+            </if>
         )MAIN
         order by MAIN.sale_id DESC
         <if test="pageNumber != null">
