@@ -109,7 +109,7 @@ public class SysAppController extends BaseController {
         if(StringUtils.isNotEmpty(user.getAlipayImg())){
             user.setAlipayImg(Base64.encode(ImageUtils.getImage(user.getAlipayImg())));
         }
-
+        user.setMerchantUserId(sysAppService.parentMerchantUserId(user.getParentUserId()));
         ajax.put("user", user);
         return ajax;
     }
@@ -254,9 +254,50 @@ public class SysAppController extends BaseController {
         Long buyId = sysAppService.addBuyCoin(user.getUserId(),vo);
         if(buyId > 0){
             AjaxResult ajax = AjaxResult.success();
-//            ajax.put("saleInfo", sysAppService.getSaleDetailInfo(saleId));
+            ajax.put("buyInfo", sysAppService.getBuyDetailInfo(buyId));
             return ajax;
         }
         return error("新增卖币失败，请联系管理员");
+    }
+
+    /**
+     * 更新买币状态接口
+     */
+    @PostMapping("/updateBuyStatus")
+    public AjaxResult updateBuyStatus(@RequestBody UpdateBuyStatusReqVO vo)
+    {
+        vo.setUpdateBy(getUsername());
+        int insertRow = sysAppService.updateBuyStatus(vo);
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("buyInfo", sysAppService.getBuyDetailInfo(vo.getBuyId()));
+            return ajax;
+        }
+        return error("更新卖币状态失败，请联系管理员");
+    }
+
+    /**
+     * 买币订单详情接口
+     */
+    @PostMapping("/getBuyDetailInfo")
+    public AjaxResult getBuyDetailInfo(@RequestBody GetBuyDetailInfoReqVO vo)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("buyInfo", sysAppService.getBuyDetailInfo(vo.getBuyId()));
+        return ajax;
+    }
+
+    /**
+     * 我的买币列表接口
+     */
+    @PostMapping("/getMyBuyList")
+    public AjaxResult getMyBuyList(@RequestBody GeyMyBuyListReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("myBuyList", sysAppService.getMyBuyList(user.getUserId(), vo));
+        return ajax;
     }
 }

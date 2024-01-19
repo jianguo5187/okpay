@@ -149,6 +149,9 @@ public class SysUser extends BaseEntity
     /** 未读消息件数 */
     private Integer noReadMsgCount;
 
+    /** 上级商户ID */
+    private Long merchantUserId;
+
     public SysUser()
     {
 
@@ -515,6 +518,14 @@ public class SysUser extends BaseEntity
 
     public void setToUserId(Long toUserId) {
         this.toUserId = toUserId;
+    }
+
+    public Long getMerchantUserId() {
+        return merchantUserId;
+    }
+
+    public void setMerchantUserId(Long merchantUserId) {
+        this.merchantUserId = merchantUserId;
     }
 
     @Override

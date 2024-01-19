@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 交易记录对象 sys_transaction_record
  * 
  * @author ruoyi
- * @date 2024-01-13
+ * @date 2024-01-19
  */
 public class SysTransactionRecord extends BaseEntity
 {
@@ -26,13 +26,25 @@ public class SysTransactionRecord extends BaseEntity
     private Long userId;
 
     /** 交易时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "交易时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "交易时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date recordTime;
 
     /** 交易类型（0买币 1卖币 2商家直充 3代理充值 4手续费） */
     @Excel(name = "交易类型", readConverterExp = "0=买币,1=卖币,2=商家直充,3=代理充值,4=手续费")
     private String recordType;
+
+    /** 买币ID */
+    @Excel(name = "买币ID")
+    private Long buyId;
+
+    /** 卖币ID */
+    @Excel(name = "卖币ID")
+    private Long saleId;
+
+    /** 充值ID */
+    @Excel(name = "充值ID")
+    private Long rechargeId;
 
     /** 交易金额 */
     @Excel(name = "交易金额")
@@ -74,6 +86,33 @@ public class SysTransactionRecord extends BaseEntity
     {
         return recordType;
     }
+    public void setBuyId(Long buyId) 
+    {
+        this.buyId = buyId;
+    }
+
+    public Long getBuyId() 
+    {
+        return buyId;
+    }
+    public void setSaleId(Long saleId) 
+    {
+        this.saleId = saleId;
+    }
+
+    public Long getSaleId() 
+    {
+        return saleId;
+    }
+    public void setRechargeId(Long rechargeId) 
+    {
+        this.rechargeId = rechargeId;
+    }
+
+    public Long getRechargeId() 
+    {
+        return rechargeId;
+    }
     public void setRecordAmount(BigDecimal recordAmount) 
     {
         this.recordAmount = recordAmount;
@@ -91,6 +130,9 @@ public class SysTransactionRecord extends BaseEntity
             .append("userId", getUserId())
             .append("recordTime", getRecordTime())
             .append("recordType", getRecordType())
+            .append("buyId", getBuyId())
+            .append("saleId", getSaleId())
+            .append("rechargeId", getRechargeId())
             .append("recordAmount", getRecordAmount())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())

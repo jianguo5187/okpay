@@ -63,5 +63,5 @@ public interface SysSaleCoinMapper
 
     public List<SaleDetailInfoRespVO> getSaleList(@Param("userId") Long userId, @Param("deptId") Long deptId,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 
-    public List<SaleDetailInfoRespVO> getMySaleList(@Param("userId") Long userId, @Param("status") String status, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+    public List<SaleDetailInfoRespVO> getMySaleList(@Param("userId") Long userId, @Param("status") String status,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 }

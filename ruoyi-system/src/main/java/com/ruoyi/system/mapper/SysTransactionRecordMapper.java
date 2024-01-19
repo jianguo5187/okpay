@@ -1,13 +1,15 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
+
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
+
+import java.util.List;
 
 /**
  * 交易记录Mapper接口
  * 
  * @author ruoyi
- * @date 2024-01-13
+ * @date 2024-01-19
  */
 public interface SysTransactionRecordMapper 
 {

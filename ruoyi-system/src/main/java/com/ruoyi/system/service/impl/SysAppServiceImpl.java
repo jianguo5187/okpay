@@ -1,9 +1,11 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.core.domain.entity.SysBuyCoin;
+import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.vo.req.*;
+import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,37 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private SysBuyCoinMapper sysBuyCoinMapper;
+
+    public boolean checkRoleExist(List<SysRole> roleList, Long checkValue){
+        boolean exist = false;
+        for(SysRole role : roleList){
+            if(role.getRoleId().compareTo(checkValue) == 0){
+                exist = true;
+                break;
+            }
+        }
+        return exist;
+    }
+
+    @Override
+    public Long parentMerchantUserId(Long userId) {
+        if(userId != null && userId != 0){
+            SysUser user = sysUserService.selectUserById(userId);
+
+            //商户
+            if(checkRoleExist(user.getRoles(), 3l)) {
+                return user.getUserId();
+            }else if(checkRoleExist(user.getRoles(), 4l)){
+                //代理
+                return user.getParentUserId();
+            }else if(checkRoleExist(user.getRoles(), 5l)){
+                //客户
+                SysUser agentUser = sysUserService.selectUserById(user.getParentUserId());
+                return agentUser.getParentUserId();
+            }
+        }
+        return null;
+    }
 
     @Override
     public Long addSaleCoin(Long userId, SaleCoinReqVO vo) {
@@ -112,12 +146,12 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNull(vo.getPageRowCount())){
             vo.setPageRowCount(20);
         }
-        String[] tableNames = new String[]{};
+        String[] supportBuyArg = new String[]{};
         if(vo.getSupportBuyType() != null){
-            tableNames = vo.getSupportBuyType().split(",");
+            supportBuyArg = vo.getSupportBuyType().split(",");
         }
 
-        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), tableNames, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
         for(SaleDetailInfoRespVO respVO : saleList){
 
             if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
@@ -138,7 +172,11 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNull(vo.getPageRowCount())){
             vo.setPageRowCount(20);
         }
-        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getMySaleList(userId,vo.getStatus(), (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        String[] supportBuyArg = new String[]{};
+        if(vo.getSupportBuyType() != null){
+            supportBuyArg = vo.getSupportBuyType().split(",");
+        }
+        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getMySaleList(userId,vo.getStatus(),vo.getSaleAmountFrom(), vo.getSaleAmountTo(),vo.getSaleSplitType(),supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
         for(SaleDetailInfoRespVO respVO : saleList){
 
             if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
@@ -191,5 +229,68 @@ public class SysAppServiceImpl implements ISysAppService {
 
         //todo 扣除用户余额
         return sysBuyCoin.getBuyId();
+    }
+
+    @Override
+    public int updateBuyStatus(UpdateBuyStatusReqVO vo) {
+
+        SysBuyCoin sysBuyCoin = sysBuyCoinMapper.selectSysBuyCoinByBuyId(vo.getBuyId());
+        if(StringUtils.isNull(sysBuyCoin)){
+            throw new ServiceException("买币信息不存在，请联系管理员");
+        }
+        sysBuyCoin.setStatus(vo.getStatus());
+        sysBuyCoin.setUpdateBy(vo.getUpdateBy());
+
+        return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+    }
+
+    @Override
+    public BuyDetailInfoRespVO getBuyDetailInfo(Long buyId) {
+
+        BuyDetailInfoRespVO respVO = sysBuyCoinMapper.getBuyDetailInfo(buyId);
+
+        if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
+            respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
+        }
+        if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
+            respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
+        }
+
+        if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
+            respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
+        }
+        if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
+            respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
+        }
+
+        return respVO;
+    }
+
+    @Override
+    public List<BuyDetailInfoRespVO> getMyBuyList(Long userId, GeyMyBuyListReqVO vo) {
+        if(StringUtils.isNull(vo.getPageNumber())){
+            vo.setPageNumber(1);
+        }
+        if(StringUtils.isNull(vo.getPageRowCount())){
+            vo.setPageRowCount(20);
+        }
+        List<BuyDetailInfoRespVO> buyList = sysBuyCoinMapper.getMyBuyList(userId,vo.getStatus(),vo.getBuyAmountFrom(), vo.getBuyAmountTo(),vo.getSplitType(), vo.getBuyType(), (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+
+        for (BuyDetailInfoRespVO respVO : buyList){
+            if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
+                respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
+                respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
+            }
+
+            if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
+                respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
+                respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
+            }
+        }
+        return buyList;
     }
 }

@@ -4,10 +4,10 @@ import javax.validation.constraints.NotNull;
 
 public class GetSaleListReqVO {
 
-    @NotNull(message = "页数不能为空")
+    /** 页数 */
     private Integer pageNumber;
 
-    @NotNull(message = "每页显示件数不能为空")
+    /** 每页件数 */
     private Integer pageRowCount;
 
     /** 卖币金额 */

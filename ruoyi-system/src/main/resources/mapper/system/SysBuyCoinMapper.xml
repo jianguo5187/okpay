@@ -20,6 +20,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap type="com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO" id="BuyDetailInfoResult">
+        <result property="buyId"    column="buy_id"    />
+        <result property="saleId"    column="sale_id"    />
+        <result property="saleUserId"    column="sale_user_id"    />
+        <result property="saleUserNickName"    column="sale_nick_name"    />
+        <result property="saleUserPhonenumber"    column="sale_phonenumber"    />
+        <result property="saleWechatPayImg"    column="sale_wechat_pay_img"    />
+        <result property="saleAlipayImg"    column="sale_alipay_img"    />
+        <result property="saleUnionpayAccount"    column="sale_unionpay_account"    />
+        <result property="saleUnionpayCard"    column="sale_unionpay_card"    />
+        <result property="buyUserId"    column="buy_user_id"    />
+        <result property="buyUserNickName"    column="buy_nick_name"    />
+        <result property="buyUserPhonenumber"    column="buy_phonenumber"    />
+        <result property="buyWechatPayImg"    column="buy_wechat_pay_img"    />
+        <result property="buyAlipayImg"    column="buy_alipay_img"    />
+        <result property="buyUnionpayAccount"    column="buy_unionpay_account"    />
+        <result property="buyUnionpayCard"    column="buy_unionpay_card"    />
+        <result property="buyTime"    column="buy_time"    />
+        <result property="buyType"    column="buy_type"    />
+        <result property="buyAmount"    column="buy_amount"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
     <sql id="selectSysBuyCoinVo">
         select buy_id, sale_id, sale_user_id, buy_user_id, buy_time, buy_type, buy_amount, status, create_by, create_time, update_by, update_time, remark from sys_buy_coin
     </sql>
@@ -90,4 +113,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{buyId}
         </foreach>
     </delete>
+
+    <sql id="selectBuyDetailVo">
+        SELECT
+            b.buy_id
+             ,b.sale_id
+             ,b.sale_user_id
+             ,b.buy_time
+             ,b.buy_type
+             ,b.buy_amount
+             ,b.status
+             ,su.nick_name AS sale_nick_name
+             ,su.phonenumber AS sale_phonenumber
+             ,su.wechat_pay_img AS sale_wechat_pay_img
+             ,su.alipay_img AS sale_alipay_img
+             ,su.unionpay_account AS sale_unionpay_account
+             ,su.unionpay_card AS sale_unionpay_card
+             ,b.buy_user_id
+             ,bu.nick_name AS buy_nick_name
+             ,bu.phonenumber AS buy_phonenumber
+             ,bu.wechat_pay_img AS buy_wechat_pay_img
+             ,bu.alipay_img AS buy_alipay_img
+             ,bu.unionpay_account AS buy_unionpay_account
+             ,bu.unionpay_card AS buy_unionpay_card
+        FROM sys_buy_coin b
+        LEFT JOIN sys_user su ON b.sale_user_id = su.user_id
+        LEFT JOIN sys_user bu ON b.buy_user_id = bu.user_id
+    </sql>
+
+    <select id="getBuyDetailInfo" parameterType="Long" resultMap="BuyDetailInfoResult">
+        <include refid="selectBuyDetailVo"/>
+        WHERE b.buy_id = #{buyId}
+    </select>
+
+    <select id="getMyBuyList" resultMap="BuyDetailInfoResult">
+        <include refid="selectBuyDetailVo"/>
+        INNER JOIN sys_sale_coin s ON b.sale_id = s.sale_id
+        WHERE b.buy_user_id = #{userId}
+        <if test="status != null and status != ''">
+            and b.status = #{status}
+        </if>
+        <if test="buyAmountFrom != null and buyAmountFrom != 0">
+            AND b.buy_amount >= #{buyAmountFrom}
+        </if>
+        <if test="buyAmountTo != null and buyAmountTo != 0">
+            AND b.buy_amount &lt;= #{buyAmountTo}
+        </if>
+        <if test="splitType != null and splitType != ''">
+            AND s.sale_split_type = #{splitType}
+        </if>
+        <if test="buyType != null and buyType != ''">
+            AND b.buy_type = #{buyType}
+        </if>
+        order by b.buy_id DESC
+        <if test="pageNumber != null">
+            limit #{pageNumber} , #{pageRowCount}
+        </if>
+    </select>
 </mapper>

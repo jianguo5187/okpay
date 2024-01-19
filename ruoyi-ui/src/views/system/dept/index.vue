@@ -304,7 +304,7 @@ export default {
         userId: undefined,
         parentId: undefined,
         deptName: undefined,
-        // orderNum: 0,
+        orderNum: 0,
         leader: undefined,
         phone: undefined,
         email: undefined,

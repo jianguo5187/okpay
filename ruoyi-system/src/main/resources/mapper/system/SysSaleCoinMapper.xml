@@ -248,6 +248,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="status != null and status != ''">
             and s.status = #{status}
         </if>
+        <if test="saleAmountFrom != null and saleAmountFrom != 0">
+            AND s.sale_amount >= #{saleAmountFrom}
+        </if>
+        <if test="saleAmountTo != null and saleAmountTo != 0">
+            AND s.sale_amount &lt;= #{saleAmountTo}
+        </if>
+        <if test="saleSplitType != null and saleSplitType != ''">
+            AND s.sale_split_type = #{saleSplitType}
+        </if>
+        <if test="supportBuyType != null and supportBuyType.length >0">
+            AND
+            <foreach collection="supportBuyType" item="dictCode" open="(" separator="OR" close=")">
+                (s.support_buy_type LIKE CONCAT(CONCAT('%',#{dictCode}),'%'))
+            </foreach>
+        </if>
         order by s.sale_id DESC
         <if test="pageNumber != null">
             limit #{pageNumber} , #{pageRowCount}

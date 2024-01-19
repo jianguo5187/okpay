@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 充值对象 sys_recharge
  * 
  * @author ruoyi
- * @date 2024-01-13
+ * @date 2024-01-19
  */
 public class SysRecharge extends BaseEntity
 {
@@ -31,16 +31,20 @@ public class SysRecharge extends BaseEntity
 
     /** 充值金额 */
     @Excel(name = "充值金额")
-    private Float rechargeAmount;
+    private BigDecimal rechargeAmount;
 
     /** 充值时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "充值时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "充值时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date rechargeTime;
 
     /** 充值方式（0支付宝 1微信 2银联） */
     @Excel(name = "充值方式", readConverterExp = "0=支付宝,1=微信,2=银联")
     private String rechargeType;
+
+    /** 充值状态（0进行中 1已确认(充值完成) 9已取消） */
+    @Excel(name = "充值状态", readConverterExp = "0=进行中,1=已确认(充值完成),9=已取消")
+    private String status;
 
     public void setRechargeId(Long rechargeId) 
     {
@@ -69,12 +73,12 @@ public class SysRecharge extends BaseEntity
     {
         return toUserId;
     }
-    public void setRechargeAmount(Float rechargeAmount)
+    public void setRechargeAmount(BigDecimal rechargeAmount) 
     {
         this.rechargeAmount = rechargeAmount;
     }
 
-    public Float getRechargeAmount()
+    public BigDecimal getRechargeAmount() 
     {
         return rechargeAmount;
     }
@@ -96,6 +100,15 @@ public class SysRecharge extends BaseEntity
     {
         return rechargeType;
     }
+    public void setStatus(String status) 
+    {
+        this.status = status;
+    }
+
+    public String getStatus() 
+    {
+        return status;
+    }
 
     @Override
     public String toString() {
@@ -106,6 +119,7 @@ public class SysRecharge extends BaseEntity
             .append("rechargeAmount", getRechargeAmount())
             .append("rechargeTime", getRechargeTime())
             .append("rechargeType", getRechargeType())
+            .append("status", getStatus())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("remark", getRemark())
