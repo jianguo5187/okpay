@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.vo.req.*;
@@ -12,13 +11,9 @@ import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysAppService;
-import com.ruoyi.system.service.ISysSaleCoinService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 /**
  * APP使用接口
@@ -291,13 +286,78 @@ public class SysAppController extends BaseController {
      * 我的买币列表接口
      */
     @PostMapping("/getMyBuyList")
-    public AjaxResult getMyBuyList(@RequestBody GeyMyBuyListReqVO vo)
+    public AjaxResult getMyBuyList(@RequestBody GetMyBuyListReqVO vo)
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
 
         AjaxResult ajax = AjaxResult.success();
         ajax.put("myBuyList", sysAppService.getMyBuyList(user.getUserId(), vo));
+        return ajax;
+    }
+
+    /**
+     * 充值到商户
+     */
+    @PostMapping("/rechargeToMerchant")
+    public AjaxResult rechargeToMerchant(@RequestBody RechargeToMerchantReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Float reaminUserAmount = user.getAmount();
+
+        if(reaminUserAmount.compareTo(vo.getRechargeAmount()) < 0){
+            return error("充值失败，余额不足，请先充值");
+        }
+        vo.setCreateBy(getUsername());
+
+        Long rechargeId = sysAppService.addRechargeToMerchant(user.getUserId(),vo);
+        if(rechargeId > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("rechargeInfo", sysAppService.getRechargeDetailInfo(rechargeId));
+            return ajax;
+        }
+        return error("充值失败，请联系管理员");
+    }
+
+    /**
+     * 更新充值状态接口
+     */
+    @PostMapping("/updateRechargeStatus")
+    public AjaxResult updateRechargeStatus(@RequestBody UpdateRechargeStatusReqVO vo)
+    {
+        vo.setUpdateBy(getUsername());
+        int insertRow = sysAppService.updateRechargeStatus(vo);
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("rechargeInfo", sysAppService.getRechargeDetailInfo(vo.getRechargeId()));
+            return ajax;
+        }
+        return error("更新卖币状态失败，请联系管理员");
+    }
+
+    /**
+     * 充值详情接口
+     */
+    @PostMapping("/getRechargeDetailInfo")
+    public AjaxResult getRechargeDetailInfo(@RequestBody GetRechargeDetailInfoReqVO vo)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("rechargeInfo", sysAppService.getRechargeDetailInfo(vo.getRechargeId()));
+        return ajax;
+    }
+
+    /**
+     * 我的充值列表接口
+     */
+    @PostMapping("/getMyRechargeList")
+    public AjaxResult getMyRechargeList(@RequestBody GetMyRechargeListReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("myRechargeList", sysAppService.getMyRechargeList(user.getUserId(), vo));
         return ajax;
     }
 }

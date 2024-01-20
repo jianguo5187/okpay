@@ -1,7 +1,10 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysRecharge;
+import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 充值Mapper接口
@@ -58,4 +61,8 @@ public interface SysRechargeMapper
      * @return 结果
      */
     public int deleteSysRechargeByRechargeIds(Long[] rechargeIds);
+
+    public RechargeDetailInfoRespVO getRechargeDetailInfo(Long rechargeId);
+
+    public List<RechargeDetailInfoRespVO> getMyRechargeList(@Param("userId") Long userId, @Param("status") String status, @Param("rechargeAmountFrom") Float rechargeAmountFrom, @Param("rechargeAmountTo") Float rechargeAmountTo, @Param("rechargeType") String rechargeType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 }

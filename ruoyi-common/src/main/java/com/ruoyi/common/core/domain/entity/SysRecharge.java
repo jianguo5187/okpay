@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 充值对象 sys_recharge
  * 
  * @author ruoyi
- * @date 2024-01-19
+ * @date 2024-01-20
  */
 public class SysRecharge extends BaseEntity
 {
@@ -31,7 +31,7 @@ public class SysRecharge extends BaseEntity
 
     /** 充值金额 */
     @Excel(name = "充值金额")
-    private BigDecimal rechargeAmount;
+    private Float rechargeAmount;
 
     /** 充值时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -73,12 +73,12 @@ public class SysRecharge extends BaseEntity
     {
         return toUserId;
     }
-    public void setRechargeAmount(BigDecimal rechargeAmount) 
+    public void setRechargeAmount(Float rechargeAmount)
     {
         this.rechargeAmount = rechargeAmount;
     }
 
-    public BigDecimal getRechargeAmount() 
+    public Float getRechargeAmount()
     {
         return rechargeAmount;
     }
@@ -122,6 +122,8 @@ public class SysRecharge extends BaseEntity
             .append("status", getStatus())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .toString();
     }

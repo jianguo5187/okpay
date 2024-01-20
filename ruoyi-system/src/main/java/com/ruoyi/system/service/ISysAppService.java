@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
+import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 
 import java.util.List;
@@ -26,5 +27,13 @@ public interface ISysAppService {
 
     public BuyDetailInfoRespVO getBuyDetailInfo(Long buyId);
 
-    public List<BuyDetailInfoRespVO> getMyBuyList(Long userId,GeyMyBuyListReqVO vo);
+    public List<BuyDetailInfoRespVO> getMyBuyList(Long userId, GetMyBuyListReqVO vo);
+
+    public Long addRechargeToMerchant(Long userId, RechargeToMerchantReqVO vo);
+
+    public int updateRechargeStatus(UpdateRechargeStatusReqVO vo);
+
+    public RechargeDetailInfoRespVO getRechargeDetailInfo(Long rechargeId);
+
+    public List<RechargeDetailInfoRespVO> getMyRechargeList(Long userId, GetMyRechargeListReqVO vo);
 }

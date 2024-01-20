@@ -14,11 +14,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="status"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap type="com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO" id="RechargeDetailInfoResult">
+        <result property="rechargeId"    column="recharge_id"    />
+        <result property="fromUserId"    column="from_user_id"    />
+        <result property="rechargeFromUserNickName"    column="recharge_from_nick_name"    />
+        <result property="rechargeFromUserPhonenumber"    column="recharge_from_phonenumber"    />
+        <result property="rechargeFromWechatPayImg"    column="recharge_from_wechat_pay_img"    />
+        <result property="rechargeFromAlipayImg"    column="recharge_from_alipay_img"    />
+        <result property="rechargeFromUnionpayAccount"    column="recharge_from_unionpay_account"    />
+        <result property="rechargeFromUnionpayCard"    column="recharge_from_unionpay_card"    />
+        <result property="toUserId"    column="to_user_id"    />
+        <result property="rechargeToUserNickName"    column="recharge_to_nick_name"    />
+        <result property="rechargeToUserPhonenumber"    column="recharge_to_phonenumber"    />
+        <result property="rechargeToWechatPayImg"    column="recharge_to_wechat_pay_img"    />
+        <result property="rechargeToAlipayImg"    column="recharge_to_alipay_img"    />
+        <result property="rechargeToUnionpayAccount"    column="recharge_to_unionpay_account"    />
+        <result property="rechargeToUnionpayCard"    column="recharge_to_unionpay_card"    />
+        <result property="rechargeAmount"    column="recharge_amount"    />
+        <result property="rechargeTime"    column="recharge_time"    />
+        <result property="rechargeType"    column="recharge_type"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
     <sql id="selectSysRechargeVo">
-        select recharge_id, from_user_id, to_user_id, recharge_amount, recharge_time, recharge_type, status, create_by, create_time, remark from sys_recharge
+        select recharge_id, from_user_id, to_user_id, recharge_amount, recharge_time, recharge_type, status, create_by, create_time, update_by, update_time, remark from sys_recharge
     </sql>
 
     <select id="selectSysRechargeList" parameterType="SysRecharge" resultMap="SysRechargeResult">
@@ -39,44 +63,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertSysRecharge" parameterType="SysRecharge" useGeneratedKeys="true" keyProperty="rechargeId">
-        insert into sys_recharge
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        insert into sys_recharge(
             <if test="fromUserId != null">from_user_id,</if>
             <if test="toUserId != null">to_user_id,</if>
             <if test="rechargeAmount != null">recharge_amount,</if>
-            <if test="rechargeTime != null">recharge_time,</if>
             <if test="rechargeType != null">recharge_type,</if>
             <if test="status != null">status,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="remark != null">remark,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            recharge_time,
+            create_time
+        )values(
             <if test="fromUserId != null">#{fromUserId},</if>
             <if test="toUserId != null">#{toUserId},</if>
             <if test="rechargeAmount != null">#{rechargeAmount},</if>
-            <if test="rechargeTime != null">#{rechargeTime},</if>
             <if test="rechargeType != null">#{rechargeType},</if>
             <if test="status != null">#{status},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+            sysdate(),
+            sysdate()
+        )
     </insert>
 
     <update id="updateSysRecharge" parameterType="SysRecharge">
         update sys_recharge
-        <trim prefix="SET" suffixOverrides=",">
+        <set>
             <if test="fromUserId != null">from_user_id = #{fromUserId},</if>
             <if test="toUserId != null">to_user_id = #{toUserId},</if>
             <if test="rechargeAmount != null">recharge_amount = #{rechargeAmount},</if>
             <if test="rechargeTime != null">recharge_time = #{rechargeTime},</if>
             <if test="rechargeType != null">recharge_type = #{rechargeType},</if>
             <if test="status != null">status = #{status},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="remark != null">remark = #{remark},</if>
-        </trim>
+            update_time = sysdate()
+        </set>
         where recharge_id = #{rechargeId}
     </update>
 
@@ -90,4 +112,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{rechargeId}
         </foreach>
     </delete>
+
+    <sql id="selectRechargeDetailVo">
+
+        SELECT
+            r.recharge_id
+             ,r.from_user_id
+             ,fu.nick_name AS recharge_from_nick_name
+             ,fu.phonenumber AS recharge_from_phonenumber
+             ,fu.wechat_pay_img AS recharge_from_wechat_pay_img
+             ,fu.alipay_img AS recharge_from_alipay_img
+             ,fu.unionpay_account AS recharge_from_unionpay_account
+             ,fu.unionpay_card AS recharge_from_unionpay_card
+             ,r.to_user_id
+             ,tu.nick_name AS recharge_to_nick_name
+             ,tu.phonenumber AS recharge_to_phonenumber
+             ,tu.wechat_pay_img AS recharge_to_wechat_pay_img
+             ,tu.alipay_img AS recharge_to_alipay_img
+             ,tu.unionpay_account AS recharge_to_unionpay_account
+             ,tu.unionpay_card AS recharge_to_unionpay_card
+             ,r.recharge_amount
+             ,r.recharge_time
+             ,r.recharge_type
+             ,r.status
+        FROM sys_recharge r
+        INNER JOIN sys_user fu ON r.from_user_id = fu.user_id
+        INNER JOIN sys_user tu ON r.to_user_id = tu.user_id
+    </sql>
+
+    <select id="getRechargeDetailInfo" parameterType="Long" resultMap="RechargeDetailInfoResult">
+        <include refid="selectRechargeDetailVo"/>
+        WHERE r.recharge_id = #{rechargeId}
+    </select>
+
+    <select id="getMyRechargeList" resultMap="RechargeDetailInfoResult">
+        <include refid="selectRechargeDetailVo"/>
+        WHERE r.from_user_id = #{userId}
+        <if test="status != null and status != ''">
+            and r.status = #{status}
+        </if>
+        <if test="rechargeAmountFrom != null and rechargeAmountFrom != 0">
+            AND r.recharge_amount >= #{rechargeAmountFrom}
+        </if>
+        <if test="rechargeAmountTo != null and rechargeAmountTo != 0">
+            AND r.recharge_amount &lt;= #{rechargeAmountTo}
+        </if>
+        <if test="rechargeType != null and rechargeType != ''">
+            AND r.recharge_type = #{rechargeType}
+        </if>
+        order by r.recharge_id DESC
+        <if test="pageNumber != null">
+            limit #{pageNumber} , #{pageRowCount}
+        </if>
+    </select>
 </mapper>

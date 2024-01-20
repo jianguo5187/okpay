@@ -1,17 +1,16 @@
 package com.ruoyi.system.service.impl;
 
-import com.ruoyi.common.core.domain.entity.SysBuyCoin;
-import com.ruoyi.common.core.domain.entity.SysRole;
-import com.ruoyi.common.core.domain.entity.SysSaleCoin;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
+import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.system.mapper.SysBuyCoinMapper;
+import com.ruoyi.system.mapper.SysRechargeMapper;
 import com.ruoyi.system.mapper.SysSaleCoinMapper;
 import com.ruoyi.system.service.ISysAppService;
 import com.ruoyi.system.service.ISysSaleCoinService;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +36,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private SysBuyCoinMapper sysBuyCoinMapper;
+
+    @Autowired
+    private SysRechargeMapper sysRechargeMapper;
 
     public boolean checkRoleExist(List<SysRole> roleList, Long checkValue){
         boolean exist = false;
@@ -267,7 +268,7 @@ public class SysAppServiceImpl implements ISysAppService {
     }
 
     @Override
-    public List<BuyDetailInfoRespVO> getMyBuyList(Long userId, GeyMyBuyListReqVO vo) {
+    public List<BuyDetailInfoRespVO> getMyBuyList(Long userId, GetMyBuyListReqVO vo) {
         if(StringUtils.isNull(vo.getPageNumber())){
             vo.setPageNumber(1);
         }
@@ -292,5 +293,81 @@ public class SysAppServiceImpl implements ISysAppService {
             }
         }
         return buyList;
+    }
+
+    @Override
+    public Long addRechargeToMerchant(Long userId, RechargeToMerchantReqVO vo) {
+        SysRecharge recharge = new SysRecharge();
+        recharge.setFromUserId(userId);
+        recharge.setToUserId(vo.getMerchantUserId());
+        recharge.setRechargeAmount(vo.getRechargeAmount());
+        recharge.setStatus("0");
+        recharge.setRechargeType(vo.getRechargeType());
+        int insertRow = sysRechargeMapper.insertSysRecharge(recharge);
+        //TODO 记录表等信息
+        return recharge.getRechargeId();
+    }
+
+    @Override
+    public int updateRechargeStatus(UpdateRechargeStatusReqVO vo) {
+
+        SysRecharge sysRecharge = sysRechargeMapper.selectSysRechargeByRechargeId(vo.getRechargeId());
+        if(StringUtils.isNull(sysRecharge)){
+            throw new ServiceException("充值记录信息不存在，请联系管理员");
+        }
+        sysRecharge.setStatus(vo.getStatus());
+        sysRecharge.setUpdateBy(vo.getUpdateBy());
+
+        //todo
+
+        return sysRechargeMapper.updateSysRecharge(sysRecharge);
+    }
+
+    @Override
+    public RechargeDetailInfoRespVO getRechargeDetailInfo(Long rechargeId) {
+
+        RechargeDetailInfoRespVO respVO = sysRechargeMapper.getRechargeDetailInfo(rechargeId);
+
+        if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
+            respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
+        }
+        if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
+            respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
+        }
+        if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
+            respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
+        }
+        if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
+            respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
+        }
+        return respVO;
+    }
+
+    @Override
+    public List<RechargeDetailInfoRespVO> getMyRechargeList(Long userId, GetMyRechargeListReqVO vo) {
+
+        if(StringUtils.isNull(vo.getPageNumber())){
+            vo.setPageNumber(1);
+        }
+        if(StringUtils.isNull(vo.getPageRowCount())){
+            vo.setPageRowCount(20);
+        }
+        List<RechargeDetailInfoRespVO> rechargeList = sysRechargeMapper.getMyRechargeList(userId,vo.getStatus(),vo.getRechargeAmountFrom(), vo.getRechargeAmountTo(),vo.getRechargeType(), (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+
+        for (RechargeDetailInfoRespVO respVO : rechargeList){
+            if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
+                respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
+                respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
+            }
+            if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
+                respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
+                respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
+            }
+        }
+        return rechargeList;
     }
 }

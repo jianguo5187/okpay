@@ -97,6 +97,7 @@
         </template>
       </el-table-column>
       <el-table-column label="充值方式" align="center" prop="rechargeType" />
+      <el-table-column label="充值状态" align="center" prop="status" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -192,6 +193,7 @@ export default {
         rechargeAmount: null,
         rechargeTime: null,
         rechargeType: null,
+        status: null,
       },
       // 表单参数
       form: {},
@@ -233,8 +235,11 @@ export default {
         rechargeAmount: null,
         rechargeTime: null,
         rechargeType: null,
+        status: null,
         createBy: null,
         createTime: null,
+        updateBy: null,
+        updateTime: null,
         remark: null
       };
       this.resetForm("form");

@@ -17,6 +17,30 @@
           placeholder="请选择交易时间">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="买币ID" prop="buyId">
+        <el-input
+          v-model="queryParams.buyId"
+          placeholder="请输入买币ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="卖币ID" prop="saleId">
+        <el-input
+          v-model="queryParams.saleId"
+          placeholder="请输入卖币ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="充值ID" prop="rechargeId">
+        <el-input
+          v-model="queryParams.rechargeId"
+          placeholder="请输入充值ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="交易金额" prop="recordAmount">
         <el-input
           v-model="queryParams.recordAmount"
@@ -87,6 +111,9 @@
         </template>
       </el-table-column>
       <el-table-column label="交易类型" align="center" prop="recordType" />
+      <el-table-column label="买币ID" align="center" prop="buyId" />
+      <el-table-column label="卖币ID" align="center" prop="saleId" />
+      <el-table-column label="充值ID" align="center" prop="rechargeId" />
       <el-table-column label="交易金额" align="center" prop="recordAmount" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -130,6 +157,15 @@
             value-format="yyyy-MM-dd"
             placeholder="请选择交易时间">
           </el-date-picker>
+        </el-form-item>
+        <el-form-item label="买币ID" prop="buyId">
+          <el-input v-model="form.buyId" placeholder="请输入买币ID" />
+        </el-form-item>
+        <el-form-item label="卖币ID" prop="saleId">
+          <el-input v-model="form.saleId" placeholder="请输入卖币ID" />
+        </el-form-item>
+        <el-form-item label="充值ID" prop="rechargeId">
+          <el-input v-model="form.rechargeId" placeholder="请输入充值ID" />
         </el-form-item>
         <el-form-item label="交易金额" prop="recordAmount">
           <el-input v-model="form.recordAmount" placeholder="请输入交易金额" />
@@ -178,6 +214,9 @@ export default {
         userId: null,
         recordTime: null,
         recordType: null,
+        buyId: null,
+        saleId: null,
+        rechargeId: null,
         recordAmount: null,
       },
       // 表单参数
@@ -215,6 +254,9 @@ export default {
         userId: null,
         recordTime: null,
         recordType: null,
+        buyId: null,
+        saleId: null,
+        rechargeId: null,
         recordAmount: null,
         createBy: null,
         createTime: null,

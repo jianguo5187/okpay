@@ -1,6 +1,6 @@
 package com.ruoyi.common.core.vo.req;
 
-public class GeyMyBuyListReqVO {
+public class GetMyBuyListReqVO {
 
     /** 页数 */
     private Integer pageNumber;
