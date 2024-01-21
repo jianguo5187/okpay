@@ -31,6 +31,9 @@ public class SysNotice extends BaseEntity
     /** 公告状态（0正常 1关闭） */
     private String status;
 
+    /** 用户已读状态（0未读 1已读） */
+    private String readFlg;
+
     public Long getNoticeId()
     {
         return noticeId;
@@ -82,6 +85,14 @@ public class SysNotice extends BaseEntity
     public String getStatus()
     {
         return status;
+    }
+
+    public String getReadFlg() {
+        return readFlg;
+    }
+
+    public void setReadFlg(String readFlg) {
+        this.readFlg = readFlg;
     }
 
     @Override

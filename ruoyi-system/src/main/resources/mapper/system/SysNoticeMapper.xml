@@ -16,6 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"     column="update_time"     />
         <result property="remark"         column="remark"          />
     </resultMap>
+
+    <resultMap type="com.ruoyi.common.core.vo.resp.NoticeDetailInfoRespVO" id="UserSysNoticeResult">
+        <result property="noticeId"       column="notice_id"       />
+        <result property="noticeTitle"    column="notice_title"    />
+        <result property="noticeType"     column="notice_type"     />
+        <result property="noticeContent"  column="notice_content"  />
+        <result property="status"         column="status"          />
+        <result property="readFlg"         column="read_flg"       />
+    </resultMap>
     
     <sql id="selectNoticeVo">
         select notice_id, notice_title, notice_type, cast(notice_content as char) as notice_content, status, create_by, create_time, update_by, update_time, remark 
@@ -85,5 +94,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{noticeId}
         </foreach>
     </delete>
-    
+
+    <select id="getUserNoticeList" resultMap="UserSysNoticeResult">
+        select n.notice_id
+             , n.notice_title
+             , n.notice_type
+             , cast(n.notice_content as char) as notice_content
+             , n.status
+             , case when nu.user_id is null then '0' else '1' END as read_flg
+        from sys_notice n
+        left join sys_notice_user nu on n.notice_id = nu.notice_id and nu.user_id = #{userId}
+        order by n.notice_id DESC
+        <if test="pageNumber != null">
+            limit #{pageNumber} , #{pageRowCount}
+        </if>
+    </select>
+
+    <delete id="deleteNoticeUser">
+        delete from sys_notice_user where notice_id = #{noticeId} and user_id = #{userId}
+    </delete>
+
+    <insert id="inserteNoticeUser">
+        insert into sys_notice_user (notice_id,user_id)values(#{noticeId},#{userId})
+    </insert>
 </mapper>

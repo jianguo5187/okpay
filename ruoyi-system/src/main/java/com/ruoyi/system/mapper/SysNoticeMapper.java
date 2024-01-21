@@ -1,7 +1,10 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.common.core.vo.resp.NoticeDetailInfoRespVO;
 import com.ruoyi.system.domain.SysNotice;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 通知公告表 数据层
@@ -57,4 +60,10 @@ public interface SysNoticeMapper
      * @return 结果
      */
     public int deleteNoticeByIds(Long[] noticeIds);
+
+
+    public List<NoticeDetailInfoRespVO> getUserNoticeList(@Param("userId") Long userId, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+
+    public int deleteNoticeUser(@Param("noticeId") Long noticeId,@Param("userId") Long userId);
+    public int inserteNoticeUser(@Param("noticeId") Long noticeId,@Param("userId") Long userId);
 }

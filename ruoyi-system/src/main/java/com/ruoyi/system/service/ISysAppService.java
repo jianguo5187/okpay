@@ -1,10 +1,8 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.vo.req.*;
-import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
+import com.ruoyi.common.core.vo.resp.*;
+import com.ruoyi.system.domain.SysNotice;
 
 import java.util.List;
 
@@ -40,4 +38,8 @@ public interface ISysAppService {
     public RechargeDetailInfoRespVO getRechargeDetailInfo(Long rechargeId);
 
     public List<RechargeDetailInfoRespVO> getMyRechargeList(Long userId, GetMyRechargeListReqVO vo);
+
+    public List<NoticeDetailInfoRespVO> getUserNoticeList(Long userId, GetNoticeListReqVO vo);
+
+    public int updateNoticeReadStatus(Long userId, Long noticeId);
 }

@@ -2,18 +2,12 @@ package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.common.core.vo.req.*;
-import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
+import com.ruoyi.common.core.vo.resp.*;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
-import com.ruoyi.system.mapper.SysBuyCoinMapper;
-import com.ruoyi.system.mapper.SysRechargeMapper;
-import com.ruoyi.system.mapper.SysSaleCoinMapper;
-import com.ruoyi.system.mapper.SysUserMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysAppService;
 import com.ruoyi.system.service.ISysSaleCoinService;
 import com.ruoyi.system.service.ISysUserService;
@@ -44,6 +38,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private SysRechargeMapper sysRechargeMapper;
+
+    @Autowired
+    private SysNoticeMapper noticeMapper;
 
     public boolean checkRoleExist(List<SysRole> roleList, Long checkValue){
         boolean exist = false;
@@ -402,5 +399,22 @@ public class SysAppServiceImpl implements ISysAppService {
             }
         }
         return rechargeList;
+    }
+
+    @Override
+    public List<NoticeDetailInfoRespVO> getUserNoticeList(Long userId, GetNoticeListReqVO vo) {
+        if(StringUtils.isNull(vo.getPageNumber())){
+            vo.setPageNumber(1);
+        }
+        if(StringUtils.isNull(vo.getPageRowCount())){
+            vo.setPageRowCount(20);
+        }
+        return noticeMapper.getUserNoticeList(userId,(vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+    }
+
+    @Override
+    public int updateNoticeReadStatus(Long userId, Long noticeId) {
+        noticeMapper.deleteNoticeUser(noticeId,userId);
+        return noticeMapper.inserteNoticeUser(noticeId,userId);
     }
 }

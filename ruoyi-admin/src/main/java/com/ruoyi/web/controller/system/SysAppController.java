@@ -454,4 +454,39 @@ public class SysAppController extends BaseController {
         ajax.put("myRechargeList", sysAppService.getMyRechargeList(user.getUserId(), vo));
         return ajax;
     }
+
+    /**
+     * 站内信列表接口
+     */
+    @PostMapping("/getNoticeList")
+    public AjaxResult getNoticeList(@RequestBody GetNoticeListReqVO vo)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        ajax.put("notice", sysAppService.getUserNoticeList(user.getUserId(),vo));
+        return ajax;
+    }
+
+    /**
+     * 更新站内信已读接口
+     */
+    @PostMapping("/updateNoticeReadStatus")
+    public AjaxResult updateNoticeReadStatus(@RequestBody UpdateNoticeReadStatusReqVO vo)
+    {
+
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        if(vo.getNoticeId() == null || vo.getNoticeId() == 0){
+            return error("更新站内信已读，公告ID必须输入");
+        }
+
+        int insertRow = sysAppService.updateNoticeReadStatus(user.getUserId(),vo.getNoticeId());
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success();
+            return ajax;
+        }
+        return error("更新站内信已读失败，请联系管理员");
+    }
 }

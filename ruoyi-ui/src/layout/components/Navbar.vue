@@ -6,12 +6,12 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
-      <div id="ruoyi-git" class="el-tooltip right-menu-item hover-effect">
-        <svg-icon icon-class="message" @click="openChat" />
-      </div>
+<!--      <div id="ruoyi-git" class="el-tooltip right-menu-item hover-effect">-->
+<!--        <svg-icon icon-class="message" @click="openChat" />-->
+<!--      </div>-->
 
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+<!--        <search id="header-search" class="right-menu-item" />-->
 
         <!-- <el-tooltip content="聊天" effect="dark" placement="bottom"> -->
         <!-- <div class="avatar-wrapper">
@@ -19,19 +19,19 @@
         </div> -->
         <!-- </el-tooltip> -->
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
+<!--        <el-tooltip content="源码地址" effect="dark" placement="bottom">-->
+<!--          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />-->
+<!--        </el-tooltip>-->
 
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
+<!--        <el-tooltip content="文档地址" effect="dark" placement="bottom">-->
+<!--          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />-->
+<!--        </el-tooltip>-->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+<!--        <screenfull id="screenfull" class="right-menu-item hover-effect" />-->
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+<!--        <el-tooltip content="布局大小" effect="dark" placement="bottom">-->
+<!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
+<!--        </el-tooltip>-->
 
       </template>
 
@@ -53,7 +53,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    
+
     <el-dialog title="" :visible.sync="open" width="600px" append-to-body>
       <!-- <div class="chatAppBody">
           <div class="chatTitle">标题</div>
