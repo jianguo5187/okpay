@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 20/01/2024 12:06:39
+ Date: 21/01/2024 21:20:37
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +44,7 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table
@@ -54,6 +54,7 @@ INSERT INTO `gen_table` VALUES (4, 'sys_sale_coin', '卖币表', NULL, NULL, 'Sy
 INSERT INTO `gen_table` VALUES (5, 'sys_buy_coin', '买币表', NULL, NULL, 'SysBuyCoin', 'crud', 'element-ui', 'com.ruoyi.system', 'system', 'buyCoin', '买币', 'ruoyi', '0', '/', '{}', 'admin', '2024-01-13 15:35:46', '', '2024-01-13 15:48:35', NULL);
 INSERT INTO `gen_table` VALUES (8, 'sys_transaction_record', '交易记录表', NULL, NULL, 'SysTransactionRecord', 'crud', 'element-ui', 'com.ruoyi.system', 'system', 'transactionRecord', '交易记录', 'ruoyi', '0', '/', '{}', 'admin', '2024-01-19 21:17:11', '', '2024-01-19 21:17:46', NULL);
 INSERT INTO `gen_table` VALUES (10, 'sys_recharge', '充值表', NULL, NULL, 'SysRecharge', 'crud', '', 'com.ruoyi.system', 'system', 'recharge', '充值', 'ruoyi', '0', '/', NULL, 'admin', '2024-01-20 10:17:20', '', NULL, NULL);
+INSERT INTO `gen_table` VALUES (13, 'sys_notice_user', '公告和用户关联表', NULL, NULL, 'SysNoticeUser', 'crud', '', 'com.ruoyi.system', 'system', 'user', '公告和用户关联', 'ruoyi', '0', '/', NULL, 'admin', '2024-01-21 19:14:31', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -83,7 +84,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 128 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -146,6 +147,8 @@ INSERT INTO `gen_table_column` VALUES (110, 10, 'create_time', '创建时间', '
 INSERT INTO `gen_table_column` VALUES (111, 10, 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', '0', '1', '1', NULL, NULL, 'EQ', 'input', '', 10, 'admin', '2024-01-20 10:17:20', '', NULL);
 INSERT INTO `gen_table_column` VALUES (112, 10, 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', '0', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 11, 'admin', '2024-01-20 10:17:20', '', NULL);
 INSERT INTO `gen_table_column` VALUES (113, 10, 'remark', '备注', 'varchar(500)', 'String', 'remark', '0', '0', '0', '1', '1', '1', NULL, 'EQ', 'textarea', '', 12, 'admin', '2024-01-20 10:17:20', '', NULL);
+INSERT INTO `gen_table_column` VALUES (126, 13, 'notice_id', '公告ID', 'bigint(20)', 'Long', 'noticeId', '1', '0', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-01-21 19:14:31', '', NULL);
+INSERT INTO `gen_table_column` VALUES (127, 13, 'user_id', '用户ID', 'bigint(20)', 'Long', 'userId', '1', '0', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 2, 'admin', '2024-01-21 19:14:31', '', NULL);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -404,7 +407,7 @@ CREATE TABLE `sys_chat`  (
   `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
   PRIMARY KEY (`chat_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_chat
@@ -440,6 +443,8 @@ INSERT INTO `sys_chat` VALUES (28, 2, 7, '你在干嘛', '1', '0', '2024-01-07 1
 INSERT INTO `sys_chat` VALUES (29, 7, 2, '测试代码呀', '1', '0', '2024-01-07 18:46:35');
 INSERT INTO `sys_chat` VALUES (30, 7, 2, '你真厉害', '1', '0', '2024-01-07 18:46:46');
 INSERT INTO `sys_chat` VALUES (31, 7, 2, '牛呀', '1', '0', '2024-01-07 18:47:07');
+INSERT INTO `sys_chat` VALUES (32, 7, 11, '你好', '0', '0', '2024-01-21 10:48:00');
+INSERT INTO `sys_chat` VALUES (33, 11, 7, '你好呀', '1', '0', '2024-01-21 10:48:48');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -661,7 +666,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 192 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 216 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -758,6 +763,30 @@ INSERT INTO `sys_logininfor` VALUES (188, 'kehu2', '127.0.0.1', '内网IP', 'Unk
 INSERT INTO `sys_logininfor` VALUES (189, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-20 10:16:47');
 INSERT INTO `sys_logininfor` VALUES (190, 'kehu2', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-20 10:23:17');
 INSERT INTO `sys_logininfor` VALUES (191, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-20 11:11:01');
+INSERT INTO `sys_logininfor` VALUES (192, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:45:55');
+INSERT INTO `sys_logininfor` VALUES (193, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:46:17');
+INSERT INTO `sys_logininfor` VALUES (194, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:46:32');
+INSERT INTO `sys_logininfor` VALUES (195, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:47:07');
+INSERT INTO `sys_logininfor` VALUES (196, 'liao1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:47:10');
+INSERT INTO `sys_logininfor` VALUES (197, 'liao1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:47:35');
+INSERT INTO `sys_logininfor` VALUES (198, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:47:39');
+INSERT INTO `sys_logininfor` VALUES (199, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:57:18');
+INSERT INTO `sys_logininfor` VALUES (200, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:57:22');
+INSERT INTO `sys_logininfor` VALUES (201, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:59:25');
+INSERT INTO `sys_logininfor` VALUES (202, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:59:28');
+INSERT INTO `sys_logininfor` VALUES (203, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 10:59:44');
+INSERT INTO `sys_logininfor` VALUES (204, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 10:59:50');
+INSERT INTO `sys_logininfor` VALUES (205, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-21 15:46:49');
+INSERT INTO `sys_logininfor` VALUES (206, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-21 16:52:49');
+INSERT INTO `sys_logininfor` VALUES (207, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 18:29:52');
+INSERT INTO `sys_logininfor` VALUES (208, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 18:36:29');
+INSERT INTO `sys_logininfor` VALUES (209, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 18:37:30');
+INSERT INTO `sys_logininfor` VALUES (210, 'admin', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '1', '用户不存在/密码错误', '2024-01-21 19:07:13');
+INSERT INTO `sys_logininfor` VALUES (211, 'admin', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-01-21 19:07:33');
+INSERT INTO `sys_logininfor` VALUES (212, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 19:18:25');
+INSERT INTO `sys_logininfor` VALUES (213, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 19:18:30');
+INSERT INTO `sys_logininfor` VALUES (214, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-01-21 20:22:10');
+INSERT INTO `sys_logininfor` VALUES (215, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-01-21 20:23:11');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -789,7 +818,7 @@ CREATE TABLE `sys_menu`  (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2024-01-02 21:22:09', '', NULL, '系统管理目录');
+INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-21 18:57:18', '系统管理目录');
 INSERT INTO `sys_menu` VALUES (2, '系统监控', 0, 2, 'monitor', NULL, '', 1, 0, 'M', '0', '0', '', 'monitor', 'admin', '2024-01-02 21:22:09', '', NULL, '系统监控目录');
 INSERT INTO `sys_menu` VALUES (3, '系统工具', 0, 3, 'tool', NULL, '', 1, 0, 'M', '0', '0', '', 'tool', 'admin', '2024-01-02 21:22:09', '', NULL, '系统工具目录');
 INSERT INTO `sys_menu` VALUES (4, '若依官网', 0, 4, 'http://ruoyi.vip', NULL, '', 0, 0, 'M', '0', '0', '', 'guide', 'admin', '2024-01-02 21:22:09', '', NULL, '若依官网地址');
@@ -891,13 +920,29 @@ CREATE TABLE `sys_notice`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO `sys_notice` VALUES (1, '温馨提醒：2018-07-01 若依新版本发布啦', '2', 0xE696B0E78988E69CACE58685E5AEB9, '0', 'admin', '2024-01-02 21:22:13', '', NULL, '管理员');
+INSERT INTO `sys_notice` VALUES (1, '温馨提醒：2018-07-01 若依新版本发布啦', '2', 0x3C703E3C7374726F6E673EE696B0E78988E69CACE58685E5AEB93C2F7374726F6E673E3C2F703E, '0', 'admin', '2024-01-02 21:22:13', 'admin', '2024-01-21 19:09:54', '管理员');
 INSERT INTO `sys_notice` VALUES (2, '维护通知：2018-07-01 若依系统凌晨维护', '1', 0xE7BBB4E68AA4E58685E5AEB9, '0', 'admin', '2024-01-02 21:22:13', '', NULL, '管理员');
+INSERT INTO `sys_notice` VALUES (3, '测试', '1', 0x3C703EE698AFE79A84E58F91E98081E588B03C2F703E3C703EE998BFE696AFE9A1BFE58F91613C2F703E3C703EE68C89E697B6613C2F703E, '0', 'okadmin', '2024-01-21 19:19:05', '', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for sys_notice_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice_user`;
+CREATE TABLE `sys_notice_user`  (
+  `notice_id` bigint(20) NOT NULL COMMENT '公告ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  PRIMARY KEY (`notice_id`, `user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告和用户关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_notice_user
+-- ----------------------------
+INSERT INTO `sys_notice_user` VALUES (3, 1);
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -925,7 +970,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 196 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 220 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1026,6 +1071,30 @@ INSERT INTO `sys_oper_log` VALUES (192, '代码生成', 3, 'com.ruoyi.generator.
 INSERT INTO `sys_oper_log` VALUES (193, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"sys_recharge\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-20 10:17:20', 193);
 INSERT INTO `sys_oper_log` VALUES (194, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"sys_recharge\"}', NULL, 0, NULL, '2024-01-20 10:17:24', 321);
 INSERT INTO `sys_oper_log` VALUES (195, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"sys_sale_coin,sys_buy_coin,sys_transaction_record,sys_recharge\"}', NULL, 0, NULL, '2024-01-20 12:02:19', 606);
+INSERT INTO `sys_oper_log` VALUES (196, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"sys_mail_user,sys_mail\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:30:08', 232);
+INSERT INTO `sys_oper_log` VALUES (197, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"mailUser\",\"className\":\"SysMailUser\",\"columns\":[{\"capJavaField\":\"MailId\",\"columnComment\":\"站内信ID\",\"columnId\":124,\"columnName\":\"mail_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2024-01-21 18:30:08\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"mailId\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":12,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"UserId\",\"columnComment\":\"用户ID\",\"columnId\":125,\"columnName\":\"user_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2024-01-21 18:30:08\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"userId\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":12,\"updateBy\":\"\",\"usableColumn\":false}],\"crud\":true,\"functionAuthor\":\"ruoyi\",\"functionName\":\"站内信和用户关联\",\"genPath\":\"/\",\"genType\":\"0\",\"moduleName\":\"system\",\"options\":\"{}\",\"packageName\":\"com.ruoyi.system\",\"params\":{},\"sub\":false,\"tableComment\":\"站内信和用户关联表\",\"tableId\":12,\"tableName\":\"sys_mail_user\",\"tplCategory\":\"crud\",\"tplWebType\":\"element-ui\",\"tree\":false}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:30:29', 52);
+INSERT INTO `sys_oper_log` VALUES (198, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"sys_mail,sys_mail_user\"}', NULL, 0, NULL, '2024-01-21 18:30:44', 345);
+INSERT INTO `sys_oper_log` VALUES (199, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/mail/index\",\"createTime\":\"2024-01-21 18:36:03\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1061,\"menuName\":\"站内信\",\"menuType\":\"C\",\"orderNum\":10,\"params\":{},\"parentId\":1,\"path\":\"mail\",\"perms\":\"system:mail:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:38:00', 60);
+INSERT INTO `sys_oper_log` VALUES (200, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/mail/index\",\"createTime\":\"2024-01-21 18:36:03\",\"icon\":\"email\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1061,\"menuName\":\"站内信\",\"menuType\":\"C\",\"orderNum\":10,\"params\":{},\"parentId\":1,\"path\":\"mail\",\"perms\":\"system:mail:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:38:21', 350);
+INSERT INTO `sys_oper_log` VALUES (201, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2024-01-02 21:22:09\",\"dataScope\":\"4\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,103,1016,1017,1018,1019,1061,1062,1063,1064,1065,1066],\"params\":{},\"remark\":\"OK平台管理员\",\"roleId\":2,\"roleKey\":\"okpayadmin\",\"roleName\":\"OK平台管理员\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:39:17', 2447);
+INSERT INTO `sys_oper_log` VALUES (202, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:48:28\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:48:28', 65);
+INSERT INTO `sys_oper_log` VALUES (203, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:51:55\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:51:55', 4);
+INSERT INTO `sys_oper_log` VALUES (204, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:52:59\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:53:00', 9);
+INSERT INTO `sys_oper_log` VALUES (205, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:53:25\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:53:25', 4);
+INSERT INTO `sys_oper_log` VALUES (206, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:53:40\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:53:40', 5);
+INSERT INTO `sys_oper_log` VALUES (207, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:54:02\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:54:02', 4);
+INSERT INTO `sys_oper_log` VALUES (208, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:55:10\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:55:10', 4);
+INSERT INTO `sys_oper_log` VALUES (209, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:55:38\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:55:39', 19);
+INSERT INTO `sys_oper_log` VALUES (210, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2024-01-02 21:22:09\",\"icon\":\"system\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1,\"menuName\":\"系统管理\",\"menuType\":\"M\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"system\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 18:57:18', 61);
+INSERT INTO `sys_oper_log` VALUES (211, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 18:58:58\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 18:58:58', 4);
+INSERT INTO `sys_oper_log` VALUES (212, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 19:00:05\",\"params\":{},\"status\":\"0\"}', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\r\n### The error may exist in file [D:\\projcet\\RuoYi-Vue\\ruoyi-system\\target\\classes\\mapper\\system\\SysMailMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMailMapper.insertSysMail-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_mail          ( status,                          create_time )           values ( ?,                          ? )\r\n### Cause: java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value\n; Field \'mail_content\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'mail_content\' doesn\'t have a default value', '2024-01-21 19:00:05', 6);
+INSERT INTO `sys_oper_log` VALUES (213, '站内信', 1, 'com.ruoyi.web.controller.system.SysMailController.add()', 'POST', 1, 'admin', NULL, '/system/mail', '127.0.0.1', '内网IP', '{\"createTime\":\"2024-01-21 19:02:19\",\"mailContent\":\"<strong>阿斯蒂芬阿斯蒂芬阿萨德发顺丰</strong><strong>阿斯顿发12</strong>\",\"mailId\":1,\"mailTitle\":\"测试\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:02:19', 70);
+INSERT INTO `sys_oper_log` VALUES (214, '通知公告', 2, 'com.ruoyi.web.controller.system.SysNoticeController.edit()', 'PUT', 1, 'admin', NULL, '/system/notice', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2024-01-02 21:22:13\",\"noticeContent\":\"<p><strong>新版本内容</strong></p>\",\"noticeId\":1,\"noticeTitle\":\"温馨提醒：2018-07-01 若依新版本发布啦\",\"noticeType\":\"2\",\"params\":{},\"remark\":\"管理员\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:09:54', 32);
+INSERT INTO `sys_oper_log` VALUES (215, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2024-01-02 21:22:09\",\"dataScope\":\"4\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,103,1016,1017,1018,1019,107,1035,1036,1037,1038],\"params\":{},\"remark\":\"OK平台管理员\",\"roleId\":2,\"roleKey\":\"okpayadmin\",\"roleName\":\"OK平台管理员\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:11:25', 3491);
+INSERT INTO `sys_oper_log` VALUES (216, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/12,11', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:12:34', 137);
+INSERT INTO `sys_oper_log` VALUES (217, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"sys_notice_user\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:14:31', 124);
+INSERT INTO `sys_oper_log` VALUES (218, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"sys_notice_user\"}', NULL, 0, NULL, '2024-01-21 19:14:36', 362);
+INSERT INTO `sys_oper_log` VALUES (219, '通知公告', 1, 'com.ruoyi.web.controller.system.SysNoticeController.add()', 'POST', 1, 'okadmin', 'OKPAY平台', '/system/notice', '127.0.0.1', '内网IP', '{\"createBy\":\"okadmin\",\"noticeContent\":\"<p>是的发送到</p><p>阿斯顿发a</p><p>按时a</p>\",\"noticeTitle\":\"测试\",\"noticeType\":\"1\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-01-21 19:19:07', 2308);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1104,7 +1173,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-03 00:06:43', 'OK平台管理员');
+INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-21 19:11:22', 'OK平台管理员');
 INSERT INTO `sys_role` VALUES (3, '商户', 'merchant', 3, '4', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:21', 'admin', '2024-01-03 00:06:38', NULL);
 INSERT INTO `sys_role` VALUES (4, '代理', 'agent', 4, '1', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:36', '', '2024-01-04 22:45:05', NULL);
 INSERT INTO `sys_role` VALUES (5, '客户', 'customer', 5, '1', 1, 1, '0', '0', 'admin', '2024-01-04 22:44:34', '', '2024-01-04 22:44:59', NULL);
@@ -1139,6 +1208,7 @@ CREATE TABLE `sys_role_menu`  (
 INSERT INTO `sys_role_menu` VALUES (2, 1);
 INSERT INTO `sys_role_menu` VALUES (2, 100);
 INSERT INTO `sys_role_menu` VALUES (2, 103);
+INSERT INTO `sys_role_menu` VALUES (2, 107);
 INSERT INTO `sys_role_menu` VALUES (2, 1000);
 INSERT INTO `sys_role_menu` VALUES (2, 1001);
 INSERT INTO `sys_role_menu` VALUES (2, 1002);
@@ -1150,6 +1220,10 @@ INSERT INTO `sys_role_menu` VALUES (2, 1016);
 INSERT INTO `sys_role_menu` VALUES (2, 1017);
 INSERT INTO `sys_role_menu` VALUES (2, 1018);
 INSERT INTO `sys_role_menu` VALUES (2, 1019);
+INSERT INTO `sys_role_menu` VALUES (2, 1035);
+INSERT INTO `sys_role_menu` VALUES (2, 1036);
+INSERT INTO `sys_role_menu` VALUES (2, 1037);
+INSERT INTO `sys_role_menu` VALUES (2, 1038);
 INSERT INTO `sys_role_menu` VALUES (3, 1);
 INSERT INTO `sys_role_menu` VALUES (3, 100);
 INSERT INTO `sys_role_menu` VALUES (3, 1000);
@@ -1186,8 +1260,8 @@ CREATE TABLE `sys_sale_coin`  (
 -- ----------------------------
 -- Records of sys_sale_coin
 -- ----------------------------
-INSERT INTO `sys_sale_coin` VALUES (3, 'OK20240113233714961', '2024-01-13 23:37:14', 11, '0', '0,2', 10.10, 0.00, '9', '1', 'kehu1', '2024-01-13 23:37:14', 'kehu1', '2024-01-17 20:34:44', NULL);
-INSERT INTO `sys_sale_coin` VALUES (4, 'OK20240113233826314', '2024-01-13 23:38:26', 11, '0', '1,2', 10.10, 0.00, '9', '1', 'kehu1', '2024-01-13 23:38:26', '', '2024-01-19 20:22:46', NULL);
+INSERT INTO `sys_sale_coin` VALUES (3, 'OK20240113233714961', '2024-01-13 23:37:14', 11, '0', '0,2', 10.10, 0.00, '1', '1', 'kehu1', '2024-01-13 23:37:14', 'kehu1', '2024-01-17 20:34:44', NULL);
+INSERT INTO `sys_sale_coin` VALUES (4, 'OK20240113233826314', '2024-01-13 23:38:26', 11, '0', '1,2', 10.10, 0.00, '2', '1', 'kehu1', '2024-01-13 23:38:26', '', '2024-01-19 20:22:46', NULL);
 
 -- ----------------------------
 -- Table structure for sys_transaction_record
@@ -1236,8 +1310,11 @@ CREATE TABLE `sys_user`  (
   `wallet_address` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '钱包地址',
   `amount` float(10, 2) NULL DEFAULT 0.00 COMMENT '余额',
   `invite_code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邀请码',
+  `wechat_pay_remark` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信收款填充信息',
   `wechat_pay_img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信收款码图片地址',
+  `alipay_remark` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付宝收款填充信息',
   `alipay_img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付宝收款码图片地址',
+  `unionpay_remark` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银联填充信息',
   `unionpay_account` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银联收款户名',
   `unionpay_card` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银联收款卡号',
   `parent_user_id` bigint(20) NULL DEFAULT 0 COMMENT '上级用户ID',
@@ -1259,16 +1336,16 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '/profile/avatar/2024/01/07/头像_20240107111226A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 'a12c', NULL, NULL, NULL, NULL, 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-20 10:16:47', 'admin', '2024-01-02 21:22:09', '', '2024-01-20 10:16:47', '管理员');
-INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '00', 'r1@qq.com', '15666666666', '0', '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, '789c', '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', '1231', '123', 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-19 22:51:16', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-19 22:51:16', '测试员');
-INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '02', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 'e7afd6', NULL, NULL, NULL, NULL, 2, 15, 5, '0', '0', '0', '', NULL, 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-01-04 23:26:04', NULL);
-INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, '52541b', NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '0', '127.0.0.1', '2024-01-04 23:41:52', 'admin', '2024-01-04 23:05:25', '', '2024-01-04 23:41:51', NULL);
-INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 0.00, '506309', NULL, NULL, NULL, NULL, 2, 10, 5, '1', '0', '0', '127.0.0.1', '2024-01-07 17:58:58', 'admin', '2024-01-04 23:20:30', '', '2024-01-07 17:58:58', NULL);
-INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', '', '$2a$10$aGG1i82MoMh2TZggFFh/e.ho8nRbFs3O4y9z/GMJHnK8DTHpHW3Hm', '$2a$10$UMHjQIZ9kGS/ZDESAO1DXuLR886dKJ6iK11X2I7vKhSQavvAvpwxa', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 500.00, '834d02', '/profile/upload/2024/01/06/image_20240106204519A001.jpeg', NULL, NULL, NULL, 7, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-19 22:33:45', '', '2024-01-06 00:23:59', '', '2024-01-19 22:33:45', NULL);
-INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户1', '04', '', '15888888881', '0', '', '$2a$10$eCHngkkX93fWTLmH4iX0cu/WA.RiuQokpXft7ypl7NJ/KknX4KJey', '$2a$10$6L4WPZZKnS0tTFME0uLrD.XO/TlHC5yI.3Kpaju3vU06r59XWYXSa', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 100.00, '0e9ace', '/profile/upload/2024/01/13/image_20240113233808A001.jpeg', NULL, NULL, NULL, 10, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-20 11:11:01', '', '2024-01-13 23:10:17', '', '2024-01-20 11:11:01', NULL);
-INSERT INTO `sys_user` VALUES (12, 219, 'liao4', '测试商户4', '02', '', '', '0', '', '$2a$10$wkffx1ddD7D3FXPh9FKTJeao8Zzzqbt0u9wmiEyze8v8nNKWmdr4S', NULL, NULL, NULL, NULL, NULL, NULL, '21648c3fabab84c3', 0.00, '750e5f', NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '0', '', NULL, 'okadmin', '2024-01-19 22:53:21', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (13, 220, 'agent2', '测试代理2', '03', '', '15888888882', '0', '', '$2a$10$SGV242RHmdUlb15eH4xBp.HxGQoy2CRHqsMaMPrOMVuN1oWvlG.Wy', '$2a$10$2TnEyCbt/0u79ec4t91KuuAmY/u0tVCUzo7QeUMQ.b29qvRkF6IdO', '客', '123123121', '/profile/upload/2024/01/19/image_20240119225435A001.jpeg', '/profile/upload/2024/01/19/image_20240119225435A002.jpeg', NULL, '392a0c09a2d5cbbf', 0.00, '9b9e1c', NULL, NULL, NULL, NULL, 12, 0, 0, '0', '0', '0', '', NULL, '', '2024-01-19 22:54:35', 'okadmin', '2024-01-19 22:55:49', NULL);
-INSERT INTO `sys_user` VALUES (14, 221, 'kehu2', '测试客户2', '04', '', '15888888883', '0', '', '$2a$10$JzhQ5X2k9YpDofOx0PdZ/enIJexzZ8DBLL9ngT5ulbm2rPP2MO29u', '$2a$10$gWqK.tYlf42quKXwTjabkunaL9nUYxx.XYA0WnsJiiYqS0SXFZA7y', '客2', '1231231211', '/profile/upload/2024/01/19/image_20240119225611A003.jpeg', '/profile/upload/2024/01/19/image_20240119225611A004.jpeg', NULL, '609c28593886f5a4', 0.00, '7df77f', NULL, NULL, NULL, NULL, 13, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-20 10:23:18', '', '2024-01-19 22:56:12', '', '2024-01-20 10:23:17', NULL);
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '/profile/avatar/2024/01/07/头像_20240107111226A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 'a12c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-21 19:07:34', 'admin', '2024-01-02 21:22:09', '', '2024-01-21 19:07:33', '管理员');
+INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '00', 'r1@qq.com', '15666666666', '0', '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, '789c', NULL, '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', NULL, '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', NULL, '1231', '123', 0, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-21 20:23:12', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-21 20:23:11', '测试员');
+INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '02', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 'e7afd6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 15, 5, '0', '0', '0', '127.0.0.1', '2024-01-21 10:47:11', 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-01-21 10:47:10', NULL);
+INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, '52541b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '0', '127.0.0.1', '2024-01-04 23:41:52', 'admin', '2024-01-04 23:05:25', '', '2024-01-04 23:41:51', NULL);
+INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 0.00, '506309', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, '1', '0', '0', '127.0.0.1', '2024-01-21 10:47:40', 'admin', '2024-01-04 23:20:30', '', '2024-01-21 10:47:39', NULL);
+INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', '', '$2a$10$aGG1i82MoMh2TZggFFh/e.ho8nRbFs3O4y9z/GMJHnK8DTHpHW3Hm', '$2a$10$UMHjQIZ9kGS/ZDESAO1DXuLR886dKJ6iK11X2I7vKhSQavvAvpwxa', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 500.00, '834d02', NULL, '/profile/upload/2024/01/06/image_20240106204519A001.jpeg', NULL, NULL, NULL, NULL, NULL, 7, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-19 22:33:45', '', '2024-01-06 00:23:59', '', '2024-01-19 22:33:45', NULL);
+INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户new1', '04', '', '15888888881', '0', '/profile/upload/2024/01/21/image_20240121170818A001.jpeg', '$2a$10$eCHngkkX93fWTLmH4iX0cu/WA.RiuQokpXft7ypl7NJ/KknX4KJey', '$2a$10$uZN0un1.OehgLTfm5y1AMuJhNNMPJ6YCNrd8dG1mEqpgaLs9DT.DO', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 100.00, '0e9ace', '微信支付补充信息', '/profile/upload/2024/01/21/image_20240121165650A001.jpeg', NULL, NULL, NULL, NULL, NULL, 10, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-21 15:46:49', '', '2024-01-13 23:10:17', '', '2024-01-21 17:08:18', 'hello');
+INSERT INTO `sys_user` VALUES (12, 219, 'liao4', '测试商户4', '02', '', '', '0', '', '$2a$10$wkffx1ddD7D3FXPh9FKTJeao8Zzzqbt0u9wmiEyze8v8nNKWmdr4S', NULL, NULL, NULL, NULL, NULL, NULL, '21648c3fabab84c3', 0.00, '750e5f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, '0', '0', '0', '', NULL, 'okadmin', '2024-01-19 22:53:21', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (13, 220, 'agent2', '测试代理2', '03', '', '15888888882', '0', '', '$2a$10$SGV242RHmdUlb15eH4xBp.HxGQoy2CRHqsMaMPrOMVuN1oWvlG.Wy', '$2a$10$2TnEyCbt/0u79ec4t91KuuAmY/u0tVCUzo7QeUMQ.b29qvRkF6IdO', '客', '123123121', '/profile/upload/2024/01/19/image_20240119225435A001.jpeg', '/profile/upload/2024/01/19/image_20240119225435A002.jpeg', NULL, '392a0c09a2d5cbbf', 0.00, '9b9e1c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 0, 0, '0', '0', '0', '', NULL, '', '2024-01-19 22:54:35', 'okadmin', '2024-01-19 22:55:49', NULL);
+INSERT INTO `sys_user` VALUES (14, 221, 'kehu2', '测试客户2', '04', '', '15888888883', '0', '', '$2a$10$JzhQ5X2k9YpDofOx0PdZ/enIJexzZ8DBLL9ngT5ulbm2rPP2MO29u', '$2a$10$gWqK.tYlf42quKXwTjabkunaL9nUYxx.XYA0WnsJiiYqS0SXFZA7y', '客2', '1231231211', '/profile/upload/2024/01/19/image_20240119225611A003.jpeg', '/profile/upload/2024/01/19/image_20240119225611A004.jpeg', NULL, '609c28593886f5a4', 0.00, '7df77f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 0, 0, '0', '0', '0', '127.0.0.1', '2024-01-20 10:23:18', '', '2024-01-19 22:56:12', '', '2024-01-20 10:23:17', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1305,7 +1382,6 @@ INSERT INTO `sys_user_role` VALUES (3, 3);
 INSERT INTO `sys_user_role` VALUES (4, 3);
 INSERT INTO `sys_user_role` VALUES (7, 3);
 INSERT INTO `sys_user_role` VALUES (10, 4);
-INSERT INTO `sys_user_role` VALUES (11, 5);
 INSERT INTO `sys_user_role` VALUES (12, 3);
 INSERT INTO `sys_user_role` VALUES (13, 4);
 INSERT INTO `sys_user_role` VALUES (14, 5);
