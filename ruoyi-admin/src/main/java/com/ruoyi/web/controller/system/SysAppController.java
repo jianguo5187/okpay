@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.vo.req.*;
+import com.ruoyi.common.core.vo.resp.MerchantUserRespVO;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
@@ -62,6 +63,34 @@ public class SysAppController extends BaseController {
     }
 
     /**
+     * 修改支付密码
+     */
+    @PostMapping("/changePayPwd")
+    public AjaxResult changePayPwd(@RequestBody ChangePayPwdReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        Long userId = loginUser.getUserId();
+        String payPassword = loginUser.getPayPassword();
+        if (!SecurityUtils.matchesPassword(vo.getOldPayPassword(), payPassword))
+        {
+            return error("修改支付密码失败，旧密码错误");
+        }
+        if (SecurityUtils.matchesPassword(vo.getNewPayPassword(), payPassword))
+        {
+            return error("新密码不能与旧密码相同");
+        }
+        String newPayPassword = SecurityUtils.encryptPassword(vo.getNewPayPassword());
+        if (userService.resetUserPayPwd(userId, newPayPassword) > 0)
+        {
+            // 更新缓存用户密码
+            loginUser.getUser().setPayPassword(newPayPassword);
+            tokenService.setLoginUser(loginUser);
+            return success();
+        }
+        return error("修改支付密码异常，请联系管理员");
+    }
+
+    /**
      * 支付密码验证
      */
     @PostMapping("/checkPayPwd")
@@ -106,6 +135,38 @@ public class SysAppController extends BaseController {
         }
         user.setMerchantUserId(sysAppService.parentMerchantUserId(user.getParentUserId()));
         ajax.put("user", user);
+        if(user.getMerchantUserId() != null && user.getMerchantUserId() != 0){
+            SysUser merchantUser = userService.selectUserById(user.getMerchantUserId());
+            if (StringUtils.isNotNull(merchantUser)){
+                MerchantUserRespVO merchantUserRespVO = new MerchantUserRespVO();
+                merchantUserRespVO.setMerchantUserId(merchantUser.getUserId());
+                merchantUserRespVO.setMerchantUserNickName(merchantUser.getNickName());
+
+                if(StringUtils.isNotEmpty(merchantUser.getAvatar())){
+                    merchantUserRespVO.setMerchantUserAvatar(Base64.encode(ImageUtils.getImage(merchantUser.getAvatar())));
+                }
+
+                merchantUserRespVO.setUngentCommission(merchantUser.getUngentCommission());
+                merchantUserRespVO.setNormalCommission(merchantUser.getNormalCommission());
+
+                ajax.put("merchantUser", merchantUserRespVO);
+            }
+        }
+        return ajax;
+    }
+
+
+    /**
+     * 获取用户金额信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping("getUserAmountInfo")
+    public AjaxResult getUserAmountInfo()
+    {
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("userAmountInfo", sysAppService.getUserAmountInfo(user.getUserId()));
         return ajax;
     }
 
@@ -117,6 +178,10 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
+
+        user.setWechatPayRemark(vo.getWechatPayRemark());
+        user.setAlipayRemark(vo.getAlipayRemark());
+        user.setUnionpayRemark(vo.getUnionpayRemark());
 
         if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
             String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
@@ -143,6 +208,35 @@ public class SysAppController extends BaseController {
         if(StringUtils.isNotEmpty(vo.getUnionpayCard())){
             user.setUnionpayCard(vo.getUnionpayCard());
         }
+
+        int updateRow = userService.updateUser(user);
+        if (updateRow > 0){
+            // 更新缓存用户信息
+            tokenService.setLoginUser(loginUser);
+            return success();
+        }
+        return error("修改失败，请联系管理员");
+    }
+
+    /**
+     * 修改用户信息接口
+     */
+    @PostMapping("/updateUserInfo")
+    public AjaxResult updateUserInfo(@RequestBody UpdateUserInfoReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        if(StringUtils.isNotEmpty(vo.getAvatar())){
+            String avatarFileName = ImageUtils.savaBase64ImageFile(vo.getAvatar());
+            if(StringUtils.isNotEmpty(avatarFileName)){
+                user.setAvatar(avatarFileName);
+            }else{
+                return error("头像上传失败");
+            }
+        }
+        user.setRemark(vo.getRemark());
+        user.setNickName(vo.getNickName());
 
         int updateRow = userService.updateUser(user);
         if (updateRow > 0){

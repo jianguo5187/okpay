@@ -424,6 +424,18 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 重置用户支付密码
+     *
+     * @param userId 用户ID
+     * @param payPassword 支付密码
+     * @return 结果
+     */
+    public int resetUserPayPwd(Long userId, String payPassword)
+    {
+        return userMapper.resetUserPayPwd(userId, payPassword);
+    }
+
+    /**
      * 新增用户角色信息
      * 
      * @param user 用户对象

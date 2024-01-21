@@ -5,6 +5,7 @@ import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
+import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
@@ -12,6 +13,7 @@ import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.system.mapper.SysBuyCoinMapper;
 import com.ruoyi.system.mapper.SysRechargeMapper;
 import com.ruoyi.system.mapper.SysSaleCoinMapper;
+import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.service.ISysAppService;
 import com.ruoyi.system.service.ISysSaleCoinService;
 import com.ruoyi.system.service.ISysUserService;
@@ -32,6 +34,9 @@ public class SysAppServiceImpl implements ISysAppService {
     private ISysUserService sysUserService;
 
     @Autowired
+    private SysUserMapper userMapper;
+
+    @Autowired
     private SysSaleCoinMapper sysSaleCoinMapper;
 
     @Autowired
@@ -49,6 +54,11 @@ public class SysAppServiceImpl implements ISysAppService {
             }
         }
         return exist;
+    }
+
+    @Override
+    public UserAmountInfoRespVO getUserAmountInfo(Long userId) {
+        return userMapper.getUserAmountInfo(userId);
     }
 
     @Override
@@ -127,6 +137,9 @@ public class SysAppServiceImpl implements ISysAppService {
         respVO.setSaleUserId(saleUser.getUserId());
         respVO.setSaleUserNickName(saleUser.getNickName());
         respVO.setSaleUserPhonenumber(saleUser.getPhonenumber());
+        respVO.setWechatPayRemark(saleUser.getWechatPayRemark());
+        respVO.setAlipayRemark(saleUser.getAlipayRemark());
+        respVO.setUnionpayRemark(saleUser.getUnionpayRemark());
         respVO.setUnionpayAccount(saleUser.getUnionpayAccount());
         respVO.setUnionpayCard(saleUser.getUnionpayCard());
         if(StringUtils.isNotEmpty(saleUser.getWechatPayImg())){
@@ -135,6 +148,26 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNotEmpty(saleUser.getAlipayImg())){
             respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(saleUser.getAlipayImg())));
         }
+
+        List<BuyDetailInfoRespVO> buyList = sysBuyCoinMapper.getBuyListBySaleId(saleId);
+
+        for (BuyDetailInfoRespVO vo : buyList){
+            if(StringUtils.isNotEmpty(vo.getSaleWechatPayImg())){
+                vo.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getSaleWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(vo.getSaleAlipayImg())){
+                vo.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(vo.getSaleAlipayImg())));
+            }
+
+            if(StringUtils.isNotEmpty(vo.getBuyWechatPayImg())){
+                vo.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getBuyWechatPayImg())));
+            }
+            if(StringUtils.isNotEmpty(vo.getBuyAlipayImg())){
+                vo.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(vo.getBuyAlipayImg())));
+            }
+        }
+
+        respVO.setBuyUserList(buyList);
 
         return respVO;
     }

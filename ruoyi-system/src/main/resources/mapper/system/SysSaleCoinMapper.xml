@@ -34,8 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
         <result property="saleUserNickName"     column="nick_name"    />
         <result property="saleUserPhonenumber"  column="phonenumber"  />
+        <result property="wechatPayRemark"    column="wechat_pay_remark"  />
         <result property="wechatPayImg"    column="wechat_pay_img"  />
+        <result property="alipayRemark"       column="alipay_remark"      />
         <result property="alipayImg"       column="alipay_img"      />
+        <result property="unionpayRemark"       column="unionpay_remark"      />
         <result property="unionpayAccount" column="unionpay_account"/>
         <result property="unionpayCard"    column="unionpay_card"   />
     </resultMap>
@@ -136,8 +139,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.urgent_sale_flg,
             MAIN.nick_name,
             MAIN.phonenumber,
+            MAIN.wechat_pay_remark,
             MAIN.wechat_pay_img,
+            MAIN.alipay_remark,
             MAIN.alipay_img,
+            MAIN.unionpay_remark,
             MAIN.unionpay_account,
             MAIN.unionpay_card
         FROM(
@@ -153,8 +159,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.urgent_sale_flg,
                 u.nick_name,
                 u.phonenumber,
+                u.wechat_pay_remark,
                 u.wechat_pay_img,
+                u.alipay_remark,
                 u.alipay_img,
+                u.unionpay_remark,
                 u.unionpay_account,
                 u.unionpay_card
             FROM
@@ -190,8 +199,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.urgent_sale_flg,
                 u.nick_name,
                 u.phonenumber,
+                u.wechat_pay_remark,
                 u.wechat_pay_img,
+                u.alipay_remark,
                 u.alipay_img,
+                u.unionpay_remark,
                 u.unionpay_account,
                 u.unionpay_card
             FROM
@@ -235,8 +247,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.urgent_sale_flg,
             u.nick_name,
             u.phonenumber,
+            u.wechat_pay_remark,
             u.wechat_pay_img,
+            u.alipay_remark,
             u.alipay_img,
+            u.unionpay_remark,
             u.unionpay_account,
             u.unionpay_card
         FROM

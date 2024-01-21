@@ -2,18 +2,50 @@ package com.ruoyi.common.core.vo.req;
 
 public class UpdatePayInfoReqVO {
 
+    /** 微信收款码填充信息 */
+    private String wechatPayRemark;
 
     /** 微信收款码图片地址 */
     private String wechatPayImg;
 
+    /** 支付宝收款码填充信息 */
+    private String alipayRemark;
+
     /** 支付宝收款码图片地址 */
     private String alipayImg;
+
+    /** 银联填充信息 */
+    private String unionpayRemark;
 
     /** 银联收款户名 */
     private String unionpayAccount;
 
     /** 银联收款卡号 */
     private String unionpayCard;
+
+    public String getWechatPayRemark() {
+        return wechatPayRemark;
+    }
+
+    public void setWechatPayRemark(String wechatPayRemark) {
+        this.wechatPayRemark = wechatPayRemark;
+    }
+
+    public String getAlipayRemark() {
+        return alipayRemark;
+    }
+
+    public void setAlipayRemark(String alipayRemark) {
+        this.alipayRemark = alipayRemark;
+    }
+
+    public String getUnionpayRemark() {
+        return unionpayRemark;
+    }
+
+    public void setUnionpayRemark(String unionpayRemark) {
+        this.unionpayRemark = unionpayRemark;
+    }
 
     public String getWechatPayImg() {
         return wechatPayImg;

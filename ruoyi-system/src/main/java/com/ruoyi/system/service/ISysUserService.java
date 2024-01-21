@@ -203,6 +203,15 @@ public interface ISysUserService
     public int resetUserPwd(String userName, String password);
 
     /**
+     * 重置用户支付密码
+     *
+     * @param userId 用户ID
+     * @param payPassword 支付密码
+     * @return 结果
+     */
+    public int resetUserPayPwd(Long userId, String payPassword);
+
+    /**
      * 通过用户ID删除用户
      * 
      * @param userId 用户ID

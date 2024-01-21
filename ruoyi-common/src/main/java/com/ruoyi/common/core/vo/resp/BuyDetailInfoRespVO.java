@@ -21,11 +21,20 @@ public class BuyDetailInfoRespVO {
     /** 卖币用户手机号码 */
     private String saleUserPhonenumber;
 
+    /** 卖币用户微信收款码填充信息 */
+    private String saleWechatPayRemark;
+
     /** 卖币用户微信收款码图片地址 */
     private String saleWechatPayImg;
 
+    /** 卖币用户支付宝收款填充信息 */
+    private String saleAlipayRemark;
+
     /** 卖币用户支付宝收款码图片地址 */
     private String saleAlipayImg;
+
+    /** 卖币用户银联填充信息 */
+    private String saleUnionpayRemark;
 
     /** 卖币用户银联收款户名 */
     private String saleUnionpayAccount;
@@ -42,11 +51,20 @@ public class BuyDetailInfoRespVO {
     /** 买币用户手机号码 */
     private String buyUserPhonenumber;
 
+    /** 买币用户微信收款码填充信息 */
+    private String buyWechatPayRemark;
+
     /** 买币用户微信收款码图片地址 */
     private String buyWechatPayImg;
 
+    /** 买币用户支付宝收款填充信息 */
+    private String buyAlipayRemark;
+
     /** 买币用户支付宝收款码图片地址 */
     private String buyAlipayImg;
+
+    /** 买币用户银联填充信息 */
+    private String buyUnionpayRemark;
 
     /** 买币用户银联收款户名 */
     private String buyUnionpayAccount;
@@ -225,5 +243,53 @@ public class BuyDetailInfoRespVO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSaleWechatPayRemark() {
+        return saleWechatPayRemark;
+    }
+
+    public void setSaleWechatPayRemark(String saleWechatPayRemark) {
+        this.saleWechatPayRemark = saleWechatPayRemark;
+    }
+
+    public String getSaleAlipayRemark() {
+        return saleAlipayRemark;
+    }
+
+    public void setSaleAlipayRemark(String saleAlipayRemark) {
+        this.saleAlipayRemark = saleAlipayRemark;
+    }
+
+    public String getSaleUnionpayRemark() {
+        return saleUnionpayRemark;
+    }
+
+    public void setSaleUnionpayRemark(String saleUnionpayRemark) {
+        this.saleUnionpayRemark = saleUnionpayRemark;
+    }
+
+    public String getBuyWechatPayRemark() {
+        return buyWechatPayRemark;
+    }
+
+    public void setBuyWechatPayRemark(String buyWechatPayRemark) {
+        this.buyWechatPayRemark = buyWechatPayRemark;
+    }
+
+    public String getBuyAlipayRemark() {
+        return buyAlipayRemark;
+    }
+
+    public void setBuyAlipayRemark(String buyAlipayRemark) {
+        this.buyAlipayRemark = buyAlipayRemark;
+    }
+
+    public String getBuyUnionpayRemark() {
+        return buyUnionpayRemark;
+    }
+
+    public void setBuyUnionpayRemark(String buyUnionpayRemark) {
+        this.buyUnionpayRemark = buyUnionpayRemark;
     }
 }

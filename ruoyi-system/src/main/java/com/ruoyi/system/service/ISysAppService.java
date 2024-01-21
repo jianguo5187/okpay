@@ -4,10 +4,14 @@ import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
+import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
 
 import java.util.List;
 
 public interface ISysAppService {
+
+
+    public UserAmountInfoRespVO getUserAmountInfo(Long userId);
 
     public Long parentMerchantUserId(Long userId);
 

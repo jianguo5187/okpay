@@ -3,6 +3,7 @@ package com.ruoyi.common.core.vo.resp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class SaleDetailInfoRespVO {
 
@@ -40,17 +41,28 @@ public class SaleDetailInfoRespVO {
     /** 手机号码 */
     private String saleUserPhonenumber;
 
+    /** 微信收款填充信息 */
+    private String wechatPayRemark;
+
     /** 微信收款码图片地址 */
     private String wechatPayImg;
 
+    /** 支付宝收款填充信息 */
+    private String alipayRemark;
+
     /** 支付宝收款码图片地址 */
     private String alipayImg;
+
+    /** 银联填充信息 */
+    private String unionpayRemark;
 
     /** 银联收款户名 */
     private String unionpayAccount;
 
     /** 银联收款卡号 */
     private String unionpayCard;
+
+    private List<BuyDetailInfoRespVO> buyUserList;
 
     public Long getSaleId() {
         return saleId;
@@ -170,5 +182,37 @@ public class SaleDetailInfoRespVO {
 
     public void setUnionpayCard(String unionpayCard) {
         this.unionpayCard = unionpayCard;
+    }
+
+    public String getWechatPayRemark() {
+        return wechatPayRemark;
+    }
+
+    public void setWechatPayRemark(String wechatPayRemark) {
+        this.wechatPayRemark = wechatPayRemark;
+    }
+
+    public String getAlipayRemark() {
+        return alipayRemark;
+    }
+
+    public void setAlipayRemark(String alipayRemark) {
+        this.alipayRemark = alipayRemark;
+    }
+
+    public String getUnionpayRemark() {
+        return unionpayRemark;
+    }
+
+    public void setUnionpayRemark(String unionpayRemark) {
+        this.unionpayRemark = unionpayRemark;
+    }
+
+    public List<BuyDetailInfoRespVO> getBuyUserList() {
+        return buyUserList;
+    }
+
+    public void setBuyUserList(List<BuyDetailInfoRespVO> buyUserList) {
+        this.buyUserList = buyUserList;
     }
 }
