@@ -161,4 +161,14 @@ public interface SysUserMapper
     public SysUser checkAgentUserExist(Long userId);
 
     public UserAmountInfoRespVO getUserAmountInfo(Long userId);
+
+    /**
+     * 修改用户头像
+     * 
+     * @param userName 用户名
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    public int updateUserAmount(@Param("userId") Long userId, @Param("amount") Float amount);
+
 }

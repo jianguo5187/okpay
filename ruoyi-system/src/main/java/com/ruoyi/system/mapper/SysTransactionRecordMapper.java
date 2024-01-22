@@ -5,6 +5,8 @@ import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  * 交易记录Mapper接口
  * 
@@ -60,4 +62,13 @@ public interface SysTransactionRecordMapper
      * @return 结果
      */
     public int deleteSysTransactionRecordByRecordIds(Long[] recordIds);
+    
+
+    /**
+     * 查询交易记录
+     * 
+     * @param recordId 交易记录主键
+     * @return 交易记录
+     */
+    public SysTransactionRecord selectTransactionRecordByRecordTypeAndId(@Param("recordType") String recordType,@Param("buyId") Long buyId,@Param("saleId") Long saleId,@Param("rechargeId") Long rechargeId);
 }

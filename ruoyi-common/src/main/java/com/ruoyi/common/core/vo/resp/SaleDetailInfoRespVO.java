@@ -29,6 +29,12 @@ public class SaleDetailInfoRespVO {
     /** 卖币金额 */
     private Float saleAmount;
 
+    /** 扣除手续费可交易金额 */
+    private Float saleAmountWithoutCommission;
+
+    /** 手续费 */
+    private Float commissionAmount;
+
     /** 卖币状态（0订单生产 1交易中 2已完成 9已取消） */
     private String status;
 
@@ -118,6 +124,25 @@ public class SaleDetailInfoRespVO {
 
     public void setSaleAmount(Float saleAmount) {
         this.saleAmount = saleAmount;
+    }
+    
+    public void setSaleAmountWithoutCommission(Float saleAmountWithoutCommission) 
+    {
+        this.saleAmountWithoutCommission = saleAmountWithoutCommission;
+    }
+
+    public Float getSaleAmountWithoutCommission() 
+    {
+        return saleAmountWithoutCommission;
+    }
+    public void setCommissionAmount(Float commissionAmount) 
+    {
+        this.commissionAmount = commissionAmount;
+    }
+
+    public Float getCommissionAmount() 
+    {
+        return commissionAmount;
     }
 
     public String getStatus() {

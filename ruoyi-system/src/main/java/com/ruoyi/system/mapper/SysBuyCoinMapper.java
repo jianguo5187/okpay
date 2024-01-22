@@ -66,4 +66,6 @@ public interface SysBuyCoinMapper
 
     public List<BuyDetailInfoRespVO> getMyBuyList(@Param("userId") Long userId, @Param("status") String status, @Param("buyAmountFrom") Float buyAmountFrom, @Param("buyAmountTo") Float buyAmountTo, @Param("splitType") String splitType, @Param("buyType") String buyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
     public List<BuyDetailInfoRespVO> getBuyListBySaleId(Long saleId);
+
+    public SysBuyCoin selectsBuyCoinBySaleId(Long saleId);
 }

@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.MerchantUserRespVO;
+import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
@@ -264,7 +265,13 @@ public class SysAppController extends BaseController {
 
         Long saleId = sysAppService.addSaleCoin(user.getUserId(),vo);
         if(saleId > 0){
+        	
             AjaxResult ajax = AjaxResult.success();
+            Float remainAmount = sysAppService.updateUserAmount(user.getUserId(), "2", saleId, vo.getSaleAmount());
+            user.setAmount(remainAmount);
+            // 更新缓存用户信息
+            tokenService.setLoginUser(loginUser);
+            
             ajax.put("saleInfo", sysAppService.getSaleDetailInfo(saleId));
             return ajax;
         }
@@ -277,10 +284,18 @@ public class SysAppController extends BaseController {
     @PostMapping("/updateSaleStatus")
     public AjaxResult updateSaleStatus(@RequestBody UpdateSaleStatusReqVO vo)
     {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        
         vo.setUpdateBy(getUsername());
-        int insertRow = sysAppService.updateSaleStatus(vo);
+        int insertRow = sysAppService.updateSaleStatus(user.getUserId(),vo);
         if(insertRow > 0){
             AjaxResult ajax = AjaxResult.success();
+            UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
+            user.setAmount(amountInfo.getAmount());
+            // 更新缓存用户信息
+            tokenService.setLoginUser(loginUser);
+            
             ajax.put("saleInfo", sysAppService.getSaleDetailInfo(vo.getSaleId()));
             return ajax;
         }

@@ -12,6 +12,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleSplitType"    column="sale_split_type"    />
         <result property="supportBuyType"    column="support_buy_type"    />
         <result property="saleAmount"    column="sale_amount"    />
+        <result property="saleAmountWithoutCommission"    column="sale_amount_without_commission"    />
+        <result property="commissionAmount"    column="commission_amount"    />
         <result property="remainAmount"    column="remain_amount"    />
         <result property="status"    column="status"    />
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
@@ -44,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysSaleCoinVo">
-        select sale_id, sale_no, sale_time, sale_user_id, sale_split_type, support_buy_type, sale_amount, remain_amount, status, urgent_sale_flg, create_by, create_time, update_by, update_time, remark from sys_sale_coin
+        select sale_id, sale_no, sale_time, sale_user_id, sale_split_type, support_buy_type, sale_amount, sale_amount_without_commission, commission_amount, remain_amount, status, urgent_sale_flg, create_by, create_time, update_by, update_time, remark from sys_sale_coin
     </sql>
 
     <select id="selectSysSaleCoinList" parameterType="SysSaleCoin" resultMap="SysSaleCoinResult">
@@ -56,6 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleSplitType != null  and saleSplitType != ''"> and sale_split_type = #{saleSplitType}</if>
             <if test="supportBuyType != null  and supportBuyType != ''"> and support_buy_type = #{supportBuyType}</if>
             <if test="saleAmount != null "> and sale_amount = #{saleAmount}</if>
+            <if test="saleAmountWithoutCommission != null "> and sale_amount_without_commission = #{saleAmountWithoutCommission}</if>
+            <if test="commissionAmount != null "> and commission_amount = #{commissionAmount}</if>
             <if test="remainAmount != null "> and remain_amount = #{remainAmount}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="urgentSaleFlg != null  and urgentSaleFlg != ''"> and urgent_sale_flg = #{urgentSaleFlg}</if>
@@ -74,6 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleSplitType != null">sale_split_type,</if>
             <if test="supportBuyType != null">support_buy_type,</if>
             <if test="saleAmount != null">sale_amount,</if>
+            <if test="saleAmountWithoutCommission != null">sale_amount_without_commission,</if>
+            <if test="commissionAmount != null">commission_amount,</if>
             <if test="remainAmount != null">remain_amount,</if>
             <if test="status != null">status,</if>
             <if test="urgentSaleFlg != null">urgent_sale_flg,</if>
@@ -87,6 +93,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleSplitType != null">#{saleSplitType},</if>
             <if test="supportBuyType != null">#{supportBuyType},</if>
             <if test="saleAmount != null">#{saleAmount},</if>
+            <if test="saleAmountWithoutCommission != null">#{saleAmountWithoutCommission},</if>
+            <if test="commissionAmount != null">#{commissionAmount},</if>
             <if test="remainAmount != null">#{remainAmount},</if>
             <if test="status != null">#{status},</if>
             <if test="urgentSaleFlg != null">#{urgentSaleFlg},</if>
@@ -100,14 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSysSaleCoin" parameterType="SysSaleCoin">
         update sys_sale_coin
         <set>
-            <if test="saleNo != null">sale_no = #{saleNo},</if>
-            <if test="saleUserId != null">sale_user_id = #{saleUserId},</if>
-            <if test="saleSplitType != null">sale_split_type = #{saleSplitType},</if>
-            <if test="supportBuyType != null">support_buy_type = #{supportBuyType},</if>
-            <if test="saleAmount != null">sale_amount = #{saleAmount},</if>
-            <if test="remainAmount != null">remain_amount = #{remainAmount},</if>
             <if test="status != null">status = #{status},</if>
-            <if test="urgentSaleFlg != null">urgent_sale_flg = #{urgentSaleFlg},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="remark != null">remark = #{remark},</if>
             update_time = sysdate()
@@ -135,6 +136,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.sale_split_type,
             MAIN.support_buy_type,
             MAIN.sale_amount,
+            MAIN.sale_amount_without_commission,
+            MAIN.commission_amount,
             MAIN.status,
             MAIN.urgent_sale_flg,
             MAIN.nick_name,
@@ -155,6 +158,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.sale_split_type,
                 s.support_buy_type,
                 s.sale_amount,
+                s.sale_amount_without_commission,
+                s.commission_amount,
                 s.status,
                 s.urgent_sale_flg,
                 u.nick_name,
@@ -195,6 +200,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.sale_split_type,
                 s.support_buy_type,
                 s.sale_amount,
+                s.sale_amount_without_commission,
+                s.commission_amount,
                 s.status,
                 s.urgent_sale_flg,
                 u.nick_name,
@@ -243,6 +250,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.sale_split_type,
             s.support_buy_type,
             s.sale_amount,
+            s.sale_amount_without_commission,
+            s.commission_amount,
             s.status,
             s.urgent_sale_flg,
             u.nick_name,

@@ -15,9 +15,11 @@ public interface ISysAppService {
 
     public Long addSaleCoin(Long userId, SaleCoinReqVO vo);
 
-    public int updateSaleStatus(UpdateSaleStatusReqVO vo);
+    public int updateSaleStatus(Long userId, UpdateSaleStatusReqVO vo);
 
     public SaleDetailInfoRespVO getSaleDetailInfo(Long saleId);
+    
+    public Float updateUserAmount(Long userId, String transactionRecordType, Long recordId, Float amount);
 
     public List<SaleDetailInfoRespVO> getSaleList(Long userId, Long deptId, GetSaleListReqVO vo);
 

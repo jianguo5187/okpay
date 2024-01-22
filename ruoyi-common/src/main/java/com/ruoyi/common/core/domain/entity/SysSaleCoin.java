@@ -1,10 +1,11 @@
 package com.ruoyi.common.core.domain.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
@@ -26,8 +27,8 @@ public class SysSaleCoin extends BaseEntity
     private String saleNo;
 
     /** 卖币时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "卖币时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "卖币时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date saleTime;
 
     /** 卖币用户ID */
@@ -46,16 +47,24 @@ public class SysSaleCoin extends BaseEntity
     @Excel(name = "卖币金额")
     private Float saleAmount;
 
+    /** 扣除手续费可交易金额 */
+    @Excel(name = "扣除手续费可交易金额")
+    private Float saleAmountWithoutCommission;
+
+    /** 手续费 */
+    @Excel(name = "手续费")
+    private Float commissionAmount;
+
     /** 订单剩余金额 */
     @Excel(name = "订单剩余金额")
     private Float remainAmount;
 
-    /** 卖币状态（0订单生产 1交易中 2已完成 9已取消） */
-    @Excel(name = "卖币状态", readConverterExp = "0=订单生产,1=交易中,2=已完成,9=已取消")
+    /** 卖币状态（0生成订单 1交易中 2已完成 9已取消） */
+    @Excel(name = "卖币状态", readConverterExp = "0=生成订单,1=交易中,2=已完成,9=已取消")
     private String status;
 
     /** 加急状态（0否 1是） */
-    @Excel(name = "加急销售", readConverterExp = "0=否,1=是")
+    @Excel(name = "加急状态", readConverterExp = "0=否,1=是")
     private String urgentSaleFlg;
 
     public void setSaleId(Long saleId) 
@@ -112,21 +121,39 @@ public class SysSaleCoin extends BaseEntity
     {
         return supportBuyType;
     }
-    public void setSaleAmount(Float saleAmount)
+    public void setSaleAmount(Float saleAmount) 
     {
         this.saleAmount = saleAmount;
     }
 
-    public Float getSaleAmount()
+    public Float getSaleAmount() 
     {
         return saleAmount;
     }
-    public void setRemainAmount(Float remainAmount)
+    public void setSaleAmountWithoutCommission(Float saleAmountWithoutCommission) 
+    {
+        this.saleAmountWithoutCommission = saleAmountWithoutCommission;
+    }
+
+    public Float getSaleAmountWithoutCommission() 
+    {
+        return saleAmountWithoutCommission;
+    }
+    public void setCommissionAmount(Float commissionAmount) 
+    {
+        this.commissionAmount = commissionAmount;
+    }
+
+    public Float getCommissionAmount() 
+    {
+        return commissionAmount;
+    }
+    public void setRemainAmount(Float remainAmount) 
     {
         this.remainAmount = remainAmount;
     }
 
-    public Float getRemainAmount()
+    public Float getRemainAmount() 
     {
         return remainAmount;
     }
@@ -159,6 +186,8 @@ public class SysSaleCoin extends BaseEntity
             .append("saleSplitType", getSaleSplitType())
             .append("supportBuyType", getSupportBuyType())
             .append("saleAmount", getSaleAmount())
+            .append("saleAmountWithoutCommission", getSaleAmountWithoutCommission())
+            .append("commissionAmount", getCommissionAmount())
             .append("remainAmount", getRemainAmount())
             .append("status", getStatus())
             .append("urgentSaleFlg", getUrgentSaleFlg())

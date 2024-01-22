@@ -187,4 +187,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             limit #{pageNumber} , #{pageRowCount}
         </if>
     </select>
+
+
+    <select id="selectsBuyCoinBySaleId" parameterType="Long" resultMap="SysBuyCoinResult">
+        <include refid="selectSysBuyCoinVo"/>
+        WHERE sale_id = #{saleId}
+        AND status != '9'
+        limit 1
+    </select>
 </mapper>

@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 交易记录对象 sys_transaction_record
  * 
  * @author ruoyi
- * @date 2024-01-19
+ * @date 2024-01-22
  */
 public class SysTransactionRecord extends BaseEntity
 {
@@ -30,8 +30,8 @@ public class SysTransactionRecord extends BaseEntity
     @Excel(name = "交易时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date recordTime;
 
-    /** 交易类型（0买币 1卖币 2商家直充 3代理充值 4手续费） */
-    @Excel(name = "交易类型", readConverterExp = "0=买币,1=卖币,2=商家直充,3=代理充值,4=手续费")
+    /** 交易类型（0买币 1卖币 2商家直充 3代理充值 4充值到商户(提现) 5手续费） */
+    @Excel(name = "交易类型", readConverterExp = "0=买币,1=卖币,2=商家直充,3=代理充值,4=充值到商户(提现),5=手续费")
     private String recordType;
 
     /** 买币ID */
@@ -48,7 +48,11 @@ public class SysTransactionRecord extends BaseEntity
 
     /** 交易金额 */
     @Excel(name = "交易金额")
-    private BigDecimal recordAmount;
+    private Float recordAmount;
+
+    /** 记录状态（0正常 1取消） */
+    @Excel(name = "记录状态", readConverterExp = "0=正常,1=取消")
+    private String status;
 
     public void setRecordId(Long recordId) 
     {
@@ -113,14 +117,23 @@ public class SysTransactionRecord extends BaseEntity
     {
         return rechargeId;
     }
-    public void setRecordAmount(BigDecimal recordAmount) 
+    public void setRecordAmount(Float recordAmount) 
     {
         this.recordAmount = recordAmount;
     }
 
-    public BigDecimal getRecordAmount() 
+    public Float getRecordAmount() 
     {
         return recordAmount;
+    }
+    public void setStatus(String status) 
+    {
+        this.status = status;
+    }
+
+    public String getStatus() 
+    {
+        return status;
     }
 
     @Override
@@ -134,8 +147,11 @@ public class SysTransactionRecord extends BaseEntity
             .append("saleId", getSaleId())
             .append("rechargeId", getRechargeId())
             .append("recordAmount", getRecordAmount())
+            .append("status", getStatus())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .toString();
     }
