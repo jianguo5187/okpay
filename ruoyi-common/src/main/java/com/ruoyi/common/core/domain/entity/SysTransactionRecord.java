@@ -26,8 +26,8 @@ public class SysTransactionRecord extends BaseEntity
     private Long userId;
 
     /** 交易时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "交易时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "交易时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date recordTime;
 
     /** 交易类型（0买币 1卖币 2商家直充 3代理充值 4充值到商户(提现) 5手续费） */

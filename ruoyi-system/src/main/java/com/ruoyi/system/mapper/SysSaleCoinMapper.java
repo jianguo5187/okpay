@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
+import java.util.Date;
 import java.util.List;
+
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 import org.apache.ibatis.annotations.Param;
@@ -61,7 +63,9 @@ public interface SysSaleCoinMapper
      */
     public int deleteSysSaleCoinBySaleIds(Long[] saleIds);
 
-    public List<SaleDetailInfoRespVO> getSaleList(@Param("userId") Long userId, @Param("deptId") Long deptId,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+    public List<SaleDetailInfoRespVO> getSaleList(@Param("userId") Long userId, @Param("merchantUserId") Long merchantUserId,@Param("deptId") Long deptId,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 
     public List<SaleDetailInfoRespVO> getMySaleList(@Param("userId") Long userId, @Param("status") String status,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+
+    public List<SaleDetailInfoRespVO> selectShoppingList(@Param("userId") Long userId, @Param("deptId") Long deptId,@Param("saleUserId") Long saleUserId,  @Param("saleNo") String saleNo, @Param("status") String status, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("urgentSaleFlg") String urgentSaleFlg, @Param("startSaleTime") Date startSaleTime, @Param("endSaleTime") Date endSaleTime);
 }

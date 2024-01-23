@@ -1,7 +1,17 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.vo.req.BuyCoinReqVO;
+import com.ruoyi.common.core.vo.req.SaleShoppingCoinReqVo;
+import com.ruoyi.common.core.vo.req.ShoppingListReqVO;
+import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
+import com.ruoyi.system.service.ISysDictTypeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +43,8 @@ public class SysSaleCoinController extends BaseController
 {
     @Autowired
     private ISysSaleCoinService sysSaleCoinService;
+    @Autowired
+    private ISysDictTypeService dictTypeService;
 
     /**
      * 查询卖币列表
@@ -100,5 +112,58 @@ public class SysSaleCoinController extends BaseController
     public AjaxResult remove(@PathVariable Long[] saleIds)
     {
         return toAjax(sysSaleCoinService.deleteSysSaleCoinBySaleIds(saleIds));
+    }
+
+    /**
+     * 查询交易列表
+     */
+    @GetMapping("/shoppingList")
+    public TableDataInfo shoppingList(ShoppingListReqVO vo)
+    {
+        startPage();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        List<SaleDetailInfoRespVO> list = sysSaleCoinService.selectShoppingList(user.getUserId(), user.getDeptId(), vo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 获取卖币详细信息
+     */
+    @GetMapping(value = "/shopping/{saleId}")
+    public AjaxResult getShoppingInfo(@PathVariable("saleId") Long saleId)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        if(saleId != null && saleId != 0){
+            ajax.put(AjaxResult.DATA_TAG, sysSaleCoinService.selectShoppingInfo(saleId));
+        }
+        ajax.put("payTypes", dictTypeService.selectDictDataByType("pay_type"));
+        return ajax;
+    }
+
+    /**
+     * 买币接口
+     */
+    @PostMapping("/shoppingCoinBuy")
+    public AjaxResult shoppingCoinBuy(@RequestBody BuyCoinReqVO vo)
+    {
+//        AjaxResult ajax = AjaxResult.success();
+//        return ajax;
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        vo.setCreateBy(getUsername());
+        return toAjax(sysSaleCoinService.shoppingCoinBuy(user.getUserId(), vo));
+    }
+
+    /**
+     * 新增卖币
+     */
+    @PostMapping("/saleShoppingCoin")
+    public AjaxResult saleShoppingCoin(@RequestBody SaleShoppingCoinReqVo vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        vo.setCreateBy(getUsername());
+        return toAjax(sysSaleCoinService.saleShoppingCoin(user.getUserId(), vo));
     }
 }

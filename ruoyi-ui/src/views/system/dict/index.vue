@@ -243,6 +243,7 @@ export default {
     /** 查询字典类型列表 */
     getList() {
       this.loading = true;
+      console.log(this.addDateRange(this.queryParams, this.dateRange));
       listType(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.typeList = response.rows;
           this.total = response.total;

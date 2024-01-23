@@ -32,6 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleSplitType"    column="sale_split_type"    />
         <result property="supportBuyType"    column="support_buy_type"    />
         <result property="saleAmount"    column="sale_amount"    />
+        <result property="saleAmountWithoutCommission"    column="sale_amount_without_commission"    />
+        <result property="commissionAmount"    column="commission_amount"    />
+        <result property="remainAmount"    column="remain_amount"    />
         <result property="status"    column="status"    />
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
         <result property="saleUserNickName"     column="nick_name"    />
@@ -138,6 +141,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.sale_amount,
             MAIN.sale_amount_without_commission,
             MAIN.commission_amount,
+            MAIN.remain_amount,
             MAIN.status,
             MAIN.urgent_sale_flg,
             MAIN.nick_name,
@@ -160,6 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.sale_amount,
                 s.sale_amount_without_commission,
                 s.commission_amount,
+                s.remain_amount,
                 s.status,
                 s.urgent_sale_flg,
                 u.nick_name,
@@ -175,6 +180,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 sys_user u
             INNER JOIN sys_sale_coin s ON s.sale_user_id = u.parent_user_id
             WHERE u.user_id = #{userId}
+            AND u.user_id != #{merchantUserId}
             AND s.status = '1'
             <if test="saleAmountFrom != null and saleAmountFrom != 0">
                 AND s.sale_amount >= #{saleAmountFrom}
@@ -191,35 +197,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     (s.support_buy_type LIKE CONCAT(CONCAT('%',#{dictCode}),'%'))
                 </foreach>
             </if>
-            UNION ALL
-            SELECT
-                s.sale_id,
-                s.sale_no,
-                s.sale_time,
-                s.sale_user_id,
-                s.sale_split_type,
-                s.support_buy_type,
-                s.sale_amount,
-                s.sale_amount_without_commission,
-                s.commission_amount,
-                s.status,
-                s.urgent_sale_flg,
-                u.nick_name,
-                u.phonenumber,
-                u.wechat_pay_remark,
-                u.wechat_pay_img,
-                u.alipay_remark,
-                u.alipay_img,
-                u.unionpay_remark,
-                u.unionpay_account,
-                u.unionpay_card
-            FROM
-                sys_sale_coin s
-            INNER JOIN sys_user u ON s.sale_user_id = u.user_id
-            LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
-            WHERE s.status = '1'
-            AND d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
-            <if test="saleAmountFrom != null and saleAmountFrom != 0">
+        UNION ALL
+        SELECT
+        s.sale_id,
+        s.sale_no,
+        s.sale_time,
+        s.sale_user_id,
+        s.sale_split_type,
+        s.support_buy_type,
+        s.sale_amount,
+        s.sale_amount_without_commission,
+        s.commission_amount,
+        s.remain_amount,
+        s.status,
+        s.urgent_sale_flg,
+        u.nick_name,
+        u.phonenumber,
+        u.wechat_pay_remark,
+        u.wechat_pay_img,
+        u.alipay_remark,
+        u.alipay_img,
+        u.unionpay_remark,
+        u.unionpay_account,
+        u.unionpay_card
+        FROM
+        sys_sale_coin s
+        INNER JOIN sys_user u ON s.sale_user_id = u.user_id
+        LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
+        WHERE s.status = '1'
+        AND (
+            u.user_id = #{merchantUserId}
+        OR
+            d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+        )
+        <if test="saleAmountFrom != null and saleAmountFrom != 0">
                 AND s.sale_amount >= #{saleAmountFrom}
             </if>
             <if test="saleAmountTo != null and saleAmountTo != 0">
@@ -252,6 +263,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.sale_amount,
             s.sale_amount_without_commission,
             s.commission_amount,
+            s.remain_amount,
             s.status,
             s.urgent_sale_flg,
             u.nick_name,
@@ -291,5 +303,94 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="pageNumber != null">
             limit #{pageNumber} , #{pageRowCount}
         </if>
+    </select>
+
+    <select id="selectShoppingList" resultMap="SaleDetailInfoRespVOResult">
+        SELECT
+        MAIN.sale_id,
+        MAIN.sale_no,
+        MAIN.sale_time,
+        MAIN.sale_user_id,
+        MAIN.sale_split_type,
+        MAIN.support_buy_type,
+        MAIN.sale_amount,
+        MAIN.sale_amount_without_commission,
+        MAIN.commission_amount,
+        MAIN.remain_amount,
+        MAIN.status,
+        MAIN.urgent_sale_flg,
+        MAIN.nick_name,
+        MAIN.phonenumber,
+        MAIN.wechat_pay_remark,
+        MAIN.wechat_pay_img,
+        MAIN.alipay_remark,
+        MAIN.alipay_img,
+        MAIN.unionpay_remark,
+        MAIN.unionpay_account,
+        MAIN.unionpay_card
+        FROM(
+            SELECT
+            s.sale_id,
+            s.sale_no,
+            s.sale_time,
+            s.sale_user_id,
+            s.sale_split_type,
+            s.support_buy_type,
+            s.sale_amount,
+            s.sale_amount_without_commission,
+            s.commission_amount,
+            s.remain_amount,
+            s.status,
+            s.urgent_sale_flg,
+            u.nick_name,
+            u.phonenumber,
+            u.wechat_pay_remark,
+            u.wechat_pay_img,
+            u.alipay_remark,
+            u.alipay_img,
+            u.unionpay_remark,
+            u.unionpay_account,
+            u.unionpay_card
+            FROM
+            sys_sale_coin s
+            INNER JOIN sys_user u ON s.sale_user_id = u.user_id
+            LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
+            WHERE
+            (
+                #{userId} = 1
+            or
+                s.sale_user_id = #{userId} = 1
+            or
+                d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+            )
+            <if test="saleUserId != null and saleUserId != 0">
+                AND s.sale_user_id = #{saleUserId}
+            </if>
+            <if test="status != null and status != ''">
+                AND s.status = #{status}
+            </if>
+            <if test="saleNo != null and saleNo != ''">
+                AND s.sale_no like concat('%', #{saleNo}, '%')
+            </if>
+            <if test="saleSplitType != null and saleSplitType != ''">
+                AND s.sale_split_type = #{saleSplitType}
+            </if>
+            <if test="supportBuyType != null and supportBuyType.length >0">
+                AND
+                <foreach collection="supportBuyType" item="dictCode" open="(" separator="OR" close=")">
+                    (s.support_buy_type LIKE CONCAT(CONCAT('%',#{dictCode}),'%'))
+                </foreach>
+            </if>
+            <if test="urgentSaleFlg != null and urgentSaleFlg != ''">
+                AND s.urgent_sale_flg = #{urgentSaleFlg}
+            </if>
+            <if test="startSaleTime != null"><!-- 开始时间检索 -->
+                and date_format(s.sale_time,'%y%m%d') &gt;= date_format(#{startSaleTime},'%y%m%d')
+            </if>
+            <if test="endSaleTime != null"><!-- 结束时间检索 -->
+                and date_format(s.sale_time,'%y%m%d') &lt;= date_format(#{endSaleTime},'%y%m%d')
+            </if>
+        )MAIN
+        order by MAIN.sale_id asc
     </select>
 </mapper>

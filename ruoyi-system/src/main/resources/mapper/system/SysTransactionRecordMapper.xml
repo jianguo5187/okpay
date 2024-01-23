@@ -21,6 +21,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap type="com.ruoyi.common.core.vo.resp.TransactionDetailInfoRespVO" id="TransactionDetailInfoResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="recordTime"    column="record_time"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="buyId"    column="buy_id"    />
+        <result property="saleId"    column="sale_id"    />
+        <result property="rechargeId"    column="recharge_id"    />
+        <result property="recordAmount"    column="record_amount"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
     <sql id="selectSysTransactionRecordVo">
         select record_id, user_id, record_time, record_type, buy_id, sale_id, recharge_id, record_amount, status, create_by, create_time, update_by, update_time, remark from sys_transaction_record
     </sql>
@@ -106,5 +118,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	and recharge_id = #{rechargeId}
         </if>
         limit 1
+    </select>
+
+    <select id="getMyTransactionList" resultMap="TransactionDetailInfoResult">
+        select record_id
+             , user_id
+             , record_time
+             , record_type
+             , buy_id
+             , sale_id
+             , recharge_id
+             , record_amount
+             , status
+        from sys_transaction_record
+        where user_id = #{userId}
+        and status = '0'
+        order by record_id DESC
+        <if test="pageNumber != null">
+            limit #{pageNumber} , #{pageRowCount}
+        </if>
     </select>
 </mapper>

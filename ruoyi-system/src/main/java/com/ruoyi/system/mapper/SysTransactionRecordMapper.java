@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 
 import java.util.List;
 
+import com.ruoyi.common.core.vo.resp.TransactionDetailInfoRespVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -67,8 +68,9 @@ public interface SysTransactionRecordMapper
     /**
      * 查询交易记录
      * 
-     * @param recordId 交易记录主键
      * @return 交易记录
      */
     public SysTransactionRecord selectTransactionRecordByRecordTypeAndId(@Param("recordType") String recordType,@Param("buyId") Long buyId,@Param("saleId") Long saleId,@Param("rechargeId") Long rechargeId);
+
+    public List<TransactionDetailInfoRespVO> getMyTransactionList(@Param("userId") Long userId, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 }

@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.*;
 import com.ruoyi.system.domain.SysNotice;
@@ -11,6 +12,9 @@ public interface ISysAppService {
 
     public UserAmountInfoRespVO getUserAmountInfo(Long userId);
 
+    public int updatePayInfo(Long userId, UpdatePayInfoReqVO vo);
+    public int updateUserInfo(Long userId, UpdateUserInfoReqVO vo);
+
     public Long parentMerchantUserId(Long userId);
 
     public Long addSaleCoin(Long userId, SaleCoinReqVO vo);
@@ -19,7 +23,7 @@ public interface ISysAppService {
 
     public SaleDetailInfoRespVO getSaleDetailInfo(Long saleId);
     
-    public Float updateUserAmount(Long userId, String transactionRecordType, Long recordId, Float amount);
+    public Float updateUserAmount(Long userId, String transactionRecordType, Long recordId, Float amount, String updateBy);
 
     public List<SaleDetailInfoRespVO> getSaleList(Long userId, Long deptId, GetSaleListReqVO vo);
 
@@ -27,7 +31,7 @@ public interface ISysAppService {
 
     public Long addBuyCoin(Long userId, BuyCoinReqVO vo);
 
-    public int updateBuyStatus(UpdateBuyStatusReqVO vo);
+    public int updateBuyStatus(Long userId, UpdateBuyStatusReqVO vo);
 
     public BuyDetailInfoRespVO getBuyDetailInfo(Long buyId);
 
@@ -44,4 +48,6 @@ public interface ISysAppService {
     public List<NoticeDetailInfoRespVO> getUserNoticeList(Long userId, GetNoticeListReqVO vo);
 
     public int updateNoticeReadStatus(Long userId, Long noticeId);
+
+    public List<TransactionDetailInfoRespVO> getMyTransactionList(Long userId, GetMyTransactionListReqVO vo);
 }

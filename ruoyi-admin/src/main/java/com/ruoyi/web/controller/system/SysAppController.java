@@ -4,8 +4,10 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.MerchantUserRespVO;
+import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -13,9 +15,12 @@ import com.ruoyi.common.utils.file.ImageUtils;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysAppService;
+import com.ruoyi.system.service.ISysSaleCoinService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * APP使用接口
@@ -34,6 +39,8 @@ public class SysAppController extends BaseController {
 
     @Autowired
     private ISysAppService sysAppService;
+    @Autowired
+    private ISysSaleCoinService sysSaleCoinService;
 
     /**
      * 修改密码接口
@@ -180,37 +187,7 @@ public class SysAppController extends BaseController {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
 
-        user.setWechatPayRemark(vo.getWechatPayRemark());
-        user.setAlipayRemark(vo.getAlipayRemark());
-        user.setUnionpayRemark(vo.getUnionpayRemark());
-
-        if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
-            String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
-            if(StringUtils.isNotEmpty(wechatPayImgFileName)){
-                user.setWechatPayImg(wechatPayImgFileName);
-            }else{
-                return error("微信收款码图片地址上传失败");
-            }
-        }
-
-        if(StringUtils.isNotEmpty(vo.getAlipayImg())){
-            String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
-            if(StringUtils.isNotEmpty(alipayImgFileName)){
-                user.setAlipayImg(alipayImgFileName);
-            }else{
-                return error("支付宝收款码地址上传失败");
-            }
-        }
-
-        if(StringUtils.isNotEmpty(vo.getUnionpayAccount())){
-            user.setUnionpayAccount(vo.getUnionpayAccount());
-        }
-
-        if(StringUtils.isNotEmpty(vo.getUnionpayCard())){
-            user.setUnionpayCard(vo.getUnionpayCard());
-        }
-
-        int updateRow = userService.updateUser(user);
+        int updateRow = sysAppService.updatePayInfo(user.getUserId(),vo);
         if (updateRow > 0){
             // 更新缓存用户信息
             tokenService.setLoginUser(loginUser);
@@ -228,18 +205,7 @@ public class SysAppController extends BaseController {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
 
-        if(StringUtils.isNotEmpty(vo.getAvatar())){
-            String avatarFileName = ImageUtils.savaBase64ImageFile(vo.getAvatar());
-            if(StringUtils.isNotEmpty(avatarFileName)){
-                user.setAvatar(avatarFileName);
-            }else{
-                return error("头像上传失败");
-            }
-        }
-        user.setRemark(vo.getRemark());
-        user.setNickName(vo.getNickName());
-
-        int updateRow = userService.updateUser(user);
+        int updateRow = sysAppService.updateUserInfo(user.getUserId(),vo);
         if (updateRow > 0){
             // 更新缓存用户信息
             tokenService.setLoginUser(loginUser);
@@ -256,7 +222,8 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
-        Float reaminUserAmount = user.getAmount();
+        UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
+        Float reaminUserAmount = amountInfo.getAmount();
 
         if(reaminUserAmount.compareTo(vo.getSaleAmount()) < 0){
             return error("卖币失败，余额不足，请先充值");
@@ -267,7 +234,7 @@ public class SysAppController extends BaseController {
         if(saleId > 0){
         	
             AjaxResult ajax = AjaxResult.success();
-            Float remainAmount = sysAppService.updateUserAmount(user.getUserId(), "2", saleId, vo.getSaleAmount());
+            Float remainAmount = sysAppService.updateUserAmount(user.getUserId(), "1", saleId, vo.getSaleAmount(),getUsername());
             user.setAmount(remainAmount);
             // 更新缓存用户信息
             tokenService.setLoginUser(loginUser);
@@ -348,20 +315,34 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
-        Float reaminUserAmount = user.getAmount();
-
-        if(reaminUserAmount.compareTo(vo.getBuyAmount()) < 0){
-            return error("买币失败，余额不足，请先充值");
-        }
+//        Float reaminUserAmount = user.getAmount();
+//
+//        if(reaminUserAmount.compareTo(vo.getBuyAmount()) < 0){
+//            return error("买币失败，余额不足，请先充值");
+//        }
         vo.setCreateBy(getUsername());
 
         Long buyId = sysAppService.addBuyCoin(user.getUserId(),vo);
         if(buyId > 0){
             AjaxResult ajax = AjaxResult.success();
+
             ajax.put("buyInfo", sysAppService.getBuyDetailInfo(buyId));
             return ajax;
         }
         return error("新增卖币失败，请联系管理员");
+    }
+
+    /**
+     * 查询交易列表
+     */
+    @PostMapping("/shoppingList")
+    public TableDataInfo shoppingList(@RequestBody ShoppingListReqVO vo)
+    {
+        startPage();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        List<SaleDetailInfoRespVO> list = sysSaleCoinService.selectShoppingList(user.getUserId(), user.getDeptId(), vo);
+        return getDataTable(list);
     }
 
     /**
@@ -370,10 +351,19 @@ public class SysAppController extends BaseController {
     @PostMapping("/updateBuyStatus")
     public AjaxResult updateBuyStatus(@RequestBody UpdateBuyStatusReqVO vo)
     {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
         vo.setUpdateBy(getUsername());
-        int insertRow = sysAppService.updateBuyStatus(vo);
+        int insertRow = sysAppService.updateBuyStatus(user.getUserId(), vo);
         if(insertRow > 0){
             AjaxResult ajax = AjaxResult.success();
+
+            UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
+            user.setAmount(amountInfo.getAmount());
+            // 更新缓存用户信息
+            tokenService.setLoginUser(loginUser);
+
             ajax.put("buyInfo", sysAppService.getBuyDetailInfo(vo.getBuyId()));
             return ajax;
         }
@@ -413,7 +403,8 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
-        Float reaminUserAmount = user.getAmount();
+        UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
+        Float reaminUserAmount = amountInfo.getAmount();
 
         if(reaminUserAmount.compareTo(vo.getRechargeAmount()) < 0){
             return error("充值失败，余额不足，请先充值");
@@ -503,5 +494,18 @@ public class SysAppController extends BaseController {
             return ajax;
         }
         return error("更新站内信已读失败，请联系管理员");
+    }
+
+    /**
+     * 交易记录列表接口
+     */
+    @PostMapping("/getMyTransactionList")
+    public AjaxResult getMyTransactionList(@RequestBody GetMyTransactionListReqVO vo)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        ajax.put("transactionList", sysAppService.getMyTransactionList(user.getUserId(),vo));
+        return ajax;
     }
 }

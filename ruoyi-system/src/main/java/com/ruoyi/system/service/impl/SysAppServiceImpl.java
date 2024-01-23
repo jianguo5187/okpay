@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.core.vo.req.*;
+import com.ruoyi.common.core.vo.resp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,6 @@ import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.vo.req.BuyCoinReqVO;
-import com.ruoyi.common.core.vo.req.GetMyBuyListReqVO;
-import com.ruoyi.common.core.vo.req.GetMyRechargeListReqVO;
-import com.ruoyi.common.core.vo.req.GetMySaleListReqVO;
-import com.ruoyi.common.core.vo.req.GetNoticeListReqVO;
-import com.ruoyi.common.core.vo.req.GetSaleListReqVO;
-import com.ruoyi.common.core.vo.req.RechargeToMerchantReqVO;
-import com.ruoyi.common.core.vo.req.SaleCoinReqVO;
-import com.ruoyi.common.core.vo.req.UpdateBuyStatusReqVO;
-import com.ruoyi.common.core.vo.req.UpdateRechargeStatusReqVO;
-import com.ruoyi.common.core.vo.req.UpdateSaleStatusReqVO;
-import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.NoticeDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.RechargeDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.SaleDetailInfoRespVO;
-import com.ruoyi.common.core.vo.resp.UserAmountInfoRespVO;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
@@ -88,6 +74,61 @@ public class SysAppServiceImpl implements ISysAppService {
     }
 
     @Override
+    public int updatePayInfo(Long userId, UpdatePayInfoReqVO vo) {
+        SysUser user = sysUserService.selectUserById(userId);
+
+        user.setWechatPayRemark(vo.getWechatPayRemark());
+        user.setAlipayRemark(vo.getAlipayRemark());
+        user.setUnionpayRemark(vo.getUnionpayRemark());
+
+        if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
+            String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
+            if(StringUtils.isNotEmpty(wechatPayImgFileName)){
+                user.setWechatPayImg(wechatPayImgFileName);
+            }else{
+                throw new ServiceException("微信收款码图片地址上传失败");
+            }
+        }
+
+        if(StringUtils.isNotEmpty(vo.getAlipayImg())){
+            String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
+            if(StringUtils.isNotEmpty(alipayImgFileName)){
+                user.setAlipayImg(alipayImgFileName);
+            }else{
+                throw new ServiceException("支付宝收款码地址上传失败");
+            }
+        }
+
+        if(StringUtils.isNotEmpty(vo.getUnionpayAccount())){
+            user.setUnionpayAccount(vo.getUnionpayAccount());
+        }
+
+        if(StringUtils.isNotEmpty(vo.getUnionpayCard())){
+            user.setUnionpayCard(vo.getUnionpayCard());
+        }
+
+        return userMapper.updateUser(user);
+    }
+
+    @Override
+    public int updateUserInfo(Long userId, UpdateUserInfoReqVO vo) {
+        SysUser user = sysUserService.selectUserById(userId);
+
+        if(StringUtils.isNotEmpty(vo.getAvatar())){
+            String avatarFileName = ImageUtils.savaBase64ImageFile(vo.getAvatar());
+            if(StringUtils.isNotEmpty(avatarFileName)){
+                user.setAvatar(avatarFileName);
+            }else{
+                throw new ServiceException("头像上传失败");
+            }
+        }
+        user.setRemark(vo.getRemark());
+        user.setNickName(vo.getNickName());
+
+        return userMapper.updateUser(user);
+    }
+
+    @Override
     public Long parentMerchantUserId(Long userId) {
         if(userId != null && userId != 0){
             SysUser user = sysUserService.selectUserById(userId);
@@ -142,7 +183,7 @@ public class SysAppServiceImpl implements ISysAppService {
         sysSaleCoin.setSaleAmount(vo.getSaleAmount());
         sysSaleCoin.setSaleAmountWithoutCommission(saleAmountWithoutCommission);
         sysSaleCoin.setCommissionAmount(commissionAmount);
-        sysSaleCoin.setRemainAmount(vo.getSaleAmount());
+        sysSaleCoin.setRemainAmount(saleAmountWithoutCommission);
         sysSaleCoin.setStatus("0"); //生成订单
         sysSaleCoin.setUrgentSaleFlg(vo.getUrgentSaleFlg());
         sysSaleCoin.setCreateBy(vo.getCreateBy());
@@ -153,24 +194,26 @@ public class SysAppServiceImpl implements ISysAppService {
     }
     
     @Override
-    public Float updateUserAmount(Long userId, String transactionRecordType, Long recordId, Float amount) {
+    public Float updateUserAmount(Long userId, String transactionRecordType, Long recordId, Float amount, String updateBy) {
         
         //临时交易记录生成
         SysTransactionRecord transactionRecord = new SysTransactionRecord();
-        //卖币生成
-        if(StringUtils.equals(transactionRecordType, "1")) {
-        	
-        	transactionRecord.setUserId(userId);
-        	transactionRecord.setSaleId(recordId);
-        	transactionRecord.setRecordType("2"); //卖币
-        	transactionRecord.setRecordAmount(amount);
-        	transactionRecord.setStatus("9"); //临时记录
-        }
-        int transactionRecordRow = sysTransactionRecordMapper.insertSysTransactionRecord(transactionRecord);
-        
         //更新用户余额
         SysUser user = sysUserService.selectUserById(userId);
-        Float remainAmount = user.getAmount() - amount;
+        Float remainAmount = 0f;
+        if(StringUtils.equals(transactionRecordType, "1")) {
+            //卖币生成
+        	transactionRecord.setUserId(userId);
+        	transactionRecord.setSaleId(recordId);
+        	transactionRecord.setRecordType("1"); //卖币
+        	transactionRecord.setRecordAmount(amount);
+        	transactionRecord.setStatus("9"); //临时记录
+
+            remainAmount = user.getAmount() - amount;
+        }
+        transactionRecord.setCreateBy(updateBy);
+        int transactionRecordRow = sysTransactionRecordMapper.insertSysTransactionRecord(transactionRecord);
+
         userMapper.updateUserAmount(userId, remainAmount);
         return remainAmount;
     }
@@ -194,7 +237,7 @@ public class SysAppServiceImpl implements ISysAppService {
         // 0生成订单⇒1交易中
         if(StringUtils.equals(sysSaleCoin.getStatus(), "0") && StringUtils.equals(vo.getStatus(), "1")) {
         	//
-        	SysTransactionRecord transactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("2", null, vo.getSaleId(), null);
+        	SysTransactionRecord transactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("1", null, vo.getSaleId(), null);
         	if(StringUtils.isNull(transactionRecord)) {
                 throw new ServiceException("交易记录信息不存在，不可管理");
         	}
@@ -209,6 +252,7 @@ public class SysAppServiceImpl implements ISysAppService {
             commissiontransactionRecord.setRecordType("5"); //手续费
             commissiontransactionRecord.setRecordAmount(sysSaleCoin.getCommissionAmount());
             commissiontransactionRecord.setStatus("0");
+            commissiontransactionRecord.setCreateBy(vo.getUpdateBy());
             sysTransactionRecordMapper.insertSysTransactionRecord(commissiontransactionRecord);
             
         }else if(StringUtils.equals(vo.getStatus(), "9")) {
@@ -219,7 +263,7 @@ public class SysAppServiceImpl implements ISysAppService {
         	}
         	
         	//交易记录取消
-        	SysTransactionRecord transactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("2", null, vo.getSaleId(), null);
+        	SysTransactionRecord transactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("1", null, vo.getSaleId(), null);
         	//手续费交易记录取消
         	SysTransactionRecord commissiontransactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("9", null, vo.getSaleId(), null);
         	if(StringUtils.isNull(transactionRecord) || StringUtils.isNull(commissiontransactionRecord)) {
@@ -261,6 +305,9 @@ public class SysAppServiceImpl implements ISysAppService {
         respVO.setSaleSplitType(saleCoin.getSaleSplitType());
         respVO.setSupportBuyType(saleCoin.getSupportBuyType());
         respVO.setSaleAmount(saleCoin.getSaleAmount());
+        respVO.setSaleAmountWithoutCommission(saleCoin.getSaleAmountWithoutCommission());
+        respVO.setRemainAmount(saleCoin.getRemainAmount());
+        respVO.setCommissionAmount(saleCoin.getCommissionAmount());
         respVO.setStatus(saleCoin.getStatus());
         respVO.setUrgentSaleFlg(saleCoin.getUrgentSaleFlg());
         respVO.setSaleUserId(saleUser.getUserId());
@@ -313,8 +360,9 @@ public class SysAppServiceImpl implements ISysAppService {
         if(vo.getSupportBuyType() != null){
             supportBuyArg = vo.getSupportBuyType().split(",");
         }
+        Long merchantUserId  = parentMerchantUserId(userId);
 
-        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,merchantUserId, deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
         for(SaleDetailInfoRespVO respVO : saleList){
 
             if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
@@ -361,7 +409,7 @@ public class SysAppServiceImpl implements ISysAppService {
         }
         // 订单不可拆分
         if(StringUtils.equals(sysSaleCoin.getSaleSplitType(),"0")
-            && sysSaleCoin.getSaleAmount().compareTo(vo.getBuyAmount()) != 0){
+            && sysSaleCoin.getSaleAmountWithoutCommission().compareTo(vo.getBuyAmount()) != 0){
             throw new ServiceException("不可拆分购买，请全额购买");
         }
         //判断支付方式
@@ -380,26 +428,69 @@ public class SysAppServiceImpl implements ISysAppService {
         sysBuyCoin.setBuyType(vo.getBuyType());
         sysBuyCoin.setBuyAmount(vo.getBuyAmount());
         sysBuyCoin.setStatus("0");
+        sysBuyCoin.setCreateBy(vo.getCreateBy());
 
         Float remainAmount = sysSaleCoin.getRemainAmount() - vo.getBuyAmount();
         if(remainAmount == 0){
-            sysSaleCoin.setStatus("9");
+            sysSaleCoin.setStatus("2");
         }
         sysSaleCoin.setRemainAmount(remainAmount);
         sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 
         int insertRow = sysBuyCoinMapper.insertSysBuyCoin(sysBuyCoin);
 
-        //todo 扣除用户余额
         return sysBuyCoin.getBuyId();
     }
 
     @Override
-    public int updateBuyStatus(UpdateBuyStatusReqVO vo) {
+    public int updateBuyStatus(Long userId, UpdateBuyStatusReqVO vo) {
 
         SysBuyCoin sysBuyCoin = sysBuyCoinMapper.selectSysBuyCoinByBuyId(vo.getBuyId());
         if(StringUtils.isNull(sysBuyCoin)){
             throw new ServiceException("买币信息不存在，请联系管理员");
+        }
+
+        if(StringUtils.equals(vo.getStatus(),"9")){
+            //取消
+            if(StringUtils.equals(sysBuyCoin.getStatus(),"2")){
+                throw new ServiceException("买币完成，不可取消，请联系管理员");
+            }
+
+            //卖单取消
+            SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
+            sysSaleCoin.setStatus("1");
+            sysSaleCoin.setRemainAmount(sysSaleCoin.getRemainAmount() + sysBuyCoin.getBuyAmount());
+            sysSaleCoin.setUpdateBy(vo.getUpdateBy());
+            sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
+
+//            //买币记录取消
+//            SysTransactionRecord buyRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("0", sysBuyCoin.getBuyId(), null, null);
+//            if(StringUtils.isNull(buyRecord)) {
+//                throw new ServiceException("交易记录信息不存在，不可取消");
+//            }
+//            buyRecord.setStatus("9");
+//            buyRecord.setUpdateBy(vo.getUpdateBy());
+//            sysTransactionRecordMapper.updateSysTransactionRecord(buyRecord);
+
+        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"0") && StringUtils.equals(vo.getStatus(),"1")){
+            //0进行中 ⇒ 1买家已付款
+        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")){
+            //1买家已付款 ⇒ 2卖家已确认(买币完成)
+            SysTransactionRecord buyRecord = new SysTransactionRecord();
+
+            //买币交易记录
+            buyRecord.setUserId(sysBuyCoin.getBuyUserId());
+            buyRecord.setBuyId(sysBuyCoin.getBuyId());
+            buyRecord.setRecordType("0"); //买币
+            buyRecord.setRecordAmount(sysBuyCoin.getBuyAmount());
+            buyRecord.setStatus("0");
+            buyRecord.setCreateBy(vo.getUpdateBy());
+            sysTransactionRecordMapper.insertSysTransactionRecord(buyRecord);
+
+            //更新买家用户余额
+            SysUser user = sysUserService.selectUserById(sysBuyCoin.getBuyUserId());
+            Float remainAmount = user.getAmount() + sysBuyCoin.getBuyAmount();
+            userMapper.updateUserAmount(user.getUserId(), remainAmount);
         }
         sysBuyCoin.setStatus(vo.getStatus());
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
@@ -465,6 +556,7 @@ public class SysAppServiceImpl implements ISysAppService {
         recharge.setRechargeAmount(vo.getRechargeAmount());
         recharge.setStatus("0");
         recharge.setRechargeType(vo.getRechargeType());
+        recharge.setCreateBy(vo.getCreateBy());
         int insertRow = sysRechargeMapper.insertSysRecharge(recharge);
         //TODO 记录表等信息
         return recharge.getRechargeId();
@@ -548,5 +640,16 @@ public class SysAppServiceImpl implements ISysAppService {
     public int updateNoticeReadStatus(Long userId, Long noticeId) {
         noticeMapper.deleteNoticeUser(noticeId,userId);
         return noticeMapper.inserteNoticeUser(noticeId,userId);
+    }
+
+    @Override
+    public List<TransactionDetailInfoRespVO> getMyTransactionList(Long userId, GetMyTransactionListReqVO vo) {
+        if(StringUtils.isNull(vo.getPageNumber())){
+            vo.setPageNumber(1);
+        }
+        if(StringUtils.isNull(vo.getPageRowCount())){
+            vo.setPageRowCount(20);
+        }
+        return sysTransactionRecordMapper.getMyTransactionList(userId,(vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
     }
 }

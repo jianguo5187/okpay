@@ -23,14 +23,23 @@ public class SaleDetailInfoRespVO {
     /** 卖币拆分类型（0不拆分 1拆分） */
     private String saleSplitType;
 
+    /** 支持支付类型（0不拆分 1拆分） */
+    private String[] supportBuyTypeArg;
+
     /** 支持支付类型 */
     private String supportBuyType;
+
+    /** 支持支付类型名称 */
+    private String supportBuyTypeName;
 
     /** 卖币金额 */
     private Float saleAmount;
 
     /** 扣除手续费可交易金额 */
     private Float saleAmountWithoutCommission;
+
+    /** 可交易金额 */
+    private Float remainAmount;
 
     /** 手续费 */
     private Float commissionAmount;
@@ -110,12 +119,28 @@ public class SaleDetailInfoRespVO {
         this.saleSplitType = saleSplitType;
     }
 
+    public String[] getSupportBuyTypeArg() {
+        return supportBuyTypeArg;
+    }
+
+    public void setSupportBuyTypeArg(String[] supportBuyTypeArg) {
+        this.supportBuyTypeArg = supportBuyTypeArg;
+    }
+
     public String getSupportBuyType() {
         return supportBuyType;
     }
 
     public void setSupportBuyType(String supportBuyType) {
         this.supportBuyType = supportBuyType;
+    }
+
+    public String getSupportBuyTypeName() {
+        return supportBuyTypeName;
+    }
+
+    public void setSupportBuyTypeName(String supportBuyTypeName) {
+        this.supportBuyTypeName = supportBuyTypeName;
     }
 
     public Float getSaleAmount() {
@@ -131,7 +156,15 @@ public class SaleDetailInfoRespVO {
         this.saleAmountWithoutCommission = saleAmountWithoutCommission;
     }
 
-    public Float getSaleAmountWithoutCommission() 
+    public Float getRemainAmount() {
+        return remainAmount;
+    }
+
+    public void setRemainAmount(Float remainAmount) {
+        this.remainAmount = remainAmount;
+    }
+
+    public Float getSaleAmountWithoutCommission()
     {
         return saleAmountWithoutCommission;
     }

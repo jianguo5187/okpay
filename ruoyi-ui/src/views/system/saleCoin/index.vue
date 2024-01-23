@@ -1,45 +1,104 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="卖币时间" prop="saleTime">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
+      <el-form-item label="卖币开始日" prop="startSaleTime">
         <el-date-picker clearable
-          v-model="queryParams.saleTime"
+          v-model="queryParams.startSaleTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择卖币时间">
+          placeholder="请选择卖币开始日">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="卖币用户ID" prop="saleUserId">
+      <el-form-item label="卖币结束日" prop="endSaleTime">
+        <el-date-picker clearable
+                        v-model="queryParams.endSaleTime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择卖币结束日">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="卖币No" prop="saleNo">
         <el-input
-          v-model="queryParams.saleUserId"
-          placeholder="请输入卖币用户ID"
+          v-model="queryParams.saleNo"
+          placeholder="请输入卖币No"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="卖币金额" prop="saleAmount">
-        <el-input
-          v-model="queryParams.saleAmount"
-          placeholder="请输入卖币金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="卖币用户" prop="saleUserId">
+        <el-select v-model="queryParams.saleUserId" placeholder="请选择卖币用户">
+          <el-option
+            clearable
+            v-for="item in userListOptions"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId"
+          ></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="订单剩余金额" prop="remainAmount">
-        <el-input
-          v-model="queryParams.remainAmount"
-          placeholder="请输入订单剩余金额"
+
+      <el-form-item label="是否可拆分" prop="saleSplitType">
+        <el-select
+          v-model="queryParams.saleSplitType"
+          placeholder="拆分类型"
           clearable
-          @keyup.enter.native="handleQuery"
-        />
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.sale_split_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
+
+      <el-form-item label="支持支付方式" prop="supportBuyType">
+        <el-select
+          v-model="queryParams.supportBuyType"
+          placeholder="支持支付方式"
+          clearable
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.pay_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="加急销售" prop="urgentSaleFlg">
-        <el-input
+        <el-select
           v-model="queryParams.urgentSaleFlg"
-          placeholder="请输入加急销售"
+          placeholder="加急销售"
           clearable
-          @keyup.enter.native="handleQuery"
-        />
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.urgent_sale_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="状态" prop="urgentSaleFlg">
+        <el-select
+          v-model="queryParams.status"
+          placeholder="状态"
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.sale_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -55,81 +114,93 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:saleCoin:add']"
-        >新增</el-button>
+        >卖币</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:saleCoin:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:saleCoin:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:saleCoin:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:saleCoin:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['system:saleCoin:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['system:saleCoin:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="saleCoinList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="卖币ID" align="center" prop="saleId" />
+<!--      <el-table-column label="卖币ID" align="center" prop="saleId" />-->
       <el-table-column label="卖币No" align="center" prop="saleNo" />
       <el-table-column label="卖币时间" align="center" prop="saleTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.saleTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.saleTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="卖币用户ID" align="center" prop="saleUserId" />
-      <el-table-column label="卖币拆分类型" align="center" prop="saleSplitType" />
-      <el-table-column label="支持支付类型" align="center" prop="supportBuyType" />
-      <el-table-column label="卖币金额" align="center" prop="saleAmount" />
-      <el-table-column label="订单剩余金额" align="center" prop="remainAmount" />
-      <el-table-column label="卖币状态" align="center" prop="status" />
-      <el-table-column label="加急销售" align="center" prop="urgentSaleFlg" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="卖币用户" align="center" prop="saleUserNickName" />
+      <el-table-column label="拆分类型" align="center" prop="saleSplitType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sale_split_type" :value="scope.row.saleSplitType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="支持支付类型" align="center" prop="supportBuyTypeName" />
+<!--      <el-table-column label="卖币金额" align="center" prop="saleAmount" />-->
+      <el-table-column label="可购买金额" align="center" prop="remainAmount" />
+      <el-table-column label="状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sale_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="加急销售" align="center" prop="urgentSaleFlg">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.urgent_sale_status" :value="scope.row.urgentSaleFlg"/>
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="卖币状态" align="center" prop="status"/>-->
+<!--      <el-table-column label="备注" align="center" prop="remark" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            v-if="scope.row.saleUserId != loginUserId"
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:saleCoin:edit']"
-          >修改</el-button>
+            @click="handleBuy(scope.row)"
+          >购买</el-button>
           <el-button
+            v-if="scope.row.status != '9'"
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:saleCoin:remove']"
-          >删除</el-button>
+            icon="el-icon-s-order"
+            @click="handleBuy(scope.row)"
+          >购买明细</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -139,37 +210,182 @@
     />
 
     <!-- 添加或修改卖币对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="卖币No" prop="saleNo">
-          <el-input v-model="form.saleNo" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="卖币时间" prop="saleTime">
-          <el-date-picker clearable
-            v-model="form.saleTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择卖币时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="卖币用户ID" prop="saleUserId">
-          <el-input v-model="form.saleUserId" placeholder="请输入卖币用户ID" />
-        </el-form-item>
-        <el-form-item label="卖币金额" prop="saleAmount">
-          <el-input v-model="form.saleAmount" placeholder="请输入卖币金额" />
-        </el-form-item>
-        <el-form-item label="订单剩余金额" prop="remainAmount">
-          <el-input v-model="form.remainAmount" placeholder="请输入订单剩余金额" />
-        </el-form-item>
-        <el-form-item label="加急销售" prop="urgentSaleFlg">
-          <el-input v-model="form.urgentSaleFlg" placeholder="请输入加急销售" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="卖币No" prop="saleNo" >
+              <el-input v-model="form.saleNo" placeholder="请输入内容" :readOnly="true" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="卖币时间" prop="saleTime">
+              <el-date-picker clearable
+                              v-model="form.saleTime"
+                              type="date"
+                              value-format="yyyy-MM-dd"
+                              placeholder="请选择卖币时间"
+                              :readOnly="true" disabled >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="卖币用户" prop="saleUserNickName">
+              <el-input v-model="form.saleUserNickName" :readOnly="true" disabled/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="可交易金额" prop="remainAmount">
+              <el-input-number v-model="form.remainAmount" :readOnly="true" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="支持支付类型">
+              <el-select v-model="form.supportBuyTypeArg" multiple placeholder="请选择角色" :readOnly="true" :disabled="true">
+                <el-option
+                  v-for="item in buyTypeOptions"
+                  :key="item.dictValue"
+                  :label="item.dictLabel"
+                  :value="item.dictValue"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12" v-if="supportWechatPayFlg">
+            <el-form-item label="微信收款码" prop="wechatPayImg">
+              <imageUpload v-model="form.wechatPayImg" :imgUrl="form.wechatPayImg" :limit="1" :readOnly="true" :disabled="true"></imageUpload>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="supportAlipayFlg">
+            <el-form-item label="支付宝收款码" prop="alipayImg">
+              <imageUpload v-model="form.alipayImg" :imgUrl="form.alipayImg" :limit="1" :readOnly="true" :disabled="true"></imageUpload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-if="supportUnionPayFlg">
+          <el-col :span="12">
+            <el-form-item label="银联收款户名" prop="unionpayAccount">
+              <el-input v-model="form.unionpayAccount" placeholder="请输入银联收款户名" maxlength="30" :readOnly="true" :disabled="true"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="银联收款卡号" prop="unionpayCard">
+              <el-input v-model="form.unionpayCard" placeholder="请输入银联收款卡号" maxlength="20" :readOnly="true" :disabled="true"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="是否可拆分">
+              <el-select v-model="form.saleSplitType"  :readOnly="true" disabled>
+                <el-option
+                  v-for="dict in dict.type.sale_split_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="加急销售">
+              <el-select v-model="form.urgentSaleFlg"  :readOnly="true" disabled>
+                <el-option
+                  v-for="dict in dict.type.urgent_sale_status"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="购买金额" prop="buyAmount">
+              <el-input-number v-model="form.buyAmount" controls-position="right" :min="0" :readOnly="allBuyFlg==true" :disabled="allBuyFlg==true"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="支付方式" prop="buyType">
+              <el-select v-model="form.buyType" placeholder="支付方式">
+                <el-option
+                  v-for="item in buyTypeOptions"
+                  :key="item.dictValue"
+                  :label="item.dictLabel"
+                  :value="item.dictValue"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 添加卖币对话框 -->
+    <el-dialog :title="title" :visible.sync="addSaleOpen" width="1200px" append-to-body>
+      <el-form ref="addForm" :model="addForm" :rules="addRules" label-width="180px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="支持支付类型" prop="supportBuyTypeArg">
+              <el-select v-model="addForm.supportBuyTypeArg" multiple placeholder="请选择支付类型">
+                <el-option
+                  v-for="item in buyTypeOptions"
+                  :key="item.dictValue"
+                  :label="item.dictLabel"
+                  :value="item.dictValue"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="是否可拆分" prop="saleSplitType">
+              <el-select v-model="addForm.saleSplitType">
+                <el-option
+                  v-for="dict in dict.type.sale_split_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="加急销售" prop="urgentSaleFlg">
+              <el-select v-model="addForm.urgentSaleFlg">
+                <el-option
+                  v-for="dict in dict.type.urgent_sale_status"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="售出金额" prop="saleAmount">
+              <el-input-number v-model="addForm.saleAmount" controls-position="right" :min="0"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitAddSaleForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -177,14 +393,26 @@
 </template>
 
 <script>
-import { listSaleCoin, getSaleCoin, delSaleCoin, addSaleCoin, updateSaleCoin } from "@/api/system/saleCoin";
+import {
+  listShopping,
+  getShoppingDetail,
+  buyShoppingCoin,
+  saleShoppingCoin,
+  selectSaleUser
+} from "@/api/system/saleCoin";
+import Treeselect from "@riophae/vue-treeselect";
+import {delUser} from "@/api/system/user";
 
 export default {
   name: "SaleCoin",
+  components: {Treeselect},
+  dicts: ['sale_split_type','pay_type','urgent_sale_status','sale_status'],
   data() {
     return {
       // 遮罩层
       loading: true,
+      // 登录用户ID
+      loginUserId: this.$store.state.user.id,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -201,46 +429,91 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示新增弹出层
+      addSaleOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        startSaleTime: null,
+        endSaleTime: null,
         saleNo: null,
-        saleTime: null,
         saleUserId: null,
         saleSplitType: null,
+        supportBuyTypeName: null,
         supportBuyType: null,
-        saleAmount: null,
-        remainAmount: null,
-        status: null,
         urgentSaleFlg: null,
+        status: '1',
       },
       // 表单参数
       form: {},
+      // 新增表单参数
+      addForm: {},
+      // 角色选项
+      buyTypeOptions: [],
+      userListOptions:[],
+      allBuyFlg:false,
+      supportWechatPayFlg:false,
+      supportAlipayFlg:false,
+      supportUnionPayFlg:false,
       // 表单校验
       rules: {
-        saleUserId: [
-          { required: true, message: "卖币用户ID不能为空", trigger: "blur" }
+        buyAmount: [
+          { required: true, message: "购买金额不能为空", trigger: "blur" }
+        ],
+        buyType: [
+          { required: true, message: "支付方式不能为空", trigger: "blur" }
+        ],
+      },
+      // 新增表单校验
+      addRules: {
+        saleAmount: [
+          { required: true, message: "卖币金额不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callBack) => {
+              if(value > 0){
+                callBack()
+              }else{
+                callBack('金额必须大于0')
+              }
+            }
+          }
+        ],
+        saleSplitType: [
+          { required: true, message: "拆分类型不能为空", trigger: "blur" }
+        ],
+        urgentSaleFlg: [
+          { required: true, message: "紧急状态不能为空", trigger: "blur" }
+        ],
+        supportBuyTypeArg: [
+          { required: true, message: "支持的支付方式不能为空", trigger: "blur" }
         ],
       }
     };
   },
   created() {
     this.getList();
+    this.getUserList();
   },
   methods: {
     /** 查询卖币列表 */
     getList() {
       this.loading = true;
-      listSaleCoin(this.queryParams).then(response => {
+      listShopping(this.queryParams).then(response => {
         this.saleCoinList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
+    getUserList(){
+      selectSaleUser().then(response => {
+        this.userListOptions = response.rows;;
+      });
+    },
     // 取消按钮
     cancel() {
       this.open = false;
+      this.addSaleOpen = false;
       this.reset();
     },
     // 表单重置
@@ -249,20 +522,30 @@ export default {
         saleId: null,
         saleNo: null,
         saleTime: null,
-        saleUserId: null,
+        saleUserNickName: null,
+        remainAmount: null,
         saleSplitType: null,
         supportBuyType: null,
+        supportBuyTypeArg: [],
+        wechatPayImg: null,
+        alipayImg: null,
+        unionpayAccount: null,
+        unionpayCard: null,
         saleAmount: null,
-        remainAmount: null,
-        status: null,
         urgentSaleFlg: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null,
-        remark: null
+        buyAmount: 0,
+        buyType: null,
       };
+      this.addForm = {
+        saleAmount: null,
+        saleSplitType: '0',
+        supportBuyType: null,
+        supportBuyTypeArg: [],
+        urgentSaleFlg: '0',
+      };
+
       this.resetForm("form");
+      this.resetForm("addForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -283,17 +566,46 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
-      this.title = "添加卖币";
+      getShoppingDetail(0).then(response => {
+        this.addSaleOpen = true;
+        this.title = "添加卖币";
+        this.buyTypeOptions = response.payTypes;
+      });
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
+    /** 购买按钮操作 */
+    handleBuy(row) {
       this.reset();
       const saleId = row.saleId || this.ids
-      getSaleCoin(saleId).then(response => {
+      getShoppingDetail(saleId).then(response => {
         this.form = response.data;
+        this.buyTypeOptions = response.payTypes;
+        // if(this.form.saleUserId === this.$store.state.user.id){
+        console.log("supportBuyType   " + this.form.supportBuyType);
+        if(this.form.supportBuyType.indexOf("0") != -1){
+          this.supportWechatPayFlg = true;
+        }else{
+          this.supportWechatPayFlg = false;
+        }
+        if(this.form.supportBuyType.indexOf("1") != -1){
+          this.supportAlipayFlg = true;
+        }else{
+          this.supportAlipayFlg = false;
+        }
+        if(this.form.supportBuyType.indexOf("2") != -1){
+          this.supportUnionPayFlg = true;
+        }else{
+          this.supportUnionPayFlg = false;
+        }
+
+        if(this.form.saleSplitType === "0"){
+          this.form.buyAmount = this.form.remainAmount;
+          this.allBuyFlg = true;
+        }else{
+          this.form.buyAmount = 0.01;
+          this.allBuyFlg = false;
+        }
         this.open = true;
-        this.title = "修改卖币";
+        this.title = "购买";
       });
     },
     /** 提交按钮 */
@@ -301,36 +613,33 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.saleId != null) {
-            updateSaleCoin(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+            // buyShoppingCoin({"saleId":this.form.saleId,"buyAmount":this.form.buyAmount,"buyType":this.form.buyType}).then(response => {
+            //   this.$modal.msgSuccess("购买成功");
+            //   this.open = false;
+            //   this.getList();
+            // });
+
+            this.$modal.confirm('确认购买，并完成打款?').then(function() {
+              return buyShoppingCoin({"saleId":this.form.saleId,"buyAmount":this.form.buyAmount,"buyType":this.form.buyType});
+            }).then(() => {
+              this.$modal.msgSuccess("购买成功");
               this.open = false;
               this.getList();
-            });
-          } else {
-            addSaleCoin(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
+            }).catch(() => {});
           }
         }
       });
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const saleIds = row.saleId || this.ids;
-      this.$modal.confirm('是否确认删除卖币编号为"' + saleIds + '"的数据项？').then(function() {
-        return delSaleCoin(saleIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('system/saleCoin/export', {
-        ...this.queryParams
-      }, `saleCoin_${new Date().getTime()}.xlsx`)
+    submitAddSaleForm(){
+      this.$refs["addForm"].validate(valid => {
+        if (valid) {
+          saleShoppingCoin(this.addForm).then(response => {
+            this.$modal.msgSuccess("卖币成功");
+            this.addSaleOpen = false;
+            this.getList();
+          });
+        }
+      });
     }
   }
 };

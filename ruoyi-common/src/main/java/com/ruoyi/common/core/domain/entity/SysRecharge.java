@@ -34,8 +34,8 @@ public class SysRecharge extends BaseEntity
     private Float rechargeAmount;
 
     /** 充值时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "充值时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "充值时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date rechargeTime;
 
     /** 充值方式（0支付宝 1微信 2银联） */

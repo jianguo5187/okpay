@@ -27,8 +27,8 @@ public class SysSaleCoin extends BaseEntity
     private String saleNo;
 
     /** 卖币时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "卖币时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "卖币时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date saleTime;
 
     /** 卖币用户ID */
