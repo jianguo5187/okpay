@@ -86,7 +86,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="状态" prop="urgentSaleFlg">
+      <el-form-item label="状态" prop="status">
         <el-select
           v-model="queryParams.status"
           placeholder="状态"
@@ -618,14 +618,16 @@ export default {
             //   this.open = false;
             //   this.getList();
             // });
-
+            var data = {"saleId":this.form.saleId,"buyAmount":this.form.buyAmount,"buyType":this.form.buyType};
             this.$modal.confirm('确认购买，并完成打款?').then(function() {
-              return buyShoppingCoin({"saleId":this.form.saleId,"buyAmount":this.form.buyAmount,"buyType":this.form.buyType});
+              return buyShoppingCoin(data);
             }).then(() => {
               this.$modal.msgSuccess("购买成功");
               this.open = false;
               this.getList();
-            }).catch(() => {});
+            }).catch((e) => {
+              console.log(e);
+            });
           }
         }
       });

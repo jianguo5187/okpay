@@ -111,6 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSysSaleCoin" parameterType="SysSaleCoin">
         update sys_sale_coin
         <set>
+            <if test="remainAmount != null">remain_amount = #{remainAmount},</if>
             <if test="status != null">status = #{status},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -359,7 +360,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             (
                 #{userId} = 1
             or
-                s.sale_user_id = #{userId} = 1
+                s.sale_user_id = #{userId}
             or
                 d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
             )

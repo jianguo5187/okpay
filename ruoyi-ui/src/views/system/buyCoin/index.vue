@@ -1,45 +1,72 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="卖币ID" prop="saleId">
-        <el-input
-          v-model="queryParams.saleId"
-          placeholder="请输入卖币ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="卖币用户ID" prop="saleUserId">
-        <el-input
-          v-model="queryParams.saleUserId"
-          placeholder="请输入卖币用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="买币用户ID" prop="buyUserId">
-        <el-input
-          v-model="queryParams.buyUserId"
-          placeholder="请输入买币用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="买币时间" prop="buyTime">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
+      <el-form-item label="买币开始日" prop="startBuyTime">
         <el-date-picker clearable
-          v-model="queryParams.buyTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择买币时间">
+                        v-model="queryParams.startBuyTime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择买币开始日">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="买币金额" prop="buyAmount">
+      <el-form-item label="买币结束日" prop="endBuyTime">
+        <el-date-picker clearable
+                        v-model="queryParams.endBuyTime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择买币结束日">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="卖币No" prop="saleNo">
         <el-input
-          v-model="queryParams.buyAmount"
-          placeholder="请输入买币金额"
+          v-model="queryParams.saleNo"
+          placeholder="请输入卖币No"
           clearable
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+
+      <el-form-item label="买币用户" prop="buyUserId">
+        <el-select v-model="queryParams.buyUserId" placeholder="请选择买币用户">
+          <el-option
+            clearable
+            v-for="item in userListOptions"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="支付方式" prop="buyType">
+        <el-select
+          v-model="queryParams.buyType"
+          placeholder="支付方式"
+          clearable
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.pay_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="状态" prop="urgentSaleFlg">
+        <el-select
+          v-model="queryParams.status"
+          placeholder="状态"
+          style="width: 240px"
+        >
+          <el-option
+            v-for="dict in dict.type.buy_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -48,86 +75,100 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:buyCoin:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:buyCoin:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:buyCoin:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:buyCoin:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['system:buyCoin:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:buyCoin:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['system:buyCoin:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['system:buyCoin:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="buyCoinList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="买币ID" align="center" prop="buyId" />
-      <el-table-column label="卖币ID" align="center" prop="saleId" />
-      <el-table-column label="卖币用户ID" align="center" prop="saleUserId" />
-      <el-table-column label="买币用户ID" align="center" prop="buyUserId" />
+<!--      <el-table-column label="买币ID" align="center" prop="buyId" />-->
+<!--      <el-table-column label="卖币ID" align="center" prop="saleId" />-->
+      <el-table-column label="卖币No" align="center" prop="saleNo" />
+      <el-table-column label="卖币用户" align="center" prop="saleUserNickName" />
+      <el-table-column label="买币用户" align="center" prop="buyUserNickName" />
       <el-table-column label="买币时间" align="center" prop="buyTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.buyTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.buyTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付方式" align="center" prop="buyType" />
+      <el-table-column label="支付方式" align="center" prop="buyType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.pay_type" :value="scope.row.buyType"/>
+        </template>
+      </el-table-column>
       <el-table-column label="买币金额" align="center" prop="buyAmount" />
-      <el-table-column label="买币状态" align="center" prop="status" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="买币状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.buy_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--          >修改</el-button>-->
           <el-button
+            v-if="scope.row.buyUserId != loginUserId && scope.row.status == '1'"
             size="mini"
             type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:buyCoin:edit']"
-          >修改</el-button>
+            icon="el-icon-finished"
+            @click="handleConfirmPayment(scope.row,'2')"
+          >确认收款</el-button>
           <el-button
+            v-if="scope.row.status == '0'"
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:buyCoin:remove']"
-          >删除</el-button>
+            icon="el-icon-finished"
+            @click="handleConfirmPayment(scope.row,'9')"
+          >取消买币</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -172,14 +213,25 @@
 </template>
 
 <script>
-import { listBuyCoin, getBuyCoin, delBuyCoin, addBuyCoin, updateBuyCoin } from "@/api/system/buyCoin";
+import {
+  listBuyCoin,
+  getBuyCoin,
+  delBuyCoin,
+  addBuyCoin,
+  updateBuyCoin,
+  listShoppingBuyCoin, confirmPayment
+} from "@/api/system/buyCoin";
+import {selectSaleUser} from "@/api/system/saleCoin";
 
 export default {
   name: "BuyCoin",
+  dicts: ['sale_split_type','pay_type','urgent_sale_status','buy_status'],
   data() {
     return {
       // 遮罩层
       loading: true,
+      // 登录用户ID
+      loginUserId: this.$store.state.user.id,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -200,14 +252,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        saleId: null,
-        saleUserId: null,
+        startBuyTime: null,
+        endBuyTime: null,
+        saleNo: null,
         buyUserId: null,
-        buyTime: null,
         buyType: null,
-        buyAmount: null,
-        status: null,
+        status: '1',
       },
+      userListOptions:[],
       // 表单参数
       form: {},
       // 表单校验
@@ -226,15 +278,21 @@ export default {
   },
   created() {
     this.getList();
+    this.getUserList();
   },
   methods: {
     /** 查询买币列表 */
     getList() {
       this.loading = true;
-      listBuyCoin(this.queryParams).then(response => {
+      listShoppingBuyCoin(this.queryParams).then(response => {
         this.buyCoinList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getUserList(){
+      selectSaleUser().then(response => {
+        this.userListOptions = response.rows;;
       });
     },
     // 取消按钮
@@ -313,15 +371,16 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const buyIds = row.buyId || this.ids;
-      this.$modal.confirm('是否确认删除买币编号为"' + buyIds + '"的数据项？').then(function() {
-        return delBuyCoin(buyIds);
+    /** 确认收款按钮操作 */
+    handleConfirmPayment(row,status) {
+      this.$modal.confirm('是否确认已经打款').then(function() {
+        return confirmPayment({"buyId":row.buyId,"status":status});
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+        this.$modal.msgSuccess("确认打款完成");
+      }).catch(() => {
+        console.log(error);
+      });
     },
     /** 导出按钮操作 */
     handleExport() {

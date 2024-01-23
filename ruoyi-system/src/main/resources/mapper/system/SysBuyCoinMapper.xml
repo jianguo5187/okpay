@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO" id="BuyDetailInfoResult">
         <result property="buyId"    column="buy_id"    />
+        <result property="saleNo"    column="sale_no"    />
         <result property="saleId"    column="sale_id"    />
         <result property="saleUserId"    column="sale_user_id"    />
         <result property="saleUserNickName"    column="sale_nick_name"    />
@@ -148,9 +149,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              ,bu.unionpay_remark AS buy_unionpay_remark
              ,bu.unionpay_account AS buy_unionpay_account
              ,bu.unionpay_card AS buy_unionpay_card
+             ,s.sale_no
         FROM sys_buy_coin b
         LEFT JOIN sys_user su ON b.sale_user_id = su.user_id
         LEFT JOIN sys_user bu ON b.buy_user_id = bu.user_id
+        INNER JOIN sys_sale_coin s ON b.sale_id = s.sale_id
     </sql>
 
     <select id="getBuyDetailInfo" parameterType="Long" resultMap="BuyDetailInfoResult">
@@ -165,7 +168,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="getMyBuyList" resultMap="BuyDetailInfoResult">
         <include refid="selectBuyDetailVo"/>
-        INNER JOIN sys_sale_coin s ON b.sale_id = s.sale_id
         WHERE b.buy_user_id = #{userId}
         <if test="status != null and status != ''">
             and b.status = #{status}
@@ -194,5 +196,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE sale_id = #{saleId}
         AND status != '9'
         limit 1
+    </select>
+
+
+    <select id="selectShoppingBuyList" resultMap="BuyDetailInfoResult">
+        <include refid="selectBuyDetailVo"/>
+        LEFT JOIN sys_dept d ON bu.dept_id = d.dept_id
+        WHERE
+        (
+            #{userId} = 1
+        or
+            b.buy_user_id = #{userId}
+        or
+            d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+        )
+        <if test="buyUserId != null and buyUserId != 0">
+            AND b.buy_user_id = #{buyUserId}
+        </if>
+        <if test="status != null and status != ''">
+            and b.status = #{status}
+        </if>
+        <if test="saleNo != null and saleNo != ''">
+            AND s.sale_no like concat('%', #{saleNo}, '%')
+        </if>
+        <if test="buyType != null and buyType != ''">
+            AND b.buy_type = #{buyType}
+        </if>
+        <if test="startBuyTime != null"><!-- 开始时间检索 -->
+            and date_format(b.buy_time,'%y%m%d') &gt;= date_format(#{startBuyTime},'%y%m%d')
+        </if>
+        <if test="endBuyTime != null"><!-- 结束时间检索 -->
+            and date_format(b.buy_time,'%y%m%d') &lt;= date_format(#{endBuyTime},'%y%m%d')
+        </if>
+        order by b.buy_id asc
     </select>
 </mapper>

@@ -42,3 +42,21 @@ export function delBuyCoin(buyId) {
     method: 'delete'
   })
 }
+
+// 查询买币列表
+export function listShoppingBuyCoin(query) {
+  return request({
+    url: '/system/buyCoin/shoppingBuyList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 确认打款
+export function confirmPayment(data) {
+  return request({
+    url: '/system/app/updateBuyStatus',
+    method: 'post',
+    data: data
+  })
+}

@@ -1,6 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.vo.req.ShoppingBuyListReqVO;
+import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,5 +95,10 @@ public class SysBuyCoinServiceImpl implements ISysBuyCoinService
     public int deleteSysBuyCoinByBuyId(Long buyId)
     {
         return sysBuyCoinMapper.deleteSysBuyCoinByBuyId(buyId);
+    }
+
+    @Override
+    public List<BuyDetailInfoRespVO> selectShoppingBuyList(Long userId, Long deptId, ShoppingBuyListReqVO vo) {
+        return sysBuyCoinMapper.selectShoppingBuyList(userId,deptId,vo.getBuyUserId(),vo.getSaleNo(),vo.getStatus(),vo.getBuyType(),vo.getStartBuyTime(),vo.getEndBuyTime());
     }
 }

@@ -2,6 +2,11 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.vo.req.ShoppingBuyListReqVO;
+import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +105,18 @@ public class SysBuyCoinController extends BaseController
     public AjaxResult remove(@PathVariable Long[] buyIds)
     {
         return toAjax(sysBuyCoinService.deleteSysBuyCoinByBuyIds(buyIds));
+    }
+
+    /**
+     * 查询交易中心买币列表
+     */
+    @GetMapping("/shoppingBuyList")
+    public TableDataInfo shoppingBuyList(ShoppingBuyListReqVO vo)
+    {
+        startPage();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        List<BuyDetailInfoRespVO> list = sysBuyCoinService.selectShoppingBuyList(user.getUserId(), user.getDeptId(), vo);
+        return getDataTable(list);
     }
 }

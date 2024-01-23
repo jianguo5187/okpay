@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.SysBuyCoin;
 import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,4 +69,6 @@ public interface SysBuyCoinMapper
     public List<BuyDetailInfoRespVO> getBuyListBySaleId(Long saleId);
 
     public SysBuyCoin selectsBuyCoinBySaleId(Long saleId);
+
+    public List<BuyDetailInfoRespVO> selectShoppingBuyList(@Param("userId") Long userId, @Param("deptId") Long deptId, @Param("buyUserId") Long buyUserId, @Param("saleNo") String saleNo, @Param("status") String status, @Param("buyType") String buyType, @Param("startBuyTime") Date startBuyTime, @Param("endBuyTime") Date endBuyTime);
 }

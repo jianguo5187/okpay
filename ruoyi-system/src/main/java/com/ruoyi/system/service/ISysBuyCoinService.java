@@ -2,6 +2,8 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysBuyCoin;
+import com.ruoyi.common.core.vo.req.ShoppingBuyListReqVO;
+import com.ruoyi.common.core.vo.resp.BuyDetailInfoRespVO;
 
 /**
  * 买币Service接口
@@ -58,4 +60,6 @@ public interface ISysBuyCoinService
      * @return 结果
      */
     public int deleteSysBuyCoinByBuyId(Long buyId);
+
+    public List<BuyDetailInfoRespVO> selectShoppingBuyList(Long userId, Long deptId, ShoppingBuyListReqVO vo);
 }

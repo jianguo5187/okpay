@@ -9,6 +9,9 @@ public class BuyDetailInfoRespVO {
     /** 买币ID */
     private Long buyId;
 
+    /** 卖币No */
+    private String saleNo;
+
     /** 卖币ID */
     private Long saleId;
 
@@ -93,6 +96,14 @@ public class BuyDetailInfoRespVO {
         this.buyId = buyId;
     }
 
+
+    public String getSaleNo() {
+        return saleNo;
+    }
+
+    public void setSaleNo(String saleNo) {
+        this.saleNo = saleNo;
+    }
     public Long getSaleId() {
         return saleId;
     }
