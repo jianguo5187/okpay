@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
+import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,5 +102,27 @@ public class SysTransactionRecordController extends BaseController
     public AjaxResult remove(@PathVariable Long[] recordIds)
     {
         return toAjax(sysTransactionRecordService.deleteSysTransactionRecordByRecordIds(recordIds));
+    }
+
+    /**
+     * 查询交易记录列表
+     */
+    @GetMapping("/userTransactionlist")
+    public TableDataInfo userTransactionlist(SysTransactionRecord sysTransactionRecord)
+    {
+        startPage();
+        List<UserTransactionTotalRespVO> list = sysTransactionRecordService.selectUserTransactionlist(sysTransactionRecord);
+        return getDataTable(list);
+    }
+
+    /**
+     * 用户交易合计金额
+     */
+    @GetMapping(value = "/getUserTotalAmount")
+    public AjaxResult getUserTotalAmount(SysTransactionRecord sysTransactionRecord)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("totalAmount",sysTransactionRecordService.getUserTotalAmount(sysTransactionRecord.getUserId()));
+        return ajax;
     }
 }

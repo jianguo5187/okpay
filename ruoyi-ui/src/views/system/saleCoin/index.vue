@@ -580,7 +580,6 @@ export default {
         this.form = response.data;
         this.buyTypeOptions = response.payTypes;
         // if(this.form.saleUserId === this.$store.state.user.id){
-        console.log("supportBuyType   " + this.form.supportBuyType);
         if(this.form.supportBuyType.indexOf("0") != -1){
           this.supportWechatPayFlg = true;
         }else{
@@ -626,7 +625,6 @@ export default {
               this.open = false;
               this.getList();
             }).catch((e) => {
-              console.log(e);
             });
           }
         }

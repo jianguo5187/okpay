@@ -378,8 +378,8 @@ export default {
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("确认打款完成");
-      }).catch(() => {
-        console.log(error);
+      }).catch((e) => {
+        // console.log(error);
       });
     },
     /** 导出按钮操作 */

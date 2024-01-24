@@ -39,6 +39,8 @@ public interface ISysAppService {
 
     public Long addRechargeToMerchant(Long userId, RechargeToMerchantReqVO vo);
 
+    public Long addRechargeToUser(Long userId, RechargeToUserReqVO vo);
+
     public int updateRechargeStatus(UpdateRechargeStatusReqVO vo);
 
     public RechargeDetailInfoRespVO getRechargeDetailInfo(Long rechargeId);
@@ -50,4 +52,6 @@ public interface ISysAppService {
     public int updateNoticeReadStatus(Long userId, Long noticeId);
 
     public List<TransactionDetailInfoRespVO> getMyTransactionList(Long userId, GetMyTransactionListReqVO vo);
+
+    public CashFlowRespVO getUserCashFlow(Long userId);
 }

@@ -1,64 +1,130 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="24" :md="12" :lg="8">
-        <el-card class="update-log">
-          <div slot="header" class="clearfix">
-            <span>本月收入</span>
+    <div class="total-layout">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="total-frame">
+            <img :src="img_home_order" class="total-icon">
+            <div class="total-title">总收入</div>
+            <div class="total-value">{{ totalAmount }}</div>
           </div>
-          <div class="body">
-            <p>
-              <i class="el-icon-s-promotion"></i> 官网：<el-link
-              href="http://www.ruoyi.vip"
-              target="_blank"
-            >http://www.ruoyi.vip</el-link
-            >
-            </p>
-            <p>
-              <i class="el-icon-user-solid"></i> QQ群：<s> 满937441 </s> <s> 满887144332 </s>
-              <s> 满180251782 </s> <s> 满104180207 </s> <s> 满186866453 </s> <s> 满201396349 </s>
-              <s> 满101456076 </s> <s> 满101539465 </s> <s> 满264312783 </s> <s> 满167385320 </s>
-              <s> 满104748341 </s> <s> 满160110482 </s> <s> 满170801498 </s> <s> 满108482800 </s>
-              <s> 满101046199 </s> <s> 满136919097 </s> <s> 满143961921 </s> <s> 满174951577 </s> <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Lj0nHRAPD5CZv1jTOciuxXVloBJLS2Lp&authKey=Q2RxC6%2Ffxney9yOGBY0sDJxFhX9b7o1FRY1bsESmkbcZ4PFt6Vx92FpVo9O1u9p4&noverify=0&group_code=161281055" target="_blank">161281055</a>
-            </p>
-            <p>
-              <i class="el-icon-chat-dot-round"></i> 微信：<a
-              href="javascript:;"
-            >/ *OKPAY</a
-            >
-            </p>
-            <p>
-              <i class="el-icon-money"></i> 支付宝：<a
-              href="javascript:;"
-              class="支付宝信息"
-            >/ *OKPAY</a
-            >
-            </p>
+        </el-col>
+        <el-col :span="6">
+          <div class="total-frame">
+            <img :src="img_home_today_amount" class="total-icon">
+            <div class="total-title">今天收入总额</div>
+            <div class="total-value">￥{{ todayTotalAmount }}</div>
           </div>
-        </el-card>
-      </el-col>
-    </el-row>
+        </el-col>
+        <el-col :span="6">
+          <div class="total-frame">
+            <img :src="img_home_yesterday_amount" class="total-icon">
+            <div class="total-title">昨日收入总额</div>
+            <div class="total-value">￥{{ yesterdayTotalAmount }}</div>
+          </div>
+        </el-col>
+
+  <!--      <el-col :xs="24" :sm="24" :md="12" :lg="8">-->
+  <!--        <el-card class="update-log">-->
+  <!--          <div slot="header" class="clearfix">-->
+  <!--            <span>总收入</span>-->
+  <!--          </div>-->
+  <!--          <div class="body">-->
+  <!--            <p>-->
+  <!--              {{totalAmount}}-->
+  <!--            </p>-->
+  <!--          </div>-->
+  <!--        </el-card>-->
+  <!--      </el-col>-->
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
+import {getUserCashFlow} from "@/api/system/user";
+import img_home_order_img from "@/assets/images/home_order.png";
+import img_home_today_amount_img from "@/assets/images/home_today_amount.png";
+import img_home_yesterday_amount_img from "@/assets/images/home_yesterday_amount.png";
+
 export default {
   name: "Index",
   data() {
     return {
       // 版本号
-      version: "3.8.7"
+      version: "3.8.7",
+      // 总流水收入
+      totalAmount: 0,
+      // 今日收入总额
+      todayTotalAmount: 0,
+      // 昨日收入总额
+      yesterdayTotalAmount: 0,
+
+      img_home_order:img_home_order_img,
+      img_home_today_amount:img_home_today_amount_img,
+      img_home_yesterday_amount:img_home_yesterday_amount_img,
     };
+  },
+  created() {
+    this.getCashFlow();
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
-    }
+    },
+    getCashFlow(){
+      getUserCashFlow().then(response => {
+        this.totalAmount = response.userCashFlow.totalAmount;
+        this.todayTotalAmount = response.userCashFlow.todayTotalAmount;
+        this.yesterdayTotalAmount = response.userCashFlow.yesterdayTotalAmount;
+      });
+    },
   }
 };
 </script>
 
 <style scoped lang="scss">
+
+.app-container {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
+}
+
+.address-layout {
+}
+
+.total-layout {
+  margin-top: 20px;
+}
+
+.total-frame {
+  border: 1px solid #DCDFE6;
+  padding: 20px;
+  height: 100px;
+}
+
+.total-icon {
+  color: #409EFF;
+  width: 60px;
+  height: 60px;
+}
+
+.total-title {
+  position: relative;
+  font-size: 16px;
+  color: #909399;
+  left: 70px;
+  top: -50px;
+}
+
+.total-value {
+  position: relative;
+  font-size: 18px;
+  color: #606266;
+  left: 70px;
+  top: -40px;
+}
 .home {
   blockquote {
     padding: 10px 20px;

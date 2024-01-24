@@ -34,6 +34,8 @@ public class SysTransactionRecord extends BaseEntity
     @Excel(name = "交易类型", readConverterExp = "0=买币,1=卖币,2=商家直充,3=代理充值,4=充值到商户(提现),5=手续费")
     private String recordType;
 
+    private String recordTypeName;
+
     /** 买币ID */
     @Excel(name = "买币ID")
     private Long buyId;
@@ -49,6 +51,10 @@ public class SysTransactionRecord extends BaseEntity
     /** 交易金额 */
     @Excel(name = "交易金额")
     private Float recordAmount;
+
+
+    /** 显示金额 */
+    private Float showRecordAmount;
 
     /** 记录状态（0正常 1取消） */
     @Excel(name = "记录状态", readConverterExp = "0=正常,1=取消")
@@ -134,6 +140,22 @@ public class SysTransactionRecord extends BaseEntity
     public String getStatus() 
     {
         return status;
+    }
+
+    public String getRecordTypeName() {
+        return recordTypeName;
+    }
+
+    public void setRecordTypeName(String recordTypeName) {
+        this.recordTypeName = recordTypeName;
+    }
+
+    public Float getShowRecordAmount() {
+        return showRecordAmount;
+    }
+
+    public void setShowRecordAmount(Float showRecordAmount) {
+        this.showRecordAmount = showRecordAmount;
     }
 
     @Override

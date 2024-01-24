@@ -1,54 +1,65 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="交易用户ID" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入交易用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
+      <el-form-item label="交易用户" prop="userId">
+        <el-select v-model="queryParams.userId" placeholder="请选择买币用户" @change="handleQuery">
+          <el-option
+            clearable
+            v-for="item in userListOptions"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId"
+          ></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="交易时间" prop="recordTime">
-        <el-date-picker clearable
-          v-model="queryParams.recordTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择交易时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="买币ID" prop="buyId">
-        <el-input
-          v-model="queryParams.buyId"
-          placeholder="请输入买币ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="卖币ID" prop="saleId">
-        <el-input
-          v-model="queryParams.saleId"
-          placeholder="请输入卖币ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="充值ID" prop="rechargeId">
-        <el-input
-          v-model="queryParams.rechargeId"
-          placeholder="请输入充值ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="交易金额" prop="recordAmount">
-        <el-input
-          v-model="queryParams.recordAmount"
-          placeholder="请输入交易金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="交易用户ID" prop="userId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.userId"-->
+<!--          placeholder="请输入交易用户ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="交易时间" prop="recordTime">-->
+<!--        <el-date-picker clearable-->
+<!--          v-model="queryParams.recordTime"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="请选择交易时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="买币ID" prop="buyId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.buyId"-->
+<!--          placeholder="请输入买币ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="卖币ID" prop="saleId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.saleId"-->
+<!--          placeholder="请输入卖币ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="充值ID" prop="rechargeId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.rechargeId"-->
+<!--          placeholder="请输入充值ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="交易金额" prop="recordAmount">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.recordAmount"-->
+<!--          placeholder="请输入交易金额"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -56,86 +67,85 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:transactionRecord:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:transactionRecord:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:transactionRecord:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:transactionRecord:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['system:transactionRecord:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:transactionRecord:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['system:transactionRecord:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['system:transactionRecord:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
+    <span style="font-size: 20px;font-weight: bolder;color: red;">点击名称，查看流水明细</span>
     <el-table v-loading="loading" :data="transactionRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="记录ID" align="center" prop="recordId" />
-      <el-table-column label="交易用户ID" align="center" prop="userId" />
-      <el-table-column label="交易时间" align="center" prop="recordTime" width="180">
+      <el-table-column label="交易用户" align="center" prop="userNickName">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.recordTime, '{y}-{m}-{d}') }}</span>
+          <router-link :to="'/system/transaction-detail/index/' + scope.row.userId + '/' + scope.row.recordAmount" class="link-type">
+            <span>{{ scope.row.userNickName }}</span>
+          </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="交易类型" align="center" prop="recordType" />
-      <el-table-column label="买币ID" align="center" prop="buyId" />
-      <el-table-column label="卖币ID" align="center" prop="saleId" />
-      <el-table-column label="充值ID" align="center" prop="rechargeId" />
-      <el-table-column label="交易金额" align="center" prop="recordAmount" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="流水合计" align="center" prop="recordAmount">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:transactionRecord:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:transactionRecord:remove']"
-          >删除</el-button>
+          <span :style="scope.row.recordAmount>0?'font-size:25px;color:green;':'font-size:25px;color:red;'" >{{scope.row.recordAmount}}</span>
         </template>
       </el-table-column>
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['system:transactionRecord:edit']"-->
+<!--          >修改</el-button>-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['system:transactionRecord:remove']"-->
+<!--          >删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -183,7 +193,15 @@
 </template>
 
 <script>
-import { listTransactionRecord, getTransactionRecord, delTransactionRecord, addTransactionRecord, updateTransactionRecord } from "@/api/system/transactionRecord";
+import {
+  listTransactionRecord,
+  getTransactionRecord,
+  delTransactionRecord,
+  addTransactionRecord,
+  updateTransactionRecord,
+  userTransactionRecord
+} from "@/api/system/transactionRecord";
+import {selectSaleUser} from "@/api/system/saleCoin";
 
 export default {
   name: "TransactionRecord",
@@ -212,13 +230,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         userId: null,
-        recordTime: null,
-        recordType: null,
-        buyId: null,
-        saleId: null,
-        rechargeId: null,
-        recordAmount: null,
+        recordType: null
       },
+      userListOptions:[],
       // 表单参数
       form: {},
       // 表单校验
@@ -231,15 +245,21 @@ export default {
   },
   created() {
     this.getList();
+    this.getUserList();
   },
   methods: {
     /** 查询交易记录列表 */
     getList() {
       this.loading = true;
-      listTransactionRecord(this.queryParams).then(response => {
+      userTransactionRecord(this.queryParams).then(response => {
         this.transactionRecordList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getUserList(){
+      selectSaleUser().then(response => {
+        this.userListOptions = response.rows;;
       });
     },
     // 取消按钮

@@ -42,3 +42,20 @@ export function delTransactionRecord(recordId) {
     method: 'delete'
   })
 }
+
+// 查询用户交易合计记录列表
+export function userTransactionRecord(query) {
+  return request({
+    url: '/system/transactionRecord/userTransactionlist',
+    method: 'get',
+    params: query
+  })
+}
+// 查询用户交易合计金额
+export function getUserTotalAmount(query) {
+  return request({
+    url: '/system/transactionRecord/getUserTotalAmount',
+    method: 'get',
+    params: query
+  })
+}

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * APP使用接口
@@ -160,6 +161,23 @@ public class SysAppController extends BaseController {
                 ajax.put("merchantUser", merchantUserRespVO);
             }
         }
+        return ajax;
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping("getUserList")
+    public AjaxResult getUserList()
+    {
+
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        SysUser searchUser = new SysUser();
+        searchUser.setDeptId(user.getDeptId());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("userList", userService.selectUserList(searchUser).stream().filter(r -> r.getUserId().compareTo(user.getUserId()) != 0).collect(Collectors.toList()));
         return ajax;
     }
 
@@ -421,6 +439,31 @@ public class SysAppController extends BaseController {
     }
 
     /**
+     * 充值到用户
+     */
+    @PostMapping("/rechargeToUser")
+    public AjaxResult rechargeToUser(@RequestBody RechargeToUserReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
+        Float reaminUserAmount = amountInfo.getAmount();
+
+        if(reaminUserAmount.compareTo(vo.getRechargeAmount()) < 0){
+            return error("充值失败，余额不足，请先充值");
+        }
+        vo.setCreateBy(getUsername());
+
+        Long rechargeId = sysAppService.addRechargeToUser(user.getUserId(),vo);
+        if(rechargeId > 0){
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("rechargeInfo", sysAppService.getRechargeDetailInfo(rechargeId));
+            return ajax;
+        }
+        return error("充值失败，请联系管理员");
+    }
+
+    /**
      * 更新充值状态接口
      */
     @PostMapping("/updateRechargeStatus")
@@ -506,6 +549,20 @@ public class SysAppController extends BaseController {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         ajax.put("transactionList", sysAppService.getMyTransactionList(user.getUserId(),vo));
+        return ajax;
+    }
+
+    /**
+     * 获取用户流水信息
+     *
+     * @return 用户流水信息
+     */
+    @GetMapping("getUserCashFlow")
+    public AjaxResult getUserCashFlow()
+    {
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("userCashFlow", sysAppService.getUserCashFlow(user.getUserId()));
         return ajax;
     }
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,5 +93,22 @@ public class SysTransactionRecordServiceImpl implements ISysTransactionRecordSer
     public int deleteSysTransactionRecordByRecordId(Long recordId)
     {
         return sysTransactionRecordMapper.deleteSysTransactionRecordByRecordId(recordId);
+    }
+
+    @Override
+    public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord) {
+        return sysTransactionRecordMapper.selectUserTransactionlist(sysTransactionRecord);
+    }
+
+    @Override
+    public Float getUserTotalAmount(Long userId) {
+        SysTransactionRecord searchRecord = new SysTransactionRecord();
+        searchRecord.setUserId(userId);
+        List<UserTransactionTotalRespVO> list = sysTransactionRecordMapper.selectUserTransactionlist(searchRecord);
+        Float totalAmount = 0f;
+        for(UserTransactionTotalRespVO respVO : list){
+            totalAmount = respVO.getRecordAmount();
+        }
+        return totalAmount;
     }
 }

@@ -133,3 +133,11 @@ export function deptTreeSelect() {
     method: 'get'
   })
 }
+
+// 查询用户流水信息
+export function getUserCashFlow() {
+  return request({
+    url: '/system/app/getUserCashFlow',
+    method: 'get'
+  })
+}

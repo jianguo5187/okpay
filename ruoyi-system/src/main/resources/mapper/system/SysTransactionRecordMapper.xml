@@ -9,10 +9,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userId"    column="user_id"    />
         <result property="recordTime"    column="record_time"    />
         <result property="recordType"    column="record_type"    />
+        <result property="recordTypeName"    column="record_type_name"    />
         <result property="buyId"    column="buy_id"    />
         <result property="saleId"    column="sale_id"    />
         <result property="rechargeId"    column="recharge_id"    />
         <result property="recordAmount"    column="record_amount"    />
+        <result property="showRecordAmount"    column="show_record_amount"    />
         <result property="status"    column="status"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
@@ -33,27 +35,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="status"    />
     </resultMap>
 
+    <resultMap type="com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO" id="UserTransactionTotalResult">
+        <result property="userId"    column="user_id"    />
+        <result property="userNickName"    column="user_nick_name"    />
+        <result property="recordAmount"    column="record_amount"    />
+    </resultMap>
+
     <sql id="selectSysTransactionRecordVo">
-        select record_id, user_id, record_time, record_type, buy_id, sale_id, recharge_id, record_amount, status, create_by, create_time, update_by, update_time, remark from sys_transaction_record
+        select
+            tr.record_id,
+            tr.user_id,
+            tr.record_time,
+            tr.record_type,
+            tr.buy_id,
+            tr.sale_id,
+            tr.recharge_id,
+            tr.record_amount,
+            CASE
+                WHEN
+                    tr.record_type = '0'
+                    OR tr.record_type = '2'
+                    OR tr.record_type = '4'
+                    OR tr.record_type = '5'
+                    OR tr.record_type = '6'
+                THEN
+                    tr.record_amount
+                WHEN
+                    tr.record_type = '1'
+                    OR tr.record_type = '3'
+                THEN
+                    tr.record_amount *- 1
+                ELSE
+                    0
+            END AS show_record_amount,
+            tr.STATUS,
+            tr.create_by,
+            tr.create_time,
+            tr.update_by,
+            tr.update_time,
+            tr.remark,
+            d.dict_label as record_type_name
+        from sys_transaction_record tr
+        left join sys_dict_data d on d.dict_type = 'transaction_record_type' and d.dict_value = tr.record_type
     </sql>
 
     <select id="selectSysTransactionRecordList" parameterType="SysTransactionRecord" resultMap="SysTransactionRecordResult">
         <include refid="selectSysTransactionRecordVo"/>
         <where>  
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="recordTime != null "> and record_time = #{recordTime}</if>
-            <if test="recordType != null  and recordType != ''"> and record_type = #{recordType}</if>
-            <if test="buyId != null "> and buy_id = #{buyId}</if>
-            <if test="saleId != null "> and sale_id = #{saleId}</if>
-            <if test="rechargeId != null "> and recharge_id = #{rechargeId}</if>
-            <if test="recordAmount != null "> and record_amount = #{recordAmount}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="userId != null "> and tr.user_id = #{userId}</if>
+            <if test="recordTime != null "> and tr.record_time = #{recordTime}</if>
+            <if test="recordType != null  and recordType != ''"> and tr.record_type = #{recordType}</if>
+            <if test="buyId != null "> and tr.buy_id = #{buyId}</if>
+            <if test="saleId != null "> and tr.sale_id = #{saleId}</if>
+            <if test="rechargeId != null "> and tr.recharge_id = #{rechargeId}</if>
+            <if test="recordAmount != null "> and tr.record_amount = #{recordAmount}</if>
+            <if test="status != null  and status != ''"> and tr.status = #{status}</if>
         </where>
     </select>
     
     <select id="selectSysTransactionRecordByRecordId" parameterType="Long" resultMap="SysTransactionRecordResult">
         <include refid="selectSysTransactionRecordVo"/>
-        where record_id = #{recordId}
+        where tr.record_id = #{recordId}
     </select>
         
     <insert id="insertSysTransactionRecord" parameterType="SysTransactionRecord" useGeneratedKeys="true" keyProperty="recordId">
@@ -107,15 +149,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTransactionRecordByRecordTypeAndId" resultMap="SysTransactionRecordResult">
         <include refid="selectSysTransactionRecordVo"/>
-        where record_type = #{recordType}
+        where tr.record_type = #{recordType}
         <if test="buyId != null and buyId != 0">
-        	and buy_id = #{buyId}
+        	and tr.buy_id = #{buyId}
         </if>
         <if test="saleId != null and saleId != 0">
-        	and sale_id = #{saleId}
+        	and tr.sale_id = #{saleId}
         </if>
         <if test="rechargeId != null and rechargeId != 0">
-        	and recharge_id = #{rechargeId}
+        	and tr.recharge_id = #{rechargeId}
         </if>
         limit 1
     </select>
@@ -137,5 +179,79 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="pageNumber != null">
             limit #{pageNumber} , #{pageRowCount}
         </if>
+    </select>
+
+    <select id="selectUserTransactionlist" parameterType="SysTransactionRecord" resultMap="UserTransactionTotalResult">
+        SELECT
+            tr.user_id,
+            MAX( u.nick_name ) AS user_nick_name,
+            SUM(
+                CASE
+                    WHEN
+                        tr.record_type = '0'
+                        OR tr.record_type = '2'
+                        OR tr.record_type = '4'
+                        OR tr.record_type = '5'
+                        OR tr.record_type = '6'
+                    THEN
+                        tr.record_amount
+                    WHEN
+                        tr.record_type = '1'
+                        OR tr.record_type = '3'
+                    THEN
+                        tr.record_amount *- 1
+                    ELSE
+                        0
+            END ) AS record_amount
+        FROM
+            sys_transaction_record tr
+        INNER JOIN sys_user u ON u.user_id = tr.user_id
+        WHERE
+            tr.STATUS = '0'
+            <if test="userId != null ">
+                and tr.user_id = #{userId}
+            </if>
+            <if test="recordType != null ">
+                and tr.record_type = #{recordType}
+            </if>
+        GROUP BY
+            tr.user_id
+    </select>
+
+    <select id="getTransactonAmountTotal" resultType="Float">
+        SELECT
+            SUM(
+                CASE
+                    WHEN
+                        tr.record_type = '0'
+                        OR tr.record_type = '2'
+                        OR tr.record_type = '4'
+                        OR tr.record_type = '5'
+                        OR tr.record_type = '6'
+                    THEN
+                        tr.record_amount
+                    WHEN
+                        tr.record_type = '1'
+                        OR tr.record_type = '3'
+                    THEN
+                        tr.record_amount *- 1
+                    ELSE
+                        0
+            END ) AS record_amount
+        FROM
+            sys_transaction_record tr
+        WHERE
+            tr.STATUS = '0'
+        and tr.user_id = #{userId}
+        <if test="todayFlg != null">
+            and date_format(tr.record_time,'%y%m%d') &lt;= date_format(sysdate(),'%y%m%d')
+            and date_format(tr.record_time,'%y%m%d') &gt;= date_format(sysdate(),'%y%m%d')
+        </if>
+        <if test="yesterdayFlg != null">
+            and date_format(tr.record_time,'%y%m%d') &lt;= date_format(sysdate() - INTERVAL 1 DAY,'%y%m%d')
+            and date_format(tr.record_time,'%y%m%d') &gt;= date_format(sysdate() - INTERVAL 1 DAY,'%y%m%d')
+        </if>
+        GROUP BY
+            tr.user_id
     </select>
 </mapper>

@@ -373,7 +373,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm: function() {
-      this.$refs["form"].validate(valid => {console.log("this.f");
+      this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.deptId != undefined) {
             updateDept(this.form).then(response => {

@@ -135,6 +135,20 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/system/transaction-detail',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:transactionRecord:list'],
+    children: [
+      {
+        path: 'index/:userId(\\d+)/:totalAmount',
+        component: () => import('@/views/system/transactionRecord/transactionDetail'),
+        name: 'Data',
+        meta: { title: '流水明细', activeMenu: '/system/transactionRecord' }
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,

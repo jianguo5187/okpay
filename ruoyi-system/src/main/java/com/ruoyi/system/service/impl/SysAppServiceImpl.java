@@ -563,6 +563,48 @@ public class SysAppServiceImpl implements ISysAppService {
     }
 
     @Override
+    public Long addRechargeToUser(Long userId, RechargeToUserReqVO vo) {
+        SysRecharge recharge = new SysRecharge();
+        recharge.setFromUserId(userId);
+        recharge.setToUserId(vo.getUserId());
+        recharge.setRechargeAmount(vo.getRechargeAmount());
+        recharge.setStatus("1"); //充值完成
+        recharge.setRechargeType("3");
+        recharge.setCreateBy(vo.getCreateBy());
+        int insertRow = sysRechargeMapper.insertSysRecharge(recharge);
+
+        //充值扣款人交易记录
+        SysUser rechargeFromUser = sysUserService.selectUserById(userId);
+        SysTransactionRecord rechargeFromRecord = new SysTransactionRecord();
+        rechargeFromRecord.setUserId(userId);
+        rechargeFromRecord.setRechargeId(recharge.getRechargeId());
+        rechargeFromRecord.setRecordType("3"); //充值From方
+        rechargeFromRecord.setRecordAmount(vo.getRechargeAmount());
+        rechargeFromRecord.setStatus("0");
+        rechargeFromRecord.setCreateBy(vo.getCreateBy());
+        sysTransactionRecordMapper.insertSysTransactionRecord(rechargeFromRecord);
+        // 更新余额
+        Float rechargeFromUserRemainAmount = rechargeFromUser.getAmount() - vo.getRechargeAmount();
+        userMapper.updateUserAmount(rechargeFromUser.getUserId(), rechargeFromUserRemainAmount);
+
+        //充值扣款人交易记录
+        SysUser rechargeToUser = sysUserService.selectUserById(vo.getUserId());
+        SysTransactionRecord rechargeToUserRecord = new SysTransactionRecord();
+        rechargeToUserRecord.setUserId(vo.getUserId());
+        rechargeToUserRecord.setRechargeId(recharge.getRechargeId());
+        rechargeToUserRecord.setRecordType("6"); //充值To方
+        rechargeToUserRecord.setRecordAmount(vo.getRechargeAmount());
+        rechargeToUserRecord.setStatus("0");
+        rechargeToUserRecord.setCreateBy(vo.getCreateBy());
+        sysTransactionRecordMapper.insertSysTransactionRecord(rechargeToUserRecord);
+        // 更新余额
+        Float rechargeToUserRemainAmount = rechargeToUser.getAmount() - vo.getRechargeAmount();
+        userMapper.updateUserAmount(rechargeToUser.getUserId(), rechargeToUserRemainAmount);
+
+        return recharge.getRechargeId();
+    }
+
+    @Override
     public int updateRechargeStatus(UpdateRechargeStatusReqVO vo) {
 
         SysRecharge sysRecharge = sysRechargeMapper.selectSysRechargeByRechargeId(vo.getRechargeId());
@@ -651,5 +693,42 @@ public class SysAppServiceImpl implements ISysAppService {
             vo.setPageRowCount(20);
         }
         return sysTransactionRecordMapper.getMyTransactionList(userId,(vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+    }
+
+    @Override
+    public CashFlowRespVO getUserCashFlow(Long userId) {
+        CashFlowRespVO respVO = new CashFlowRespVO();
+        SysTransactionRecord searchRecord = new SysTransactionRecord();
+        searchRecord.setUserId(userId);
+        searchRecord.setStatus("0");
+//        List<SysTransactionRecord> list = sysTransactionRecordMapper.selectSysTransactionRecordList(searchRecord);
+        Float totalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,null,null);
+//        Float commissionAmount = 0f;
+        Float todayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,"0",null);
+        Float yesterdayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,null,"1");
+
+//        for(SysTransactionRecord transactionRecord : list){
+//            if(StringUtils.equals(transactionRecord.getRecordType(),"0")
+//                    || StringUtils.equals(transactionRecord.getRecordType(),"2")
+//                    || StringUtils.equals(transactionRecord.getRecordType(),"4")
+//                    || StringUtils.equals(transactionRecord.getRecordType(),"5")
+//                    || StringUtils.equals(transactionRecord.getRecordType(),"6")){
+//                totalAmount += transactionRecord.getRecordAmount();
+//
+//                // 手续费
+//                if(StringUtils.equals(transactionRecord.getRecordType(),"5")){
+//                    commissionAmount += transactionRecord.getRecordAmount();
+//                }
+//            }else if(StringUtils.equals(transactionRecord.getRecordType(),"1")
+//                    || StringUtils.equals(transactionRecord.getRecordType(),"3")){
+//                totalAmount -= transactionRecord.getRecordAmount();
+//            }
+//        }
+
+        respVO.setTotalAmount(totalAmount == null?0f : totalAmount);
+//        respVO.setCommissionAmount(commissionAmount);
+        respVO.setTodayTotalAmount(todayTotalAmount == null?0f : todayTotalAmount);
+        respVO.setYesterdayTotalAmount(yesterdayTotalAmount == null?0f : yesterdayTotalAmount);
+        return respVO;
     }
 }

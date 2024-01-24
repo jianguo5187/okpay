@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
+import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 
 /**
  * 交易记录Service接口
@@ -58,4 +59,8 @@ public interface ISysTransactionRecordService
      * @return 结果
      */
     public int deleteSysTransactionRecordByRecordId(Long recordId);
+
+    public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
+
+    public Float getUserTotalAmount (Long userId);
 }
