@@ -1,5 +1,9 @@
 package com.ruoyi.common.core.vo.resp;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class NoticeDetailInfoRespVO {
 
     /** 公告ID */
@@ -19,6 +23,10 @@ public class NoticeDetailInfoRespVO {
 
     /** 用户已读状态（0未读 1已读） */
     private String readFlg;
+
+    /** 公告发布时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
     public Long getNoticeId() {
         return noticeId;
@@ -67,4 +75,12 @@ public class NoticeDetailInfoRespVO {
     public void setReadFlg(String readFlg) {
         this.readFlg = readFlg;
     }
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 }

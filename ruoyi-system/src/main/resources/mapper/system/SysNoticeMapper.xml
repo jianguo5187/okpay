@@ -23,7 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="noticeType"     column="notice_type"     />
         <result property="noticeContent"  column="notice_content"  />
         <result property="status"         column="status"          />
-        <result property="readFlg"         column="read_flg"       />
+        <result property="readFlg"        column="read_flg"        />
+        <result property="createTime"     column="create_time"     />
     </resultMap>
     
     <sql id="selectNoticeVo">
@@ -102,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              , cast(n.notice_content as char) as notice_content
              , n.status
              , case when nu.user_id is null then '0' else '1' END as read_flg
+             , n.create_time
         from sys_notice n
         left join sys_notice_user nu on n.notice_id = nu.notice_id and nu.user_id = #{userId}
         where status = '0'

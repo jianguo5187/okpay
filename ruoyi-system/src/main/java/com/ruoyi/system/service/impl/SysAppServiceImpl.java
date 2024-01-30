@@ -365,6 +365,9 @@ public class SysAppServiceImpl implements ISysAppService {
         List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,merchantUserId, deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
         for(SaleDetailInfoRespVO respVO : saleList){
 
+            if(StringUtils.isNotEmpty(respVO.getSaleUserAvatar())){
+                respVO.setSaleUserAvatar(Base64.encode(ImageUtils.getImage(respVO.getSaleUserAvatar())));
+            }
             if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
                 respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getWechatPayImg())));
             }

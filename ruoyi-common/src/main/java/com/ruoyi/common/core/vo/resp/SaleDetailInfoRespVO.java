@@ -56,6 +56,9 @@ public class SaleDetailInfoRespVO {
     /** 手机号码 */
     private String saleUserPhonenumber;
 
+    /** 卖币用户头像 */
+    private String saleUserAvatar;
+
     /** 微信收款填充信息 */
     private String wechatPayRemark;
 
@@ -210,7 +213,15 @@ public class SaleDetailInfoRespVO {
         this.saleUserPhonenumber = saleUserPhonenumber;
     }
 
-    public String getWechatPayImg() {
+    public String getSaleUserAvatar() {
+		return saleUserAvatar;
+	}
+
+	public void setSaleUserAvatar(String saleUserAvatar) {
+		this.saleUserAvatar = saleUserAvatar;
+	}
+
+	public String getWechatPayImg() {
         return wechatPayImg;
     }
 
