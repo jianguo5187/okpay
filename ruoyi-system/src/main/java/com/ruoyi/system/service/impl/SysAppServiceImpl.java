@@ -318,30 +318,32 @@ public class SysAppServiceImpl implements ISysAppService {
         respVO.setUnionpayRemark(saleUser.getUnionpayRemark());
         respVO.setUnionpayAccount(saleUser.getUnionpayAccount());
         respVO.setUnionpayCard(saleUser.getUnionpayCard());
-        if(StringUtils.isNotEmpty(saleUser.getWechatPayImg())){
-            respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(saleUser.getWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(saleUser.getAlipayImg())){
-            respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(saleUser.getAlipayImg())));
-        }
+        respVO.setWechatPayImg(saleUser.getWechatPayImg());
+        respVO.setAlipayImg(saleUser.getAlipayImg());
+//        if(StringUtils.isNotEmpty(saleUser.getWechatPayImg())){
+//            respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(saleUser.getWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(saleUser.getAlipayImg())){
+//            respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(saleUser.getAlipayImg())));
+//        }
 
         List<BuyDetailInfoRespVO> buyList = sysBuyCoinMapper.getBuyListBySaleId(saleId);
 
-        for (BuyDetailInfoRespVO vo : buyList){
-            if(StringUtils.isNotEmpty(vo.getSaleWechatPayImg())){
-                vo.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getSaleWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(vo.getSaleAlipayImg())){
-                vo.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(vo.getSaleAlipayImg())));
-            }
-
-            if(StringUtils.isNotEmpty(vo.getBuyWechatPayImg())){
-                vo.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getBuyWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(vo.getBuyAlipayImg())){
-                vo.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(vo.getBuyAlipayImg())));
-            }
-        }
+//        for (BuyDetailInfoRespVO vo : buyList){
+//            if(StringUtils.isNotEmpty(vo.getSaleWechatPayImg())){
+//                vo.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getSaleWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(vo.getSaleAlipayImg())){
+//                vo.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(vo.getSaleAlipayImg())));
+//            }
+//
+//            if(StringUtils.isNotEmpty(vo.getBuyWechatPayImg())){
+//                vo.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(vo.getBuyWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(vo.getBuyAlipayImg())){
+//                vo.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(vo.getBuyAlipayImg())));
+//            }
+//        }
 
         respVO.setBuyUserList(buyList);
 
@@ -363,18 +365,18 @@ public class SysAppServiceImpl implements ISysAppService {
         Long merchantUserId  = parentMerchantUserId(userId);
 
         List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,merchantUserId, deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
-        for(SaleDetailInfoRespVO respVO : saleList){
-
-            if(StringUtils.isNotEmpty(respVO.getSaleUserAvatar())){
-                respVO.setSaleUserAvatar(Base64.encode(ImageUtils.getImage(respVO.getSaleUserAvatar())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
-                respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getAlipayImg())){
-                respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getAlipayImg())));
-            }
-        }
+//        for(SaleDetailInfoRespVO respVO : saleList){
+//
+//            if(StringUtils.isNotEmpty(respVO.getSaleUserAvatar())){
+//                respVO.setSaleUserAvatar(Base64.encode(ImageUtils.getImage(respVO.getSaleUserAvatar())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
+//                respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getAlipayImg())){
+//                respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getAlipayImg())));
+//            }
+//        }
         return saleList;
     }
 
@@ -391,15 +393,15 @@ public class SysAppServiceImpl implements ISysAppService {
             supportBuyArg = vo.getSupportBuyType().split(",");
         }
         List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getMySaleList(userId,vo.getStatus(),vo.getSaleAmountFrom(), vo.getSaleAmountTo(),vo.getSaleSplitType(),supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
-        for(SaleDetailInfoRespVO respVO : saleList){
-
-            if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
-                respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getAlipayImg())){
-                respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getAlipayImg())));
-            }
-        }
+//        for(SaleDetailInfoRespVO respVO : saleList){
+//
+//            if(StringUtils.isNotEmpty(respVO.getWechatPayImg())){
+//                respVO.setWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getAlipayImg())){
+//                respVO.setAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getAlipayImg())));
+//            }
+//        }
         return saleList;
     }
 
@@ -506,19 +508,19 @@ public class SysAppServiceImpl implements ISysAppService {
 
         BuyDetailInfoRespVO respVO = sysBuyCoinMapper.getBuyDetailInfo(buyId);
 
-        if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
-            respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
-            respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
-        }
-
-        if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
-            respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
-            respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
-        }
+//        if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
+//            respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
+//            respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
+//        }
+//
+//        if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
+//            respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
+//            respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
+//        }
 
         return respVO;
     }
@@ -533,21 +535,21 @@ public class SysAppServiceImpl implements ISysAppService {
         }
         List<BuyDetailInfoRespVO> buyList = sysBuyCoinMapper.getMyBuyList(userId,vo.getStatus(),vo.getBuyAmountFrom(), vo.getBuyAmountTo(),vo.getSplitType(), vo.getBuyType(), (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
 
-        for (BuyDetailInfoRespVO respVO : buyList){
-            if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
-                respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
-                respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
-            }
-
-            if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
-                respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
-                respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
-            }
-        }
+//        for (BuyDetailInfoRespVO respVO : buyList){
+//            if(StringUtils.isNotEmpty(respVO.getSaleWechatPayImg())){
+//                respVO.setSaleWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getSaleAlipayImg())){
+//                respVO.setSaleAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getSaleAlipayImg())));
+//            }
+//
+//            if(StringUtils.isNotEmpty(respVO.getBuyWechatPayImg())){
+//                respVO.setBuyWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getBuyAlipayImg())){
+//                respVO.setBuyAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getBuyAlipayImg())));
+//            }
+//        }
         return buyList;
     }
 
@@ -627,18 +629,18 @@ public class SysAppServiceImpl implements ISysAppService {
 
         RechargeDetailInfoRespVO respVO = sysRechargeMapper.getRechargeDetailInfo(rechargeId);
 
-        if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
-            respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
-            respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
-        }
-        if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
-            respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
-            respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
-        }
+//        if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
+//            respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
+//            respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
+//            respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
+//            respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
+//        }
         return respVO;
     }
 
@@ -653,20 +655,20 @@ public class SysAppServiceImpl implements ISysAppService {
         }
         List<RechargeDetailInfoRespVO> rechargeList = sysRechargeMapper.getMyRechargeList(userId,vo.getStatus(),vo.getRechargeAmountFrom(), vo.getRechargeAmountTo(),vo.getRechargeType(), (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
 
-        for (RechargeDetailInfoRespVO respVO : rechargeList){
-            if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
-                respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
-                respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
-                respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
-            }
-            if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
-                respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
-            }
-        }
+//        for (RechargeDetailInfoRespVO respVO : rechargeList){
+//            if(StringUtils.isNotEmpty(respVO.getRechargeToWechatPayImg())){
+//                respVO.setRechargeToWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getRechargeToAlipayImg())){
+//                respVO.setRechargeToAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeToAlipayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getRechargeFromWechatPayImg())){
+//                respVO.setRechargeFromWechatPayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromWechatPayImg())));
+//            }
+//            if(StringUtils.isNotEmpty(respVO.getRechargeFromAlipayImg())){
+//                respVO.setRechargeFromAlipayImg(Base64.encode(ImageUtils.getImage(respVO.getRechargeFromAlipayImg())));
+//            }
+//        }
         return rechargeList;
     }
 

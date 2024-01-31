@@ -175,7 +175,7 @@ export default {
   data() {
     return {
       //websocket部分
-      path: "ws://localhost:8080/websocket/", //后台的websocket地址，找后端要
+      path: "ws://127.0.0.1:8080/websocket/", //后台的websocket地址，找后端要
       ws: null, //建立的连接
       lockReconnect: false, //是否真正建立连接
       timeout: 10 * 1000, //30秒一次心跳

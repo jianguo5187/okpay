@@ -122,26 +122,27 @@ public class SysAppController extends BaseController {
     @GetMapping("getUserInfo")
     public AjaxResult getInfo()
     {
-        SysUser user = SecurityUtils.getLoginUser().getUser();
+        SysUser sessionUser = SecurityUtils.getLoginUser().getUser();
+        SysUser user = userService.selectUserById(sessionUser.getUserId());
         AjaxResult ajax = AjaxResult.success();
-        if(StringUtils.isNotEmpty(user.getAvatar())){
-            user.setAvatar(Base64.encode(ImageUtils.getImage(user.getAvatar())));
-        }
-        if(StringUtils.isNotEmpty(user.getIdcardFrontImg())){
-            user.setIdcardFrontImg(Base64.encode(ImageUtils.getImage(user.getIdcardFrontImg())));
-        }
-        if(StringUtils.isNotEmpty(user.getIdcardBackImg())){
-            user.setIdcardBackImg(Base64.encode(ImageUtils.getImage(user.getIdcardBackImg())));
-        }
-        if(StringUtils.isNotEmpty(user.getFaceImg())){
-            user.setFaceImg(Base64.encode(ImageUtils.getImage(user.getFaceImg())));
-        }
-        if(StringUtils.isNotEmpty(user.getWechatPayImg())){
-            user.setWechatPayImg(Base64.encode(ImageUtils.getImage(user.getWechatPayImg())));
-        }
-        if(StringUtils.isNotEmpty(user.getAlipayImg())){
-            user.setAlipayImg(Base64.encode(ImageUtils.getImage(user.getAlipayImg())));
-        }
+//        if(StringUtils.isNotEmpty(user.getAvatar())){
+//            user.setAvatar(Base64.encode(ImageUtils.getImage(user.getAvatar())));
+//        }
+//        if(StringUtils.isNotEmpty(user.getIdcardFrontImg())){
+//            user.setIdcardFrontImg(Base64.encode(ImageUtils.getImage(user.getIdcardFrontImg())));
+//        }
+//        if(StringUtils.isNotEmpty(user.getIdcardBackImg())){
+//            user.setIdcardBackImg(Base64.encode(ImageUtils.getImage(user.getIdcardBackImg())));
+//        }
+//        if(StringUtils.isNotEmpty(user.getFaceImg())){
+//            user.setFaceImg(Base64.encode(ImageUtils.getImage(user.getFaceImg())));
+//        }
+//        if(StringUtils.isNotEmpty(user.getWechatPayImg())){
+//            user.setWechatPayImg(Base64.encode(ImageUtils.getImage(user.getWechatPayImg())));
+//        }
+//        if(StringUtils.isNotEmpty(user.getAlipayImg())){
+//            user.setAlipayImg(Base64.encode(ImageUtils.getImage(user.getAlipayImg())));
+//        }
         user.setMerchantUserId(sysAppService.parentMerchantUserId(user.getParentUserId()));
         ajax.put("user", user);
         if(user.getMerchantUserId() != null && user.getMerchantUserId() != 0){
@@ -151,9 +152,10 @@ public class SysAppController extends BaseController {
                 merchantUserRespVO.setMerchantUserId(merchantUser.getUserId());
                 merchantUserRespVO.setMerchantUserNickName(merchantUser.getNickName());
 
-                if(StringUtils.isNotEmpty(merchantUser.getAvatar())){
-                    merchantUserRespVO.setMerchantUserAvatar(Base64.encode(ImageUtils.getImage(merchantUser.getAvatar())));
-                }
+                merchantUserRespVO.setMerchantUserAvatar(merchantUser.getAvatar());
+//                if(StringUtils.isNotEmpty(merchantUser.getAvatar())){
+//                    merchantUserRespVO.setMerchantUserAvatar(Base64.encode(ImageUtils.getImage(merchantUser.getAvatar())));
+//                }
 
                 merchantUserRespVO.setUngentCommission(merchantUser.getUngentCommission());
                 merchantUserRespVO.setNormalCommission(merchantUser.getNormalCommission());
