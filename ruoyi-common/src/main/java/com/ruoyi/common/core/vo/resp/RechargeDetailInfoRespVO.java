@@ -30,6 +30,9 @@ public class RechargeDetailInfoRespVO {
     /** 充值用户银联收款卡号 */
     private String rechargeFromUnionpayCard;
 
+    /** 充值用户充值后余额 */
+    private Float rechargeFromUserRemianAmount;
+
     /** 被充值用户ID */
     private Long toUserId;
 
@@ -50,6 +53,9 @@ public class RechargeDetailInfoRespVO {
 
     /** 被充值用户银联收款卡号 */
     private String rechargeToUnionpayCard;
+
+    /** 被充值用户充值后余额 */
+    private Float rechargeToUserRemianAmount;
 
     /** 充值金额 */
     private Float rechargeAmount;
@@ -182,6 +188,22 @@ public class RechargeDetailInfoRespVO {
 
     public void setRechargeToUnionpayCard(String rechargeToUnionpayCard) {
         this.rechargeToUnionpayCard = rechargeToUnionpayCard;
+    }
+
+    public Float getRechargeFromUserRemianAmount() {
+        return rechargeFromUserRemianAmount;
+    }
+
+    public void setRechargeFromUserRemianAmount(Float rechargeFromUserRemianAmount) {
+        this.rechargeFromUserRemianAmount = rechargeFromUserRemianAmount;
+    }
+
+    public Float getRechargeToUserRemianAmount() {
+        return rechargeToUserRemianAmount;
+    }
+
+    public void setRechargeToUserRemianAmount(Float rechargeToUserRemianAmount) {
+        this.rechargeToUserRemianAmount = rechargeToUserRemianAmount;
     }
 
     public Float getRechargeAmount() {

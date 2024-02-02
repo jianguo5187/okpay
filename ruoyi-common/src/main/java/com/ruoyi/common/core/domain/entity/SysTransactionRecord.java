@@ -52,6 +52,10 @@ public class SysTransactionRecord extends BaseEntity
     @Excel(name = "交易金额")
     private Float recordAmount;
 
+    /** 交易后余额 */
+    @Excel(name = "交易后余额")
+    private Float userRemainAmount;
+
 
     /** 显示金额 */
     private Float showRecordAmount;
@@ -156,6 +160,14 @@ public class SysTransactionRecord extends BaseEntity
 
     public void setShowRecordAmount(Float showRecordAmount) {
         this.showRecordAmount = showRecordAmount;
+    }
+
+    public Float getUserRemainAmount() {
+        return userRemainAmount;
+    }
+
+    public void setUserRemainAmount(Float userRemainAmount) {
+        this.userRemainAmount = userRemainAmount;
     }
 
     @Override

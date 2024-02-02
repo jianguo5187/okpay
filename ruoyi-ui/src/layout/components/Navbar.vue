@@ -6,9 +6,6 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
-<!--      <div id="ruoyi-git" class="el-tooltip right-menu-item hover-effect">-->
-<!--        <svg-icon icon-class="message" @click="openChat" />-->
-<!--      </div>-->
 
       <template v-if="device!=='mobile'">
 <!--        <search id="header-search" class="right-menu-item" />-->
@@ -168,62 +165,12 @@ export default {
       }
     }
   },
-  created() {
-      this.initWebSocket();
-  },
   destroyed() {
     this.websock.close() //离开路由之后断开websocket连接
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
-    },
-    openChat() {
-      // window.open(this.url)
-      console.log("baseUrl : " + this.baseUrl);
-        this.open = true;
-        this.title = "添加用户";
-    },
-    initWebSocket(){
-      console.debug(this.$store.state.user.id);
-      const wsuri = "ws://localhost:8080/websocket/" + this.$store.state.user.id;
-      if(typeof(WebSocket) == "undefined") {
-        console.log("您的浏览器不支持WebSocket");
-      }else{
-        console.log(wsuri)
-        this.websock = new WebSocket(wsuri);
-        this.websock.onmessage = this.websocketonmessage;
-        this.websock.onopen = this.websocketonopen;
-        this.websock.onerror = this.websocketonerror;
-        this.websock.onclose = this.websocketclose;
-      }
-    },
-    //连接建立之后执行send方法发送数据
-    websocketonopen(){
-      // let actions = {"test":"我已在线"};
-      // this.websocketsend(JSON.stringify(actions));
-    },
-    //连接建立失败重连
-    websocketonerror(){
-      this.initWebSocket();
-    },
-    //数据接收
-    websocketonmessage(e){
-      // this.$modal.msg(e.data);
-      console.log(e.data);
-      // var audio = document.querySelector("audio");//用这种标签名称获取的方式就不会报错了，，，，
-      // audio.currentTime = 0;//从头开始播放
-      // audio.muted = false;//取消静音
-      // audio.play();//音频播放
-      // const redata = JSON.parse(e.data);
-    },
-    //数据发送
-    websocketsend(Data){
-      this.websock.send(Data);
-    },
-    //关闭
-    websocketclose(e){
-      console.log('断开连接',e);
     },
     async logout() {
       this.$confirm('确定注销并退出系统吗？', '提示', {

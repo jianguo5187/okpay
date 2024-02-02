@@ -210,6 +210,8 @@ public class SysAppServiceImpl implements ISysAppService {
         	transactionRecord.setStatus("9"); //临时记录
 
             remainAmount = user.getAmount() - amount;
+
+            transactionRecord.setUserRemainAmount(remainAmount);
         }
         transactionRecord.setCreateBy(updateBy);
         int transactionRecordRow = sysTransactionRecordMapper.insertSysTransactionRecord(transactionRecord);
@@ -483,19 +485,20 @@ public class SysAppServiceImpl implements ISysAppService {
             //1买家已付款 ⇒ 2卖家已确认(买币完成)
             SysTransactionRecord buyRecord = new SysTransactionRecord();
 
+            //更新买家用户余额
+            SysUser user = sysUserService.selectUserById(sysBuyCoin.getBuyUserId());
+            Float remainAmount = user.getAmount() + sysBuyCoin.getBuyAmount();
+            userMapper.updateUserAmount(user.getUserId(), remainAmount);
+
             //买币交易记录
             buyRecord.setUserId(sysBuyCoin.getBuyUserId());
             buyRecord.setBuyId(sysBuyCoin.getBuyId());
             buyRecord.setRecordType("0"); //买币
             buyRecord.setRecordAmount(sysBuyCoin.getBuyAmount());
+            buyRecord.setUserRemainAmount(remainAmount);
             buyRecord.setStatus("0");
             buyRecord.setCreateBy(vo.getUpdateBy());
             sysTransactionRecordMapper.insertSysTransactionRecord(buyRecord);
-
-            //更新买家用户余额
-            SysUser user = sysUserService.selectUserById(sysBuyCoin.getBuyUserId());
-            Float remainAmount = user.getAmount() + sysBuyCoin.getBuyAmount();
-            userMapper.updateUserAmount(user.getUserId(), remainAmount);
         }
         sysBuyCoin.setStatus(vo.getStatus());
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
@@ -569,17 +572,24 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Override
     public Long addRechargeToUser(Long userId, RechargeToUserReqVO vo) {
+        SysUser rechargeFromUser = sysUserService.selectUserById(userId);
+        SysUser rechargeToUser = sysUserService.selectUserById(vo.getUserId());
+
+        Float rechargeFromUserRemainAmount = rechargeFromUser.getAmount() - vo.getRechargeAmount();
+        Float rechargeToUserRemainAmount = rechargeToUser.getAmount() - vo.getRechargeAmount();
+
         SysRecharge recharge = new SysRecharge();
         recharge.setFromUserId(userId);
         recharge.setToUserId(vo.getUserId());
         recharge.setRechargeAmount(vo.getRechargeAmount());
         recharge.setStatus("1"); //充值完成
         recharge.setRechargeType("3");
+        recharge.setRechargeFromUserRemianAmount(rechargeFromUserRemainAmount);
+        recharge.setRechargeToUserRemianAmount(rechargeToUserRemainAmount);
         recharge.setCreateBy(vo.getCreateBy());
         int insertRow = sysRechargeMapper.insertSysRecharge(recharge);
 
         //充值扣款人交易记录
-        SysUser rechargeFromUser = sysUserService.selectUserById(userId);
         SysTransactionRecord rechargeFromRecord = new SysTransactionRecord();
         rechargeFromRecord.setUserId(userId);
         rechargeFromRecord.setRechargeId(recharge.getRechargeId());
@@ -589,22 +599,21 @@ public class SysAppServiceImpl implements ISysAppService {
         rechargeFromRecord.setCreateBy(vo.getCreateBy());
         sysTransactionRecordMapper.insertSysTransactionRecord(rechargeFromRecord);
         // 更新余额
-        Float rechargeFromUserRemainAmount = rechargeFromUser.getAmount() - vo.getRechargeAmount();
         userMapper.updateUserAmount(rechargeFromUser.getUserId(), rechargeFromUserRemainAmount);
 
+        // 更新余额
+        userMapper.updateUserAmount(rechargeToUser.getUserId(), rechargeToUserRemainAmount);
+
         //充值扣款人交易记录
-        SysUser rechargeToUser = sysUserService.selectUserById(vo.getUserId());
         SysTransactionRecord rechargeToUserRecord = new SysTransactionRecord();
         rechargeToUserRecord.setUserId(vo.getUserId());
         rechargeToUserRecord.setRechargeId(recharge.getRechargeId());
         rechargeToUserRecord.setRecordType("6"); //充值To方
         rechargeToUserRecord.setRecordAmount(vo.getRechargeAmount());
+        rechargeToUserRecord.setUserRemainAmount(rechargeFromUserRemainAmount);
         rechargeToUserRecord.setStatus("0");
         rechargeToUserRecord.setCreateBy(vo.getCreateBy());
         sysTransactionRecordMapper.insertSysTransactionRecord(rechargeToUserRecord);
-        // 更新余额
-        Float rechargeToUserRemainAmount = rechargeToUser.getAmount() - vo.getRechargeAmount();
-        userMapper.updateUserAmount(rechargeToUser.getUserId(), rechargeToUserRemainAmount);
 
         return recharge.getRechargeId();
     }

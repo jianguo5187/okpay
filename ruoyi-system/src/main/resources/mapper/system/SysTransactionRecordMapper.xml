@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleId"    column="sale_id"    />
         <result property="rechargeId"    column="recharge_id"    />
         <result property="recordAmount"    column="record_amount"    />
+        <result property="userRemainAmount"    column="user_remain_amount"    />
         <result property="showRecordAmount"    column="show_record_amount"    />
         <result property="status"    column="status"    />
         <result property="createBy"    column="create_by"    />
@@ -32,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleId"    column="sale_id"    />
         <result property="rechargeId"    column="recharge_id"    />
         <result property="recordAmount"    column="record_amount"    />
+        <result property="showRecordAmount"    column="show_record_amount"    />
         <result property="status"    column="status"    />
     </resultMap>
 
@@ -51,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             tr.sale_id,
             tr.recharge_id,
             tr.record_amount,
+            tr.user_remain_amount,
             CASE
                 WHEN
                     tr.record_type = '0'
@@ -89,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleId != null "> and tr.sale_id = #{saleId}</if>
             <if test="rechargeId != null "> and tr.recharge_id = #{rechargeId}</if>
             <if test="recordAmount != null "> and tr.record_amount = #{recordAmount}</if>
+            <if test="userRemainAmount != null "> and tr.user_remain_amount = #{userRemainAmount}</if>
             <if test="status != null  and status != ''"> and tr.status = #{status}</if>
         </where>
     </select>
@@ -106,6 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleId != null">sale_id,</if>
             <if test="rechargeId != null">recharge_id,</if>
             <if test="recordAmount != null">record_amount,</if>
+            <if test="userRemainAmount != null "> user_remain_amount,</if>
             <if test="status != null">status,</if>
             <if test="createBy != null">create_by,</if>
             <if test="remark != null">remark,</if>
@@ -118,6 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleId != null">#{saleId},</if>
             <if test="rechargeId != null">#{rechargeId},</if>
             <if test="recordAmount != null">#{recordAmount},</if>
+            <if test="userRemainAmount != null "> #{userRemainAmount},</if>
             <if test="status != null">#{status},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="remark != null">#{remark},</if>
@@ -171,6 +177,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              , sale_id
              , recharge_id
              , record_amount
+             , user_remain_amount
              , status
         from sys_transaction_record
         where user_id = #{userId}

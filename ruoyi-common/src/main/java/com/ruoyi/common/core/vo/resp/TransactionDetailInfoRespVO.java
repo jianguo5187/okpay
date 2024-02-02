@@ -31,6 +31,9 @@ public class TransactionDetailInfoRespVO {
     /** 交易金额 */
     private Float recordAmount;
 
+    /** 交易后余额 */
+    private Float userRemainAmount;
+
     /** 记录状态（0正常 1取消） */
     private String status;
 
@@ -104,5 +107,13 @@ public class TransactionDetailInfoRespVO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Float getUserRemainAmount() {
+        return userRemainAmount;
+    }
+
+    public void setUserRemainAmount(Float userRemainAmount) {
+        this.userRemainAmount = userRemainAmount;
     }
 }

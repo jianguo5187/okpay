@@ -1,12 +1,12 @@
 package com.ruoyi.common.core.domain.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 充值对象 sys_recharge
@@ -41,6 +41,14 @@ public class SysRecharge extends BaseEntity
     /** 充值方式（0支付宝 1微信 2银联） */
     @Excel(name = "充值方式", readConverterExp = "0=支付宝,1=微信,2=银联")
     private String rechargeType;
+
+    /** 充值用户充值后余额 */
+    @Excel(name = "充值用户充值后余额")
+    private Float rechargeFromUserRemianAmount;
+
+    /** 被充值用户充值后余额 */
+    @Excel(name = "被充值用户充值后余额")
+    private Float rechargeToUserRemianAmount;
 
     /** 充值状态（0进行中 1已确认(充值完成) 9已取消） */
     @Excel(name = "充值状态", readConverterExp = "0=进行中,1=已确认(充值完成),9=已取消")
@@ -100,7 +108,24 @@ public class SysRecharge extends BaseEntity
     {
         return rechargeType;
     }
-    public void setStatus(String status) 
+
+    public Float getRechargeFromUserRemianAmount() {
+        return rechargeFromUserRemianAmount;
+    }
+
+    public void setRechargeFromUserRemianAmount(Float rechargeFromUserRemianAmount) {
+        this.rechargeFromUserRemianAmount = rechargeFromUserRemianAmount;
+    }
+
+    public Float getRechargeToUserRemianAmount() {
+        return rechargeToUserRemianAmount;
+    }
+
+    public void setRechargeToUserRemianAmount(Float rechargeToUserRemianAmount) {
+        this.rechargeToUserRemianAmount = rechargeToUserRemianAmount;
+    }
+
+    public void setStatus(String status)
     {
         this.status = status;
     }
