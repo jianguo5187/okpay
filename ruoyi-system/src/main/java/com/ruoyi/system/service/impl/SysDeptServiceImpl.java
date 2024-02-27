@@ -254,6 +254,9 @@ public class SysDeptServiceImpl implements ISysDeptService
         merchantUser.setParentUserId(2L);
         merchantUser.setUngentCommission(dept.getUngentCommission());
         merchantUser.setNormalCommission(dept.getNormalCommission());
+        merchantUser.setSplitMinRate(dept.getSplitMinRate());
+        merchantUser.setSplitMaxRate(dept.getSplitMaxRate());
+        merchantUser.setSingleBuyMaxAmount(dept.getSingleBuyMaxAmount());
         merchantUser.setCreateAgentFlg(dept.getCreateAgentFlg());
         merchantUser.setCreateBy(dept.getCreateBy());
 
@@ -301,6 +304,9 @@ public class SysDeptServiceImpl implements ISysDeptService
             merchantUser.setUngentCommission(dept.getUngentCommission());
             merchantUser.setNormalCommission(dept.getNormalCommission());
             merchantUser.setCreateAgentFlg(dept.getCreateAgentFlg());
+            merchantUser.setSplitMinRate(dept.getSplitMinRate());
+            merchantUser.setSplitMaxRate(dept.getSplitMaxRate());
+            merchantUser.setSingleBuyMaxAmount(dept.getSingleBuyMaxAmount());
             int updateUserRow = userMapper.updateUser(merchantUser);
         }
         return result;

@@ -85,6 +85,9 @@ public class BuyDetailInfoRespVO {
     /** 买币金额 */
     private Float buyAmount;
 
+    /** 支付凭证 */
+    private String buyVoucher;
+
     /** 买币状态（0进行中 1买家已付款 2卖家已确认(买币完成) 9已取消） */
     private String status;
 
@@ -246,6 +249,14 @@ public class BuyDetailInfoRespVO {
 
     public void setBuyAmount(Float buyAmount) {
         this.buyAmount = buyAmount;
+    }
+
+    public String getBuyVoucher() {
+        return buyVoucher;
+    }
+
+    public void setBuyVoucher(String buyVoucher) {
+        this.buyVoucher = buyVoucher;
     }
 
     public String getStatus() {

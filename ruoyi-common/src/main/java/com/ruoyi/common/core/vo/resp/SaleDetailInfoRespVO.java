@@ -44,6 +44,21 @@ public class SaleDetailInfoRespVO {
     /** 手续费 */
     private Float commissionAmount;
 
+    /** 拆分购买最小金额比例 */
+    private Integer splitMinRate;
+
+    /** 拆分购买最大金额比例 */
+    private Integer splitMaxRate;
+
+    /** 拆分购买最小金额 */
+    private Float splitMinAmount;
+
+    /** 拆分购买最大金额 */
+    private Float splitMaxAmount;
+
+    /** 单次购买上限金额 */
+    private Float singleBuyMaxAmount;
+
     /** 卖币状态（0订单生产 1交易中 2已完成 9已取消） */
     private String status;
 
@@ -179,6 +194,46 @@ public class SaleDetailInfoRespVO {
     public Float getCommissionAmount() 
     {
         return commissionAmount;
+    }
+
+    public Integer getSplitMinRate() {
+        return splitMinRate;
+    }
+
+    public void setSplitMinRate(Integer splitMinRate) {
+        this.splitMinRate = splitMinRate;
+    }
+
+    public Integer getSplitMaxRate() {
+        return splitMaxRate;
+    }
+
+    public void setSplitMaxRate(Integer splitMaxRate) {
+        this.splitMaxRate = splitMaxRate;
+    }
+
+    public Float getSplitMinAmount() {
+        return splitMinAmount;
+    }
+
+    public void setSplitMinAmount(Float splitMinAmount) {
+        this.splitMinAmount = splitMinAmount;
+    }
+
+    public Float getSplitMaxAmount() {
+        return splitMaxAmount;
+    }
+
+    public void setSplitMaxAmount(Float splitMaxAmount) {
+        this.splitMaxAmount = splitMaxAmount;
+    }
+
+    public Float getSingleBuyMaxAmount() {
+        return singleBuyMaxAmount;
+    }
+
+    public void setSingleBuyMaxAmount(Float singleBuyMaxAmount) {
+        this.singleBuyMaxAmount = singleBuyMaxAmount;
     }
 
     public String getStatus() {

@@ -231,6 +231,7 @@ public class SysSaleCoinServiceImpl implements ISysSaleCoinService
         String currentDateTime = sdf.format(currentDate);
         String saleNo = "OK" + currentDateTime;
 
+        SysUser saleUser = userMapper.selectUserById(userId);
         SysSaleCoin sysSaleCoin = new SysSaleCoin();
         sysSaleCoin.setSaleNo(saleNo);
         sysSaleCoin.setSaleUserId(userId);
@@ -250,6 +251,11 @@ public class SysSaleCoinServiceImpl implements ISysSaleCoinService
         sysSaleCoin.setStatus("1"); //生成订单
         sysSaleCoin.setUrgentSaleFlg(vo.getUrgentSaleFlg());
         sysSaleCoin.setCreateBy(vo.getCreateBy());
+
+        // 这个方法只有商户后台使用，所以直接用卖币用户的设置值
+        sysSaleCoin.setSplitMinRate(saleUser.getSplitMinRate());
+        sysSaleCoin.setSplitMaxRate(saleUser.getSplitMaxRate());
+        sysSaleCoin.setSingleBuyMaxAmount(saleUser.getSingleBuyMaxAmount());
 
         int insertRow = sysSaleCoinMapper.insertSysSaleCoin(sysSaleCoin);
         //临时交易记录生成

@@ -161,6 +161,15 @@ public class SysUser extends BaseEntity
     /** 上级商户ID */
     private Long merchantUserId;
 
+    /** 拆分购买最小金额比例 */
+    private Integer splitMinRate;
+
+    /** 拆分购买最大金额比例 */
+    private Integer splitMaxRate;
+
+    /** 单次购买上限金额 */
+    private Float singleBuyMaxAmount;
+
     public SysUser()
     {
 
@@ -559,6 +568,30 @@ public class SysUser extends BaseEntity
 
     public void setMerchantUserId(Long merchantUserId) {
         this.merchantUserId = merchantUserId;
+    }
+
+    public Integer getSplitMinRate() {
+        return splitMinRate;
+    }
+
+    public void setSplitMinRate(Integer splitMinRate) {
+        this.splitMinRate = splitMinRate;
+    }
+
+    public Integer getSplitMaxRate() {
+        return splitMaxRate;
+    }
+
+    public void setSplitMaxRate(Integer splitMaxRate) {
+        this.splitMaxRate = splitMaxRate;
+    }
+
+    public Float getSingleBuyMaxAmount() {
+        return singleBuyMaxAmount;
+    }
+
+    public void setSingleBuyMaxAmount(Float singleBuyMaxAmount) {
+        this.singleBuyMaxAmount = singleBuyMaxAmount;
     }
 
     @Override

@@ -8,6 +8,8 @@ public class ChangePwdReqVO {
     /** 新密码 */
     private String newPassword;
 
+    private String phonenumber;
+
     public String getOldPassword() {
         return oldPassword;
     }
@@ -22,5 +24,13 @@ public class ChangePwdReqVO {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 }

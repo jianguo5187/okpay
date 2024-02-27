@@ -27,10 +27,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="ungentCommission" column="ungent_commission"   />
 		<result property="normalCommission" column="normal_commission"   />
 		<result property="createAgentFlg" column="create_agent_flg"   />
+		<result property="splitMinRate" column="split_min_rate"   />
+		<result property="splitMaxRate" column="split_max_rate"   />
+		<result property="singleBuyMaxAmount" column="single_buy_max_amount"   />
 	</resultMap>
 	
 	<sql id="selectDeptVo">
-        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg
+        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount
         from sys_dept d
 		left join sys_user u on d.user_id = u.user_id
     </sql>
@@ -68,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
 		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,
-			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg
+			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name, u.user_id, u.user_name, u.nick_name, u.password, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount
 		from sys_dept d
 		left join sys_user u on d.user_id = u.user_id
 		where d.dept_id = #{deptId}

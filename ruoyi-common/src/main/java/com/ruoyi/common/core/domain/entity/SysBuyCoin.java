@@ -50,6 +50,9 @@ public class SysBuyCoin extends BaseEntity
     @Excel(name = "买币状态", readConverterExp = "0=进行中,1=买家已付款,2=卖家已确认(买币完成),9=已取消")
     private String status;
 
+    /** 支付凭证 */
+    private String buyVoucher;
+
     public void setBuyId(Long buyId) 
     {
         this.buyId = buyId;
@@ -121,6 +124,14 @@ public class SysBuyCoin extends BaseEntity
     public String getStatus() 
     {
         return status;
+    }
+
+    public String getBuyVoucher() {
+        return buyVoucher;
+    }
+
+    public void setBuyVoucher(String buyVoucher) {
+        this.buyVoucher = buyVoucher;
     }
 
     @Override

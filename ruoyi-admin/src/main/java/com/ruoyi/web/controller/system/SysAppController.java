@@ -159,6 +159,9 @@ public class SysAppController extends BaseController {
 
                 merchantUserRespVO.setUngentCommission(merchantUser.getUngentCommission());
                 merchantUserRespVO.setNormalCommission(merchantUser.getNormalCommission());
+                merchantUserRespVO.setSplitMinRate(merchantUser.getSplitMinRate());
+                merchantUserRespVO.setSplitMaxRate(merchantUser.getSplitMaxRate());
+                merchantUserRespVO.setSingleBuyMaxAmount(merchantUser.getSingleBuyMaxAmount());
 
                 ajax.put("merchantUser", merchantUserRespVO);
             }
@@ -245,6 +248,9 @@ public class SysAppController extends BaseController {
         UserAmountInfoRespVO amountInfo = sysAppService.getUserAmountInfo(user.getUserId());
         Float reaminUserAmount = amountInfo.getAmount();
 
+        if(vo.getSaleAmount() <=0){
+            return error("卖币金额必须大于0");
+        }
         if(reaminUserAmount.compareTo(vo.getSaleAmount()) < 0){
             return error("卖币失败，余额不足，请先充值");
         }
@@ -335,6 +341,9 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
+        if(vo.getBuyAmount() <=0){
+            return error("买币金额必须大于0");
+        }
 //        Float reaminUserAmount = user.getAmount();
 //
 //        if(reaminUserAmount.compareTo(vo.getBuyAmount()) < 0){
@@ -388,6 +397,26 @@ public class SysAppController extends BaseController {
             return ajax;
         }
         return error("更新卖币状态失败，请联系管理员");
+    }
+
+    /**
+     * 上传买币支付凭证接口
+     */
+    @PostMapping("/uploadBuyVoucher")
+    public AjaxResult uploadBuyVoucher(@RequestBody UploadBuyVoucherReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        vo.setUpdateBy(getUsername());
+        int insertRow = sysAppService.uploadBuyVoucher(user.getUserId(), vo);
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success();
+
+            ajax.put("buyInfo", sysAppService.getBuyDetailInfo(vo.getBuyId()));
+            return ajax;
+        }
+        return error("上传买币支付凭证失败，请联系管理员");
     }
 
     /**

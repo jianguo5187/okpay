@@ -158,6 +158,9 @@ public class SysAppServiceImpl implements ISysAppService {
             throw new ServiceException("上级商户不存在，请联系管理员");
         }
         SysUser merchantUser = sysUserService.selectUserById(merchantUserId);
+        if(merchantUser.getSingleBuyMaxAmount() >0 && merchantUser.getSingleBuyMaxAmount().compareTo(vo.getSaleAmount()) < 0){
+            throw new ServiceException("卖币金额不允许超过单次可购买最大金额（"+ merchantUser.getSingleBuyMaxAmount() +"）");
+        }
         Integer commissionRate = 1;
         Float commissionAmount = 0f;
         Float saleAmountWithoutCommission = 0f;
@@ -186,6 +189,9 @@ public class SysAppServiceImpl implements ISysAppService {
         sysSaleCoin.setRemainAmount(saleAmountWithoutCommission);
         sysSaleCoin.setStatus("0"); //生成订单
         sysSaleCoin.setUrgentSaleFlg(vo.getUrgentSaleFlg());
+        sysSaleCoin.setSplitMinRate(merchantUser.getSplitMinRate());
+        sysSaleCoin.setSplitMaxRate(merchantUser.getSplitMaxRate());
+        sysSaleCoin.setSingleBuyMaxAmount(merchantUser.getSingleBuyMaxAmount());
         sysSaleCoin.setCreateBy(vo.getCreateBy());
         
         int insertRow = sysSaleCoinMapper.insertSysSaleCoin(sysSaleCoin);
@@ -423,9 +429,29 @@ public class SysAppServiceImpl implements ISysAppService {
         if(sysSaleCoin.getSupportBuyType().indexOf(vo.getBuyType()) < 0){
             throw new ServiceException("支付方式不支持，请重新选择");
         }
+        if(sysSaleCoin.getSingleBuyMaxAmount() > 0
+            && sysSaleCoin.getSingleBuyMaxAmount().compareTo(vo.getBuyAmount()) < 0){
+            throw new ServiceException("购买金额大于单次可购买最大金额（" + sysSaleCoin.getSingleBuyMaxAmount() + "），请重新选择");
+        }
         //购买金额大于剩余金额
         if(sysSaleCoin.getRemainAmount().compareTo(vo.getBuyAmount()) < 0){
             throw new ServiceException("可购买金额不足，请重新选择");
+        }
+
+        //订单可拆分时，验证拆分金额
+        if(StringUtils.equals(sysSaleCoin.getSaleSplitType(),"1")){
+            if(sysSaleCoin.getSplitMinRate() != 0){
+                Float splitMinAmount = sysSaleCoin.getSplitMinRate() * sysSaleCoin.getSaleAmountWithoutCommission();
+                if(splitMinAmount.compareTo(vo.getBuyAmount()) > 0){
+                    throw new ServiceException("购买金额小于拆分购买最少购买金额（" + splitMinAmount + "），请重新选择");
+                }
+            }
+            if(sysSaleCoin.getSplitMaxRate() != 0){
+                Float splitMaxAmount = sysSaleCoin.getSplitMaxRate() * sysSaleCoin.getSaleAmountWithoutCommission();
+                if(splitMaxAmount.compareTo(vo.getBuyAmount()) < 0){
+                    throw new ServiceException("购买金额大于拆分购买最多购买金额（" + splitMaxAmount + "），请重新选择");
+                }
+            }
         }
 
         SysBuyCoin sysBuyCoin = new SysBuyCoin();
@@ -503,6 +529,25 @@ public class SysAppServiceImpl implements ISysAppService {
         sysBuyCoin.setStatus(vo.getStatus());
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
 
+        return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+    }
+
+
+    public int uploadBuyVoucher(Long userId, UploadBuyVoucherReqVO vo){
+
+        SysBuyCoin sysBuyCoin = sysBuyCoinMapper.selectSysBuyCoinByBuyId(vo.getBuyId());
+        if(StringUtils.isNull(sysBuyCoin)){
+            throw new ServiceException("买币信息不存在，请联系管理员");
+        }
+
+        if(StringUtils.isNotEmpty(vo.getBuyVoucher())){
+            String buyVoucher = ImageUtils.savaBase64ImageFile(vo.getBuyVoucher());
+            if(StringUtils.isNotEmpty(buyVoucher)){
+                sysBuyCoin.setBuyVoucher(buyVoucher);
+            }else{
+                throw new ServiceException("上传买币支付凭证失败");
+            }
+        }
         return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
     }
 

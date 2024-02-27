@@ -280,6 +280,9 @@ export default {
     this.getList();
     this.getUserList();
   },
+  mounted() {
+    setInterval(this.getList, 15000); //每15s刷新列表
+  },
   methods: {
     /** 查询买币列表 */
     getList() {

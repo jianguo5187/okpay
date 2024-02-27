@@ -33,6 +33,8 @@ public interface ISysAppService {
 
     public int updateBuyStatus(Long userId, UpdateBuyStatusReqVO vo);
 
+    public int uploadBuyVoucher(Long userId, UploadBuyVoucherReqVO vo);
+
     public BuyDetailInfoRespVO getBuyDetailInfo(Long buyId);
 
     public List<BuyDetailInfoRespVO> getMyBuyList(Long userId, GetMyBuyListReqVO vo);

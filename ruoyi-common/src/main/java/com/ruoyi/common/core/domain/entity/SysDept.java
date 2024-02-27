@@ -75,6 +75,15 @@ public class SysDept extends BaseEntity
     /** 是否可以创建代理（0可以 1不行） */
     private String createAgentFlg;
 
+    /** 拆分购买最小金额比例 */
+    private Integer splitMinRate;
+
+    /** 拆分购买最大金额比例 */
+    private Integer splitMaxRate;
+
+    /** 单次购买上限金额 */
+    private Float singleBuyMaxAmount;
+
     public Long getDeptId()
     {
         return deptId;
@@ -247,6 +256,30 @@ public class SysDept extends BaseEntity
 
     public void setCreateAgentFlg(String createAgentFlg) {
         this.createAgentFlg = createAgentFlg;
+    }
+
+    public Integer getSplitMinRate() {
+        return splitMinRate;
+    }
+
+    public void setSplitMinRate(Integer splitMinRate) {
+        this.splitMinRate = splitMinRate;
+    }
+
+    public Integer getSplitMaxRate() {
+        return splitMaxRate;
+    }
+
+    public void setSplitMaxRate(Integer splitMaxRate) {
+        this.splitMaxRate = splitMaxRate;
+    }
+
+    public Float getSingleBuyMaxAmount() {
+        return singleBuyMaxAmount;
+    }
+
+    public void setSingleBuyMaxAmount(Float singleBuyMaxAmount) {
+        this.singleBuyMaxAmount = singleBuyMaxAmount;
     }
 
     @Override

@@ -247,6 +247,9 @@ export default {
     this.getList();
     this.getUserList();
   },
+  mounted() {
+    setInterval(this.getList, 15000); //每15s刷新列表
+  },
   methods: {
     /** 查询交易记录列表 */
     getList() {

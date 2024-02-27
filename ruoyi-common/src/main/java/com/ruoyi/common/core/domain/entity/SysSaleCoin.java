@@ -59,6 +59,15 @@ public class SysSaleCoin extends BaseEntity
     @Excel(name = "订单剩余金额")
     private Float remainAmount;
 
+    /** 拆分购买最小金额比例 */
+    private Integer splitMinRate;
+
+    /** 拆分购买最大金额比例 */
+    private Integer splitMaxRate;
+
+    /** 单次购买上限金额 */
+    private Float singleBuyMaxAmount;
+
     /** 卖币状态（0生成订单 1交易中 2已完成 9已取消） */
     @Excel(name = "卖币状态", readConverterExp = "0=生成订单,1=交易中,2=已完成,9=已取消")
     private String status;
@@ -174,6 +183,30 @@ public class SysSaleCoin extends BaseEntity
     public String getUrgentSaleFlg() 
     {
         return urgentSaleFlg;
+    }
+
+    public Integer getSplitMinRate() {
+        return splitMinRate;
+    }
+
+    public void setSplitMinRate(Integer splitMinRate) {
+        this.splitMinRate = splitMinRate;
+    }
+
+    public Integer getSplitMaxRate() {
+        return splitMaxRate;
+    }
+
+    public void setSplitMaxRate(Integer splitMaxRate) {
+        this.splitMaxRate = splitMaxRate;
+    }
+
+    public Float getSingleBuyMaxAmount() {
+        return singleBuyMaxAmount;
+    }
+
+    public void setSingleBuyMaxAmount(Float singleBuyMaxAmount) {
+        this.singleBuyMaxAmount = singleBuyMaxAmount;
     }
 
     @Override

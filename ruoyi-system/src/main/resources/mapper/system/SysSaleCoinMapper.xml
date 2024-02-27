@@ -15,6 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleAmountWithoutCommission"    column="sale_amount_without_commission"    />
         <result property="commissionAmount"    column="commission_amount"    />
         <result property="remainAmount"    column="remain_amount"    />
+        <result property="splitMinRate" column="split_min_rate"   />
+        <result property="splitMaxRate" column="split_max_rate"   />
+        <result property="singleBuyMaxAmount" column="single_buy_max_amount"   />
         <result property="status"    column="status"    />
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
         <result property="createBy"    column="create_by"    />
@@ -35,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleAmountWithoutCommission"    column="sale_amount_without_commission"    />
         <result property="commissionAmount"    column="commission_amount"    />
         <result property="remainAmount"    column="remain_amount"    />
+        <result property="splitMinRate" column="split_min_rate"   />
+        <result property="splitMaxRate" column="split_max_rate"   />
+        <result property="splitMinAmount" column="split_min_amount"   />
+        <result property="splitMaxAmount" column="split_max_amount"   />
+        <result property="singleBuyMaxAmount" column="single_buy_max_amount"   />
         <result property="status"    column="status"    />
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
         <result property="saleUserNickName"     column="nick_name"    />
@@ -50,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysSaleCoinVo">
-        select sale_id, sale_no, sale_time, sale_user_id, sale_split_type, support_buy_type, sale_amount, sale_amount_without_commission, commission_amount, remain_amount, status, urgent_sale_flg, create_by, create_time, update_by, update_time, remark from sys_sale_coin
+        select sale_id, sale_no, sale_time, sale_user_id, sale_split_type, support_buy_type, sale_amount, sale_amount_without_commission, commission_amount, remain_amount, split_min_rate, split_max_rate, single_buy_max_amount, status, urgent_sale_flg, create_by, create_time, update_by, update_time, remark from sys_sale_coin
     </sql>
 
     <select id="selectSysSaleCoinList" parameterType="SysSaleCoin" resultMap="SysSaleCoinResult">
@@ -85,6 +93,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleAmountWithoutCommission != null">sale_amount_without_commission,</if>
             <if test="commissionAmount != null">commission_amount,</if>
             <if test="remainAmount != null">remain_amount,</if>
+            <if test="splitMinRate != null">split_min_rate,</if>
+            <if test="splitMaxRate != null">split_max_rate,</if>
+            <if test="singleBuyMaxAmount != null">single_buy_max_amount,</if>
             <if test="status != null">status,</if>
             <if test="urgentSaleFlg != null">urgent_sale_flg,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
@@ -100,6 +111,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleAmountWithoutCommission != null">#{saleAmountWithoutCommission},</if>
             <if test="commissionAmount != null">#{commissionAmount},</if>
             <if test="remainAmount != null">#{remainAmount},</if>
+            <if test="splitMinRate != null">#{splitMinRate},</if>
+            <if test="splitMaxRate != null">#{splitMaxRate},</if>
+            <if test="singleBuyMaxAmount != null">#{singleBuyMaxAmount},</if>
             <if test="status != null">#{status},</if>
             <if test="urgentSaleFlg != null">#{urgentSaleFlg},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -113,6 +127,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update sys_sale_coin
         <set>
             <if test="remainAmount != null">remain_amount = #{remainAmount},</if>
+            <if test="splitMinRate != null">split_min_rate = #{splitMinRate},</if>
+            <if test="splitMaxRate != null">split_max_rate = #{splitMaxRate},</if>
+            <if test="singleBuyMaxAmount != null">single_buy_max_amount = #{singleBuyMaxAmount},</if>
             <if test="status != null">status = #{status},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -144,6 +161,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.sale_amount_without_commission,
             MAIN.commission_amount,
             MAIN.remain_amount,
+            MAIN.split_min_rate,
+            MAIN.split_max_rate,
+            TRUNCATE(MAIN.split_min_rate * MAIN.sale_amount_without_commission/100,2) AS split_min_amount,
+            TRUNCATE(MAIN.split_max_rate * MAIN.sale_amount_without_commission/100,2) AS split_max_amount,
+            MAIN.single_buy_max_amount,
             MAIN.status,
             MAIN.urgent_sale_flg,
             MAIN.nick_name,
@@ -168,6 +190,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.sale_amount_without_commission,
                 s.commission_amount,
                 s.remain_amount,
+                s.split_min_rate,
+                s.split_max_rate,
+                s.single_buy_max_amount,
                 s.status,
                 s.urgent_sale_flg,
                 u.nick_name,
@@ -213,6 +238,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         s.sale_amount_without_commission,
         s.commission_amount,
         s.remain_amount,
+        s.split_min_rate,
+        s.split_max_rate,
+        s.single_buy_max_amount,
         s.status,
         s.urgent_sale_flg,
         u.nick_name,
@@ -269,6 +297,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.sale_amount_without_commission,
             s.commission_amount,
             s.remain_amount,
+            s.split_min_rate,
+            s.split_max_rate,
+            TRUNCATE(s.split_min_rate * s.sale_amount_without_commission/100,2) AS split_min_amount,
+            TRUNCATE(s.split_max_rate * s.sale_amount_without_commission/100,2) AS split_max_amount,
+            s.single_buy_max_amount,
             s.status,
             s.urgent_sale_flg,
             u.nick_name,
@@ -323,6 +356,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         MAIN.sale_amount_without_commission,
         MAIN.commission_amount,
         MAIN.remain_amount,
+        MAIN.split_min_rate,
+        MAIN.split_max_rate,
+        TRUNCATE(MAIN.split_min_rate * MAIN.sale_amount_without_commission/100,2) AS split_min_amount,
+        TRUNCATE(MAIN.split_max_rate * MAIN.sale_amount_without_commission/100,2) AS split_max_amount,
+        MAIN.single_buy_max_amount,
         MAIN.status,
         MAIN.urgent_sale_flg,
         MAIN.nick_name,
@@ -347,6 +385,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.sale_amount_without_commission,
             s.commission_amount,
             s.remain_amount,
+            s.split_min_rate,
+            s.split_max_rate,
+            s.single_buy_max_amount,
             s.status,
             s.urgent_sale_flg,
             u.nick_name,
