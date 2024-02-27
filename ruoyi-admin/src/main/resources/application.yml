@@ -97,6 +97,9 @@ token:
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认120分钟）
   expireTime: 120
+  # 是否允许账户多终端同时登录（true允许 false不允许）
+  singleLogin: false
+
 
 # MyBatis配置
 mybatis:
