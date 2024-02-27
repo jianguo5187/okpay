@@ -59,6 +59,7 @@
           v-model="queryParams.status"
           placeholder="状态"
           style="width: 240px"
+          @change="handleQuery"
         >
           <el-option
             v-for="dict in dict.type.buy_status"
@@ -155,6 +156,13 @@
             v-if="scope.row.buyUserId != loginUserId && scope.row.status == '1'"
             size="mini"
             type="text"
+            icon="el-icon-picture"
+            @click="handleShowBuyVoucher(scope.row,'2')"
+          >查看支付凭证</el-button>
+          <el-button
+            v-if="scope.row.buyUserId != loginUserId && scope.row.status == '1'"
+            size="mini"
+            type="text"
             icon="el-icon-finished"
             @click="handleConfirmPayment(scope.row,'2')"
           >确认收款</el-button>
@@ -180,35 +188,16 @@
     <!-- 添加或修改买币对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="卖币ID" prop="saleId">
-          <el-input v-model="form.saleId" placeholder="请输入卖币ID" />
-        </el-form-item>
-        <el-form-item label="卖币用户ID" prop="saleUserId">
-          <el-input v-model="form.saleUserId" placeholder="请输入卖币用户ID" />
-        </el-form-item>
-        <el-form-item label="买币用户ID" prop="buyUserId">
-          <el-input v-model="form.buyUserId" placeholder="请输入买币用户ID" />
-        </el-form-item>
-        <el-form-item label="买币时间" prop="buyTime">
-          <el-date-picker clearable
-            v-model="form.buyTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择买币时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="买币金额" prop="buyAmount">
-          <el-input v-model="form.buyAmount" placeholder="请输入买币金额" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="支付凭证" prop="buyVoucher">
+          <imageUpload unselectable="on" v-model="form.buyVoucher" :imgUrl="form.buyVoucher" :limit="1"></imageUpload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="modalConfirmPayment">确认收款</el-button>
+        <el-button @click="cancel">关闭</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -306,19 +295,19 @@ export default {
     // 表单重置
     reset() {
       this.form = {
+        buyVoucher: null,
         buyId: null,
-        saleId: null,
-        saleUserId: null,
-        buyUserId: null,
-        buyTime: null,
-        buyType: null,
-        buyAmount: null,
-        status: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null,
-        remark: null
+        // saleUserId: null,
+        // buyUserId: null,
+        // buyTime: null,
+        // buyType: null,
+        // buyAmount: null,
+        // status: null,
+        // createBy: null,
+        // createTime: null,
+        // updateBy: null,
+        // updateTime: null,
+        // remark: null
       };
       this.resetForm("form");
     },
@@ -373,6 +362,39 @@ export default {
           }
         }
       });
+    },
+    /** 查看支付凭证按钮操作 */
+    handleShowBuyVoucher(row,status) {
+      // this.$modal.confirm('是否确认已经打款').then(function() {
+      //   return confirmPayment({"buyId":row.buyId,"status":status});
+      // }).then(() => {
+      //   this.getList();
+      //   this.$modal.msgSuccess("确认打款完成");
+      // }).catch((e) => {
+      //   // console.log(error);
+      // });
+      this.reset();
+      this.open = true;
+      this.form.buyVoucher = row.buyVoucher;
+      this.form.buyId = row.buyId;
+      this.title = "查看支付凭证";
+    },
+    /** 确认收款按钮操作 */
+    modalConfirmPayment() {
+      confirmPayment({"buyId":this.form.buyId,"status":"2"}).then(response => {
+        this.$modal.msgSuccess("确认打款完成成功");
+        this.open = false;
+        this.getList();
+      });
+      // this.$modal.confirm('是否确认已经打款').then(function() {
+      //   cons
+      //   return confirmPayment({"buyId":this.form.buyId,"status":"2"});
+      // }).then(() => {
+      //   this.getList();
+      //   this.$modal.msgSuccess("确认打款完成");
+      // }).catch((e) => {
+      //   // console.log(error);
+      // });
     },
     /** 确认收款按钮操作 */
     handleConfirmPayment(row,status) {

@@ -441,13 +441,13 @@ public class SysAppServiceImpl implements ISysAppService {
         //订单可拆分时，验证拆分金额
         if(StringUtils.equals(sysSaleCoin.getSaleSplitType(),"1")){
             if(sysSaleCoin.getSplitMinRate() != 0){
-                Float splitMinAmount = sysSaleCoin.getSplitMinRate() * sysSaleCoin.getSaleAmountWithoutCommission();
+                Float splitMinAmount = (sysSaleCoin.getSplitMinRate() * sysSaleCoin.getSaleAmountWithoutCommission())/100;
                 if(splitMinAmount.compareTo(vo.getBuyAmount()) > 0){
                     throw new ServiceException("购买金额小于拆分购买最少购买金额（" + splitMinAmount + "），请重新选择");
                 }
             }
             if(sysSaleCoin.getSplitMaxRate() != 0){
-                Float splitMaxAmount = sysSaleCoin.getSplitMaxRate() * sysSaleCoin.getSaleAmountWithoutCommission();
+                Float splitMaxAmount = (sysSaleCoin.getSplitMaxRate() * sysSaleCoin.getSaleAmountWithoutCommission())/100;
                 if(splitMaxAmount.compareTo(vo.getBuyAmount()) < 0){
                     throw new ServiceException("购买金额大于拆分购买最多购买金额（" + splitMaxAmount + "），请重新选择");
                 }
