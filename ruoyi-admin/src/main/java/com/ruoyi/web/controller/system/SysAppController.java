@@ -344,6 +344,12 @@ public class SysAppController extends BaseController {
         if(vo.getBuyAmount() <=0){
             return error("买币金额必须大于0");
         }
+        if(sysAppService.existSalingOrder(vo.getSaleId())){
+            return error("该卖币已经被其他人购买。");
+        }
+        // 锁定卖币订单
+        sysAppService.createSaleOrder(vo.getSaleId());
+
 //        Float reaminUserAmount = user.getAmount();
 //
 //        if(reaminUserAmount.compareTo(vo.getBuyAmount()) < 0){
@@ -353,6 +359,7 @@ public class SysAppController extends BaseController {
 
         Long buyId = sysAppService.addBuyCoin(user.getUserId(),vo);
         if(buyId > 0){
+
             AjaxResult ajax = AjaxResult.success();
 
             ajax.put("buyInfo", sysAppService.getBuyDetailInfo(buyId));
@@ -360,19 +367,19 @@ public class SysAppController extends BaseController {
         }
         return error("新增卖币失败，请联系管理员");
     }
-
-    /**
-     * 查询交易列表
-     */
-    @PostMapping("/shoppingList")
-    public TableDataInfo shoppingList(@RequestBody ShoppingListReqVO vo)
-    {
-        startPage();
-        LoginUser loginUser = getLoginUser();
-        SysUser user = loginUser.getUser();
-        List<SaleDetailInfoRespVO> list = sysSaleCoinService.selectShoppingList(user.getUserId(), user.getDeptId(), vo);
-        return getDataTable(list);
-    }
+//
+//    /**
+//     * 查询交易列表
+//     */
+//    @PostMapping("/shoppingList")
+//    public TableDataInfo shoppingList(@RequestBody ShoppingListReqVO vo)
+//    {
+//        startPage();
+//        LoginUser loginUser = getLoginUser();
+//        SysUser user = loginUser.getUser();
+//        List<SaleDetailInfoRespVO> list = sysSaleCoinService.selectShoppingList(user.getUserId(), user.getDeptId(), vo);
+//        return getDataTable(list);
+//    }
 
     /**
      * 更新买币状态接口

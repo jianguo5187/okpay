@@ -28,6 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleUserId"    column="sale_user_id"    />
         <result property="saleUserNickName"    column="sale_nick_name"    />
         <result property="saleUserPhonenumber"    column="sale_phonenumber"    />
+        <result property="saleUserRealName"        column="sale_real_name"       />
+        <result property="saleUserIdcardNo"        column="sale_idcard_no"       />
         <result property="saleWechatPayRemark"    column="sale_wechat_pay_remark"  />
         <result property="saleWechatPayImg"    column="sale_wechat_pay_img"    />
         <result property="saleAlipayRemark"       column="sale_alipay_remark"      />
@@ -38,6 +40,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="buyUserId"    column="buy_user_id"    />
         <result property="buyUserNickName"    column="buy_nick_name"    />
         <result property="buyUserPhonenumber"    column="buy_phonenumber"    />
+        <result property="buyUserRealName"        column="buy_real_name"       />
+        <result property="buyUserIdcardNo"        column="buy_idcard_no"       />
         <result property="buyWechatPayRemark"    column="buy_wechat_pay_remark"  />
         <result property="buyWechatPayImg"    column="buy_wechat_pay_img"    />
         <result property="buyAlipayRemark"       column="buy_alipay_remark"      />
@@ -72,6 +76,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSysBuyCoinByBuyId" parameterType="Long" resultMap="SysBuyCoinResult">
         <include refid="selectSysBuyCoinVo"/>
         where buy_id = #{buyId}
+    </select>
+
+    <select id="checkNofinishBuyInfoExist" parameterType="Long" resultMap="SysBuyCoinResult">
+        <include refid="selectSysBuyCoinVo"/>
+        where buy_user_id = #{userId}
+        and status not in ('2','9')
+        limit 1
     </select>
         
     <insert id="insertSysBuyCoin" parameterType="SysBuyCoin" useGeneratedKeys="true" keyProperty="buyId">
@@ -138,6 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              ,b.status
              ,su.nick_name AS sale_nick_name
              ,su.phonenumber AS sale_phonenumber
+             ,su.real_name AS sale_real_name
+             ,su.idcard_no AS sale_idcard_no
              ,su.wechat_pay_remark AS sale_wechat_pay_remark
              ,su.wechat_pay_img AS sale_wechat_pay_img
              ,su.alipay_remark AS sale_alipay_remark
@@ -148,6 +161,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              ,b.buy_user_id
              ,bu.nick_name AS buy_nick_name
              ,bu.phonenumber AS buy_phonenumber
+             ,bu.real_name AS buy_real_name
+             ,bu.idcard_no AS buy_idcard_no
              ,bu.wechat_pay_remark AS buy_wechat_pay_remark
              ,bu.wechat_pay_img AS buy_wechat_pay_img
              ,bu.alipay_remark AS buy_alipay_remark

@@ -68,4 +68,6 @@ public interface SysSaleCoinMapper
     public List<SaleDetailInfoRespVO> getMySaleList(@Param("userId") Long userId, @Param("status") String status,@Param("saleAmountFrom") Float saleAmountFrom, @Param("saleAmountTo") Float saleAmountTo, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 
     public List<SaleDetailInfoRespVO> selectShoppingList(@Param("userId") Long userId, @Param("deptId") Long deptId,@Param("saleUserId") Long saleUserId,  @Param("saleNo") String saleNo, @Param("status") String status, @Param("saleSplitType") String saleSplitType, @Param("supportBuyType") String[] supportBuyType, @Param("urgentSaleFlg") String urgentSaleFlg, @Param("startSaleTime") Date startSaleTime, @Param("endSaleTime") Date endSaleTime);
+
+    public SysSaleCoin checkNofinishSaleInfoExist(Long userId);
 }

@@ -24,6 +24,12 @@ public class BuyDetailInfoRespVO {
     /** 卖币用户手机号码 */
     private String saleUserPhonenumber;
 
+    /** 卖币用户真实姓名 */
+    private String saleUserRealName;
+
+    /** 卖币用户身份证号码 */
+    private String saleUserIdcardNo;
+
     /** 卖币用户微信收款码填充信息 */
     private String saleWechatPayRemark;
 
@@ -53,6 +59,12 @@ public class BuyDetailInfoRespVO {
 
     /** 买币用户手机号码 */
     private String buyUserPhonenumber;
+
+    /** 买币用户真实姓名 */
+    private String buyUserRealName;
+
+    /** 买币用户身份证号码 */
+    private String buyUserIdcardNo;
 
     /** 买币用户微信收款码填充信息 */
     private String buyWechatPayRemark;
@@ -139,6 +151,22 @@ public class BuyDetailInfoRespVO {
         this.saleUserPhonenumber = saleUserPhonenumber;
     }
 
+    public String getSaleUserRealName() {
+        return saleUserRealName;
+    }
+
+    public void setSaleUserRealName(String saleUserRealName) {
+        this.saleUserRealName = saleUserRealName;
+    }
+
+    public String getSaleUserIdcardNo() {
+        return saleUserIdcardNo;
+    }
+
+    public void setSaleUserIdcardNo(String saleUserIdcardNo) {
+        this.saleUserIdcardNo = saleUserIdcardNo;
+    }
+
     public String getSaleWechatPayImg() {
         return saleWechatPayImg;
     }
@@ -193,6 +221,22 @@ public class BuyDetailInfoRespVO {
 
     public void setBuyUserPhonenumber(String buyUserPhonenumber) {
         this.buyUserPhonenumber = buyUserPhonenumber;
+    }
+
+    public String getBuyUserRealName() {
+        return buyUserRealName;
+    }
+
+    public void setBuyUserRealName(String buyUserRealName) {
+        this.buyUserRealName = buyUserRealName;
+    }
+
+    public String getBuyUserIdcardNo() {
+        return buyUserIdcardNo;
+    }
+
+    public void setBuyUserIdcardNo(String buyUserIdcardNo) {
+        this.buyUserIdcardNo = buyUserIdcardNo;
     }
 
     public String getBuyWechatPayImg() {

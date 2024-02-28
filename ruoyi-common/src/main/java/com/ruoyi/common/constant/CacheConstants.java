@@ -45,4 +45,19 @@ public class CacheConstants
      * 登录用户id redis key 用于实现灵活控制多设备登录
      */
     public static final String LOGIN_USER_ID_KEY = "login_user_ids:";
+
+    /**
+     * 卖币订单id redis key
+     */
+    public static final String SALE_ICON_ORDER_ID = "sale_icon_id:";
+
+    /**
+     * 未付款订单id redis key
+     */
+    public static final String BUY_ICON_ORDER_ID_NO_PAY = "buy_icon_id_no_pay:";
+
+    /**
+     * 付款完自动确认订单id redis key
+     */
+    public static final String BUY_ICON_ORDER_ID_AUTO_FINISH = "buy_icon_id_auto_finish:";
 }

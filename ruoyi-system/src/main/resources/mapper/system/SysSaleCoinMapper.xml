@@ -47,6 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="urgentSaleFlg"    column="urgent_sale_flg"    />
         <result property="saleUserNickName"     column="nick_name"    />
         <result property="saleUserPhonenumber"  column="phonenumber"  />
+        <result property="saleUserRealName"        column="real_name"       />
+        <result property="saleUserIdcardNo"        column="idcard_no"       />
         <result property="saleUserAvatar"  column="avatar"  />
         <result property="wechatPayRemark"    column="wechat_pay_remark"  />
         <result property="wechatPayImg"    column="wechat_pay_img"  />
@@ -81,6 +83,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSysSaleCoinBySaleId" parameterType="Long" resultMap="SysSaleCoinResult">
         <include refid="selectSysSaleCoinVo"/>
         where sale_id = #{saleId}
+    </select>
+
+    <select id="checkNofinishSaleInfoExist" parameterType="Long" resultMap="SysSaleCoinResult">
+        <include refid="selectSysSaleCoinVo"/>
+        where sale_user_id = #{userId}
+        and status not in ('2','9')
+        limit 1
     </select>
         
     <insert id="insertSysSaleCoin" parameterType="SysSaleCoin" useGeneratedKeys="true" keyProperty="saleId">
@@ -170,6 +179,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.urgent_sale_flg,
             MAIN.nick_name,
             MAIN.phonenumber,
+            MAIN.real_name,
+            MAIN.idcard_no,
             MAIN.avatar,
             MAIN.wechat_pay_remark,
             MAIN.wechat_pay_img,
@@ -197,6 +208,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 s.urgent_sale_flg,
                 u.nick_name,
                 u.phonenumber,
+                u.real_name,
+                u.idcard_no,
                 u.avatar,
                 u.wechat_pay_remark,
                 u.wechat_pay_img,
@@ -245,6 +258,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         s.urgent_sale_flg,
         u.nick_name,
         u.phonenumber,
+        u.real_name,
+        u.idcard_no,
         u.avatar,
         u.wechat_pay_remark,
         u.wechat_pay_img,
@@ -306,6 +321,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.urgent_sale_flg,
             u.nick_name,
             u.phonenumber,
+            u.real_name,
+            u.idcard_no,
             u.avatar,
             u.wechat_pay_remark,
             u.wechat_pay_img,
@@ -365,6 +382,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         MAIN.urgent_sale_flg,
         MAIN.nick_name,
         MAIN.phonenumber,
+        MAIN.real_name,
+        MAIN.idcard_no,
         MAIN.avatar,
         MAIN.wechat_pay_remark,
         MAIN.wechat_pay_img,
@@ -392,6 +411,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.urgent_sale_flg,
             u.nick_name,
             u.phonenumber,
+            u.real_name,
+            u.idcard_no,
             u.avatar,
             u.wechat_pay_remark,
             u.wechat_pay_img,

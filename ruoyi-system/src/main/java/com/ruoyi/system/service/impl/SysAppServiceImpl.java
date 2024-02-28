@@ -4,10 +4,14 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ruoyi.common.core.domain.entity.SysBuyCoin;
@@ -56,6 +60,21 @@ public class SysAppServiceImpl implements ISysAppService {
     
     @Autowired
     private SysTransactionRecordMapper sysTransactionRecordMapper;
+
+    @Autowired
+    private RedisCache redisCache;
+
+    // 卖币订单自动取消时间（默认480分钟）
+    @Value("${token.saleInfoAutoCancelTime}")
+    private int saleInfoAutoCancelTime;
+
+    // 未付款订单自动取消默认时间（默认2分钟）
+    @Value("${token.noPayAutoCancelTime}")
+    private int noPayAutoCancelTime;
+
+    // 自动确认（默认30分钟）
+    @Value("${token.autoBuyFinishTime}")
+    private int autoBuyFinishTime;
 
     public boolean checkRoleExist(List<SysRole> roleList, Long checkValue){
         boolean exist = false;
@@ -161,6 +180,12 @@ public class SysAppServiceImpl implements ISysAppService {
         if(merchantUser.getSingleBuyMaxAmount() >0 && merchantUser.getSingleBuyMaxAmount().compareTo(vo.getSaleAmount()) < 0){
             throw new ServiceException("卖币金额不允许超过单次可购买最大金额（"+ merchantUser.getSingleBuyMaxAmount() +"）");
         }
+
+        SysSaleCoin dbSaleCoin = sysSaleCoinMapper.checkNofinishSaleInfoExist(userId);
+        if(StringUtils.isNotNull(dbSaleCoin) && dbSaleCoin.getSaleId() > 0){
+            throw new ServiceException("已存在卖币订单，无法重复创建卖币订单。");
+        }
+
         Integer commissionRate = 1;
         Float commissionAmount = 0f;
         Float saleAmountWithoutCommission = 0f;
@@ -274,18 +299,18 @@ public class SysAppServiceImpl implements ISysAppService {
         	SysTransactionRecord transactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("1", null, vo.getSaleId(), null);
         	//手续费交易记录取消
         	SysTransactionRecord commissiontransactionRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("9", null, vo.getSaleId(), null);
-        	if(StringUtils.isNull(transactionRecord) || StringUtils.isNull(commissiontransactionRecord)) {
-                throw new ServiceException("交易记录信息不存在，不可管理");
+        	if(StringUtils.isNotNull(transactionRecord)){
+                transactionRecord.setStatus("9");
+                transactionRecord.setUpdateBy(vo.getUpdateBy());
+                sysTransactionRecordMapper.updateSysTransactionRecord(transactionRecord);
+            }
+
+            if(StringUtils.isNotNull(commissiontransactionRecord)) {
+                commissiontransactionRecord.setStatus("9");
+                commissiontransactionRecord.setUpdateBy(vo.getUpdateBy());
+                sysTransactionRecordMapper.updateSysTransactionRecord(commissiontransactionRecord);
         	}
-        	
-        	transactionRecord.setStatus("9");
-        	transactionRecord.setUpdateBy(vo.getUpdateBy());
-        	sysTransactionRecordMapper.updateSysTransactionRecord(transactionRecord);
-        	
-        	commissiontransactionRecord.setStatus("9");
-        	commissiontransactionRecord.setUpdateBy(vo.getUpdateBy());
-        	sysTransactionRecordMapper.updateSysTransactionRecord(commissiontransactionRecord);
-        	
+
             //更新用户余额
             SysUser user = sysUserService.selectUserById(userId);
             Float remainAmount = user.getAmount() + sysSaleCoin.getSaleAmount();
@@ -420,6 +445,12 @@ public class SysAppServiceImpl implements ISysAppService {
         if(sysSaleCoin == null){
             throw new ServiceException("卖币信息不存在，请联系管理员");
         }
+
+        SysBuyCoin dbBuyCoin = sysBuyCoinMapper.checkNofinishBuyInfoExist(userId);
+        if(StringUtils.isNotNull(dbBuyCoin) && dbBuyCoin.getBuyId() > 0){
+            throw new ServiceException("已存在交易中订单，无法重复购买，请先取消交易中订单。");
+        }
+
         // 订单不可拆分
         if(StringUtils.equals(sysSaleCoin.getSaleSplitType(),"0")
             && sysSaleCoin.getSaleAmountWithoutCommission().compareTo(vo.getBuyAmount()) != 0){
@@ -472,6 +503,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
         int insertRow = sysBuyCoinMapper.insertSysBuyCoin(sysBuyCoin);
 
+        // 买币订单超时设定
+        createBuyOrderNoPay(sysBuyCoin.getBuyId());
+
         return sysBuyCoin.getBuyId();
     }
 
@@ -484,6 +518,13 @@ public class SysAppServiceImpl implements ISysAppService {
         }
 
         if(StringUtils.equals(vo.getStatus(),"9")){
+            // 解除卖币订单锁定
+            deleteSaleOrder(sysBuyCoin.getSaleId());
+            // 解除买家未付款超时
+            deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+            // 解除自动收款超时锁定
+            deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
+
             //取消
             if(StringUtils.equals(sysBuyCoin.getStatus(),"2")){
                 throw new ServiceException("买币完成，不可取消，请联系管理员");
@@ -507,7 +548,14 @@ public class SysAppServiceImpl implements ISysAppService {
 
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"0") && StringUtils.equals(vo.getStatus(),"1")){
             //0进行中 ⇒ 1买家已付款
+            // 解除买家未付款超时
+            deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+
+            // 新增自动收款超时限制
+            createBuyOrderNoFinish(sysBuyCoin.getBuyId());
+
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")){
+
             //1买家已付款 ⇒ 2卖家已确认(买币完成)
             SysTransactionRecord buyRecord = new SysTransactionRecord();
 
@@ -525,6 +573,11 @@ public class SysAppServiceImpl implements ISysAppService {
             buyRecord.setStatus("0");
             buyRecord.setCreateBy(vo.getUpdateBy());
             sysTransactionRecordMapper.insertSysTransactionRecord(buyRecord);
+
+            // 解除卖币订单锁定
+            deleteSaleOrder(sysBuyCoin.getSaleId());
+            // 解除自动收款超时锁定
+            deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
         }
         sysBuyCoin.setStatus(vo.getStatus());
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
@@ -789,5 +842,58 @@ public class SysAppServiceImpl implements ISysAppService {
         respVO.setTodayTotalAmount(todayTotalAmount == null?0f : todayTotalAmount);
         respVO.setYesterdayTotalAmount(yesterdayTotalAmount == null?0f : yesterdayTotalAmount);
         return respVO;
+    }
+
+    @Override
+    public boolean existSalingOrder(Long saleId){
+        String saleIdKey = getSaleOrderKey(saleId);
+        Long saleKey = redisCache.getCacheObject(saleIdKey);
+        if(StringUtils.isNotNull(saleKey)){
+            return true;
+        }
+        return false;
+    }
+
+    private String getSaleOrderKey(Long saleId){
+        return CacheConstants.SALE_ICON_ORDER_ID + saleId;
+    }
+
+    @Override
+    public void createSaleOrder(Long saleId){
+        String saleIdKey = getSaleOrderKey(saleId);
+        redisCache.setCacheObject(saleIdKey, saleId, saleInfoAutoCancelTime, TimeUnit.MINUTES);
+    }
+
+    private void deleteSaleOrder(Long saleId){
+        String saleIdKey = getSaleOrderKey(saleId);
+        redisCache.deleteObject(saleIdKey);
+    }
+
+    private String getNoPayOrderKey(Long buyId){
+        return CacheConstants.BUY_ICON_ORDER_ID_NO_PAY + buyId;
+    }
+
+    private void createBuyOrderNoPay(Long buyId){
+        String buyIdKey = getNoPayOrderKey(buyId);
+        redisCache.setCacheObject(buyIdKey, buyId, noPayAutoCancelTime, TimeUnit.MINUTES);
+    }
+
+    private void deleteBuyOrderNoPay(Long buyId){
+        String buyIdKey = getNoPayOrderKey(buyId);
+        redisCache.deleteObject(buyIdKey);
+    }
+
+    private String getAutoFinishOrderKey(Long buyId){
+        return CacheConstants.BUY_ICON_ORDER_ID_AUTO_FINISH + buyId;
+    }
+
+    private void createBuyOrderNoFinish(Long buyId){
+        String buyIdKey = getAutoFinishOrderKey(buyId);
+        redisCache.setCacheObject(buyIdKey, buyId, autoBuyFinishTime, TimeUnit.MINUTES);
+    }
+
+    private void deleteBuyOrderNoFinish(Long buyId){
+        String buyIdKey = getAutoFinishOrderKey(buyId);
+        redisCache.deleteObject(buyIdKey);
     }
 }

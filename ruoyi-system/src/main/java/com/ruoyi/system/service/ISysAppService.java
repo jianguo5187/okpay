@@ -56,4 +56,8 @@ public interface ISysAppService {
     public List<TransactionDetailInfoRespVO> getMyTransactionList(Long userId, GetMyTransactionListReqVO vo);
 
     public CashFlowRespVO getUserCashFlow(Long userId);
+
+    public boolean existSalingOrder(Long saleId);
+
+    public void createSaleOrder(Long saleId);
 }

@@ -71,4 +71,6 @@ public interface SysBuyCoinMapper
     public SysBuyCoin selectsBuyCoinBySaleId(Long saleId);
 
     public List<BuyDetailInfoRespVO> selectShoppingBuyList(@Param("userId") Long userId, @Param("deptId") Long deptId, @Param("buyUserId") Long buyUserId, @Param("saleNo") String saleNo, @Param("status") String status, @Param("buyType") String buyType, @Param("startBuyTime") Date startBuyTime, @Param("endBuyTime") Date endBuyTime);
+
+    public SysBuyCoin checkNofinishBuyInfoExist(Long userId);
 }

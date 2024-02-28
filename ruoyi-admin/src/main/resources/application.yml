@@ -99,6 +99,12 @@ token:
   expireTime: 120
   # 是否允许账户多终端同时登录（true允许 false不允许）
   singleLogin: false
+  # 卖币订单自动取消时间（480分钟）
+  saleInfoAutoCancelTime: 480
+  # 未付款订单自动取消默认时间（2分钟）
+  noPayAutoCancelTime: 2
+  # 自动确认（30分钟）
+  autoBuyFinishTime: 30
 
 
 # MyBatis配置

@@ -145,13 +145,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="拆分购买最大金额比例" prop="splitMaxRate">
-              <el-input-number v-model="form.splitMaxRate" controls-position="right" :min="0" :max="100" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="拆分购买最大金额比例" prop="splitMaxRate">-->
+<!--              <el-input-number v-model="form.splitMaxRate" controls-position="right" :min="0" :max="100" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :span="12">
             <el-form-item label="单次购买上限金额" prop="singleBuyMaxAmount">
@@ -273,9 +273,9 @@ export default {
         splitMinRate: [
           { required: true, message: "拆分购买最小金额比例不能为空", trigger: "blur" }
         ],
-        splitMaxRate: [
-          { required: true, message: "拆分购买最大金额比例不能为空", trigger: "blur" }
-        ],
+        // splitMaxRate: [
+        //   { required: true, message: "拆分购买最大金额比例不能为空", trigger: "blur" }
+        // ],
         singleBuyMaxAmount: [
           { required: true, message: "单次购买上限金额不能为空", trigger: "blur" }
         ],
@@ -346,7 +346,7 @@ export default {
           normalCommission: undefined,
         createAgentFlg: "0",
         splitMinRate: "0",
-        splitMaxRate: "100",
+        // splitMaxRate: "100",
         singleBuyMaxAmount: "1000",
         // }
       };

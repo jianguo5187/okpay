@@ -74,6 +74,12 @@ public class SaleDetailInfoRespVO {
     /** 卖币用户头像 */
     private String saleUserAvatar;
 
+    /** 卖币用户真实姓名 */
+    private String saleUserRealName;
+
+    /** 卖币用户身份证号码 */
+    private String saleUserIdcardNo;
+
     /** 微信收款填充信息 */
     private String wechatPayRemark;
 
@@ -276,7 +282,23 @@ public class SaleDetailInfoRespVO {
 		this.saleUserAvatar = saleUserAvatar;
 	}
 
-	public String getWechatPayImg() {
+    public String getSaleUserRealName() {
+        return saleUserRealName;
+    }
+
+    public void setSaleUserRealName(String saleUserRealName) {
+        this.saleUserRealName = saleUserRealName;
+    }
+
+    public String getSaleUserIdcardNo() {
+        return saleUserIdcardNo;
+    }
+
+    public void setSaleUserIdcardNo(String saleUserIdcardNo) {
+        this.saleUserIdcardNo = saleUserIdcardNo;
+    }
+
+    public String getWechatPayImg() {
         return wechatPayImg;
     }
 
