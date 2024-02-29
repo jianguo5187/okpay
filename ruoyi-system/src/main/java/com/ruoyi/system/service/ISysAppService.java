@@ -62,4 +62,8 @@ public interface ISysAppService {
     public void createSaleOrder(Long saleId);
 
     public int updatePayTypeStatus(Long userId, UpdatePayTypeReqVO vo);
+
+    public void buyCoinAutoCancel(Long buyId);
+
+    public void buyCoinAutoFinish(Long buyId);
 }

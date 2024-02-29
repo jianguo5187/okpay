@@ -1,10 +1,7 @@
 package com.ruoyi.framework.config;
 
 import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.service.ISysAppService;
-import com.ruoyi.system.service.ISysChatService;
-import com.ruoyi.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +40,19 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
     public void onMessage(Message message, byte[] pattern) {
         String expiredKey = message.toString();
 
-
 //        SysUser user = sysUserService.selectUserById(11l);
         // 过期消息key:aaa.......pattern:__keyevent@*__:expired
         log.info("过期消息key:{}.......pattern:{}", expiredKey, new String(pattern, StandardCharsets.UTF_8));
         // 未付款订单超时
         if(expiredKey.indexOf(CacheConstants.BUY_ICON_ORDER_ID_NO_PAY) >= 0){
 
-
+            String buyId = expiredKey.replace(CacheConstants.BUY_ICON_ORDER_ID_NO_PAY,"");
+            sysAppService.buyCoinAutoCancel(Long.parseLong(buyId));
         // 付款完卖家未确认超时
         }else if(expiredKey.indexOf(CacheConstants.BUY_ICON_ORDER_ID_AUTO_FINISH) >= 0){
 
+            String buyId = expiredKey.replace(CacheConstants.BUY_ICON_ORDER_ID_AUTO_FINISH,"");
+            sysAppService.buyCoinAutoFinish(Long.parseLong(buyId));
         }
     }
 }

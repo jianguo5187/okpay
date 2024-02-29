@@ -172,8 +172,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             MAIN.remain_amount,
             MAIN.split_min_rate,
             MAIN.split_max_rate,
-            TRUNCATE(MAIN.split_min_rate * MAIN.sale_amount_without_commission/100,2) AS split_min_amount,
-            TRUNCATE(MAIN.split_max_rate * MAIN.sale_amount_without_commission/100,2) AS split_max_amount,
+            TRUNCATE(MAIN.split_min_rate * MAIN.remain_amount/100,2) AS split_min_amount,
+            TRUNCATE(MAIN.split_max_rate * MAIN.remain_amount/100,2) AS split_max_amount,
             MAIN.single_buy_max_amount,
             MAIN.status,
             MAIN.urgent_sale_flg,
@@ -224,6 +224,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             WHERE u.user_id = #{userId}
             AND u.user_id != #{merchantUserId}
             AND s.status = '1'
+            AND NOT EXISTS(
+                SELECT 1
+                FROM sys_buy_coin b
+                WHERE b.sale_id = s.sale_id
+                AND b.`status` not in('2','9')
+            )
             <if test="saleAmountFrom != null and saleAmountFrom != 0">
                 AND s.sale_amount >= #{saleAmountFrom}
             </if>
@@ -314,8 +320,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             s.remain_amount,
             s.split_min_rate,
             s.split_max_rate,
-            TRUNCATE(s.split_min_rate * s.sale_amount_without_commission/100,2) AS split_min_amount,
-            TRUNCATE(s.split_max_rate * s.sale_amount_without_commission/100,2) AS split_max_amount,
+            TRUNCATE(s.split_min_rate * s.remain_amount/100,2) AS split_min_amount,
+            TRUNCATE(s.split_max_rate * s.remain_amount/100,2) AS split_max_amount,
             s.single_buy_max_amount,
             s.status,
             s.urgent_sale_flg,
@@ -375,8 +381,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         MAIN.remain_amount,
         MAIN.split_min_rate,
         MAIN.split_max_rate,
-        TRUNCATE(MAIN.split_min_rate * MAIN.sale_amount_without_commission/100,2) AS split_min_amount,
-        TRUNCATE(MAIN.split_max_rate * MAIN.sale_amount_without_commission/100,2) AS split_max_amount,
+        TRUNCATE(MAIN.split_min_rate * MAIN.remain_amount/100,2) AS split_min_amount,
+        TRUNCATE(MAIN.split_max_rate * MAIN.remain_amount/100,2) AS split_max_amount,
         MAIN.single_buy_max_amount,
         MAIN.status,
         MAIN.urgent_sale_flg,

@@ -136,6 +136,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update sys_transaction_record
         <set>
             <if test="status != null">status = #{status},</if>
+            <if test="recordAmount != null">#{recordAmount},</if>
+            <if test="userRemainAmount != null "> #{userRemainAmount},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
  			update_time = sysdate()
         </set>

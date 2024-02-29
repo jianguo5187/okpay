@@ -347,8 +347,6 @@ public class SysAppController extends BaseController {
         if(sysAppService.existSalingOrder(vo.getSaleId())){
             return error("该卖币已经被其他人购买。");
         }
-        // 锁定卖币订单
-        sysAppService.createSaleOrder(vo.getSaleId());
 
 //        Float reaminUserAmount = user.getAmount();
 //

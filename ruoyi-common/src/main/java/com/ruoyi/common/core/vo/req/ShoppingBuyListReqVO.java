@@ -23,7 +23,7 @@ public class ShoppingBuyListReqVO {
     /** 支付方式 */
     private String buyType;
 
-    /** 买币状态（0进行中 1买家已付款 2卖家已确认(买币完成) 9已取消） */
+    /** 买币状态（0进行中 1买家已付款 2卖家已确认(买币完成) 3卖家已确认 9已取消） */
     private String status;
 
     public Date getStartBuyTime() {

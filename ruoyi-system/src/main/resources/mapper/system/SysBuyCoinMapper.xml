@@ -185,6 +185,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getBuyListBySaleId" parameterType="Long" resultMap="BuyDetailInfoResult">
         <include refid="selectBuyDetailVo"/>
         WHERE b.sale_id = #{saleId}
+        AND b.status != '9'
     </select>
 
     <select id="getMyBuyList" resultMap="BuyDetailInfoResult">
