@@ -27,6 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="alipayImg"       column="alipay_img"      />
 		<result property="wechatPayRemark"    column="wechat_pay_remark"  />
 		<result property="alipayRemark"       column="alipay_remark"      />
+		<result property="alipayApproveFlg"       column="alipay_approve_flg"      />
+		<result property="wechatPayApproveFlg"       column="wechat_pay_approve_flg"      />
 		<result property="unionpayRemark"       column="unionpay_remark"      />
 		<result property="unionpayAccount" column="unionpay_account"/>
 		<result property="unionpayCard"    column="unionpay_card"   />
@@ -80,18 +82,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectUserVo">
-        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_remark, u.wechat_pay_img, u.alipay_remark, u.alipay_img, u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
         from sys_user u
 		    left join sys_dept d on u.dept_id = d.dept_id
 		    left join sys_user_role ur on u.user_id = ur.user_id
 		    left join sys_role r on r.role_id = ur.role_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='0' group by a.user_id) alipayNoApprove
+		    on alipayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='1' group by a.user_id) alipay
+		    on alipay.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='0' group by a.user_id) wechatpayNoApprove
+		    on wechatpayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='1' group by a.user_id) wechatpay
+		    on wechatpay.user_id=u.user_id
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_remark, u.wechat_pay_img, u.alipay_remark, u.alipay_img, u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
+		from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='0' group by a.user_id) alipayNoApprove
+		    on alipayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='1' group by a.user_id) alipay
+		    on alipay.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='0' group by a.user_id) wechatpayNoApprove
+		    on wechatpayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='1' group by a.user_id) wechatpay
+		    on wechatpay.user_id=u.user_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
 			AND u.user_id = #{userId}
@@ -119,11 +152,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_remark, u.wechat_pay_img, u.alipay_remark, u.alipay_img, u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
 			 left join sys_role r on r.role_id = ur.role_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='0' group by a.user_id) alipayNoApprove
+		    on alipayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='1' group by a.user_id) alipay
+		    on alipay.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='0' group by a.user_id) wechatpayNoApprove
+		    on wechatpayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='1' group by a.user_id) wechatpay
+		    on wechatpay.user_id=u.user_id
 	    where u.del_flag = '0' and r.role_id = #{roleId}
 	    <if test="userName != null and userName != ''">
 			AND u.user_name like concat('%', #{userName}, '%')
@@ -136,11 +184,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code, u.wechat_pay_remark, u.wechat_pay_img, u.alipay_remark, u.alipay_img, u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
+        , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
 			 left join sys_role r on r.role_id = ur.role_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='0' group by a.user_id) alipayNoApprove
+		    on alipayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='0' and a.status='1' group by a.user_id) alipay
+		    on alipay.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='0' group by a.user_id) wechatpayNoApprove
+		    on wechatpayNoApprove.user_id=u.user_id
+		    left join (select count(*) as approveCnt,a.user_id from sys_user_pay_type_approve a where a.pay_type='1' and a.status='1' group by a.user_id) wechatpay
+		    on wechatpay.user_id=u.user_id
 	    where u.del_flag = '0' and (r.role_id != #{roleId} or r.role_id IS NULL)
 	    and u.user_id not in (select u.user_id from sys_user u inner join sys_user_role ur on u.user_id = ur.user_id and ur.role_id = #{roleId})
 	    <if test="userName != null and userName != ''">

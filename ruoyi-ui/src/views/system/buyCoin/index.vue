@@ -140,6 +140,11 @@
       </el-table-column>
       <el-table-column label="买币金额" align="center" prop="buyAmount" />
       <el-table-column label="买币状态" align="center" prop="status">
+      <el-table-column label="支付凭证" align="center" >
+      <template slot-scope="scope">
+        <image-preview :src="scope.row.buyVoucher" :width="50" :height="50"/>
+        </template> 
+      </el-table-column>
         <template slot-scope="scope">
           <dict-tag :options="dict.type.buy_status" :value="scope.row.status"/>
         </template>
@@ -152,13 +157,13 @@
 <!--            icon="el-icon-edit"-->
 <!--            @click="handleUpdate(scope.row)"-->
 <!--          >修改</el-button>-->
-          <el-button
+          <!-- <el-button
             v-if="scope.row.buyUserId != loginUserId && scope.row.status == '1'"
             size="mini"
             type="text"
             icon="el-icon-picture"
             @click="handleShowBuyVoucher(scope.row,'2')"
-          >查看支付凭证</el-button>
+          >查看支付凭证</el-button> -->
           <el-button
             v-if="scope.row.buyUserId != loginUserId && scope.row.status == '1'"
             size="mini"

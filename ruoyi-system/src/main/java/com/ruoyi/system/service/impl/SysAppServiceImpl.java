@@ -20,6 +20,7 @@ import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysSaleCoin;
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.SysUserPayTypeApprove;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.ImageUtils;
@@ -32,6 +33,7 @@ import com.ruoyi.system.mapper.SysTransactionRecordMapper;
 import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.service.ISysAppService;
 import com.ruoyi.system.service.ISysSaleCoinService;
+import com.ruoyi.system.service.ISysUserPayTypeApproveService;
 import com.ruoyi.system.service.ISysUserService;
 
 @Service
@@ -63,6 +65,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private ISysUserPayTypeApproveService sysUserPayTypeApproveService;
 
     // 卖币订单自动取消时间（默认480分钟）
     @Value("${token.saleInfoAutoCancelTime}")
@@ -896,4 +901,35 @@ public class SysAppServiceImpl implements ISysAppService {
         String buyIdKey = getAutoFinishOrderKey(buyId);
         redisCache.deleteObject(buyIdKey);
     }
+
+	@Override
+	public int updatePayTypeStatus(Long userId, UpdatePayTypeReqVO vo) {
+
+		SysUserPayTypeApprove userPayTypeApprove = sysUserPayTypeApproveService.selectSysUserPayTypeApproveByPayTypeApproveId(vo.getPayTypeApproveId());
+        if(StringUtils.isNull(userPayTypeApprove)){
+            throw new ServiceException("审核信息不存在，请联系管理员");
+        }
+        
+        // 审核成功
+        if(StringUtils.equals(vo.getStatus(), "1")) {
+        	
+            SysUser user = sysUserService.selectUserById(userPayTypeApprove.getUserId());
+            // 支付宝付款码
+            if(StringUtils.equals(userPayTypeApprove.getPayType(), "0")) {
+
+            	user.setAlipayImg(userPayTypeApprove.getPayImg());
+            	user.setAlipayRemark(userPayTypeApprove.getPayRemark());
+            // 微信付款码
+            }else if(StringUtils.equals(userPayTypeApprove.getPayType(), "1")) {
+
+            	user.setWechatPayImg(userPayTypeApprove.getPayImg());
+            	user.setWechatPayRemark(userPayTypeApprove.getPayRemark());
+            }
+            sysUserService.updateUser(user);
+        }
+    	userPayTypeApprove.setStatus(vo.getStatus());
+    	userPayTypeApprove.setUpdateBy(vo.getUpdateBy());
+
+		return sysUserPayTypeApproveService.updateSysUserPayTypeApprove(userPayTypeApprove);
+	}
 }

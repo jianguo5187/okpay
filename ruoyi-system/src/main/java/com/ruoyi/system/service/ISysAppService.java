@@ -60,4 +60,6 @@ public interface ISysAppService {
     public boolean existSalingOrder(Long saleId);
 
     public void createSaleOrder(Long saleId);
+
+    public int updatePayTypeStatus(Long userId, UpdatePayTypeReqVO vo);
 }

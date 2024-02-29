@@ -93,6 +93,12 @@ public class SysUser extends BaseEntity
 
     /** 支付宝收款码图片地址 */
     private String alipayImg;
+    
+    /** 支付宝收款码图片上传flg(0：未承认、1：承认，2：未上传) */
+    private String alipayApproveFlg;
+    
+    /** 微信收款码图片上传flg(0：未承认、1：承认，2：未上传)*/
+    private String wechatPayApproveFlg;
 
     /** 银联填充信息 */
     private String unionpayRemark;
@@ -169,7 +175,7 @@ public class SysUser extends BaseEntity
 
     /** 单次购买上限金额 */
     private Float singleBuyMaxAmount;
-
+    
     public SysUser()
     {
 
@@ -594,7 +600,23 @@ public class SysUser extends BaseEntity
         this.singleBuyMaxAmount = singleBuyMaxAmount;
     }
 
-    @Override
+    public String getAlipayApproveFlg() {
+		return alipayApproveFlg;
+	}
+
+	public void setAlipayApproveFlg(String alipayApproveFlg) {
+		this.alipayApproveFlg = alipayApproveFlg;
+	}
+
+	public String getWechatPayApproveFlg() {
+		return wechatPayApproveFlg;
+	}
+
+	public void setWechatPayApproveFlg(String wechatPayApproveFlg) {
+		this.wechatPayApproveFlg = wechatPayApproveFlg;
+	}
+
+	@Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("userId", getUserId())

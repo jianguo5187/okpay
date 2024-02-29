@@ -603,4 +603,22 @@ public class SysAppController extends BaseController {
         ajax.put("userCashFlow", sysAppService.getUserCashFlow(user.getUserId()));
         return ajax;
     }
+
+    /**
+     * 更新支付方式状态接口
+     */
+    @PostMapping("/updatePayTypeStatus")
+    public AjaxResult updatePayTypeStatus(@RequestBody UpdatePayTypeReqVO vo)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+
+        vo.setUpdateBy(getUsername());
+        int insertRow = sysAppService.updatePayTypeStatus(user.getUserId(), vo);
+        if(insertRow > 0){
+            AjaxResult ajax = AjaxResult.success("状态变更成功");
+            return ajax;
+        }
+        return error("更新卖币状态失败，请联系管理员");
+    }
 }
