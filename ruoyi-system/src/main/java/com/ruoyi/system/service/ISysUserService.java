@@ -202,6 +202,14 @@ public interface ISysUserService
     public int resetPwd(SysUser user);
 
     /**
+     * 重置用户支付密码
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public int resetPayPwd(SysUser user);
+
+    /**
      * 重置用户密码
      * 
      * @param userName 用户名

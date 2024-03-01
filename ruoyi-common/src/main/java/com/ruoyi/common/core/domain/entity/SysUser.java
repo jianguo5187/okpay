@@ -121,6 +121,9 @@ public class SysUser extends BaseEntity
     /** 普通手续费 */
     private Integer normalCommission;
 
+    /** 转账手续费 */
+    private Integer rechargeCommission;
+
     /** 是否可以创建代理（0可以 1不行） */
     private String createAgentFlg;
 
@@ -452,6 +455,14 @@ public class SysUser extends BaseEntity
 
     public void setNormalCommission(Integer normalCommission) {
         this.normalCommission = normalCommission;
+    }
+
+    public Integer getRechargeCommission() {
+        return rechargeCommission;
+    }
+
+    public void setRechargeCommission(Integer rechargeCommission) {
+        this.rechargeCommission = rechargeCommission;
     }
 
     public String getCreateAgentFlg() {

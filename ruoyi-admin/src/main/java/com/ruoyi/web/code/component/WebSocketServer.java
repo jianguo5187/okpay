@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 //import com.ruoyi.common.core.domain.entity.Chat;
 import com.ruoyi.common.core.domain.entity.SysChat;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.system.service.ISysChatService;
 import org.slf4j.Logger;
@@ -162,24 +163,13 @@ public class WebSocketServer {
 
         // 将json字符串转化为json对象
         JSONObject obj = JSON.parseObject(message);
-//        String status = (String) obj.get("status");
-        // 获取消息的内容
-        String text = (String) obj.get("content");
-        // 查看消息要发送给哪个用户
-        String to = obj.get("chatToUserId").toString();
-//        String fromToKey = userId + "-" + to;
-//        String toFromKey = to + "-" + userId;
-//        if (status != null) {
-//            if (status.equals("start")) {
-//                fromToMap.put(fromToKey, 1);
-//            } else if (status.equals("end")) {
-//                System.out.println("移除销毁的fromToKey:" + fromToKey);
-//                fromToMap.remove(fromToKey);
-//            } else if (status.equals("ping")) {
-//                // 更新用户对应的时间戳
-////                userIdAndTimeStampMap.put(userId, System.currentTimeMillis());
-//            }
-//        } else {
+        String type = (String) obj.get("type");
+        if(StringUtils.equals(type,"chat")){
+
+            // 获取消息的内容
+            String text = (String) obj.get("content");
+            // 查看消息要发送给哪个用户
+            String to = obj.get("chatToUserId").toString();
             // 封装数据发送给消息队列
             SysChat chat = new SysChat();
             chat.setFromUserId(Long.parseLong(userId));
@@ -208,6 +198,7 @@ public class WebSocketServer {
             }
 
             chatService.insertSysChat(chat);
+        }
 //            rabbitTemplate.convertAndSend(RabbitMqConstant.CHAT_STORAGE_EXCHANGE, RabbitMqConstant.CHAT_STORAGE_ROUTER_KEY, chat);
 //        }
     }

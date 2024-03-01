@@ -420,6 +420,11 @@ public class SysUserServiceImpl implements ISysUserService
         return userMapper.updateUser(user);
     }
 
+    @Override
+    public int resetPayPwd(SysUser user) {
+        return userMapper.updateUser(user);
+    }
+
     /**
      * 重置用户密码
      * 

@@ -61,6 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     OR tr.record_type = '4'
                     OR tr.record_type = '5'
                     OR tr.record_type = '6'
+                    OR tr.record_type = '7'
+                    OR tr.record_type = '8'
                 THEN
                     tr.record_amount
                 WHEN
@@ -95,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userRemainAmount != null "> and tr.user_remain_amount = #{userRemainAmount}</if>
             <if test="status != null  and status != ''"> and tr.status = #{status}</if>
         </where>
+        order by record_time desc
     </select>
     
     <select id="selectSysTransactionRecordByRecordId" parameterType="Long" resultMap="SysTransactionRecordResult">
@@ -184,7 +187,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from sys_transaction_record
         where user_id = #{userId}
         and status = '0'
-        order by record_id DESC
+        order by record_time DESC
         <if test="pageNumber != null">
             limit #{pageNumber} , #{pageRowCount}
         </if>
@@ -202,6 +205,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         OR tr.record_type = '4'
                         OR tr.record_type = '5'
                         OR tr.record_type = '6'
+                        OR tr.record_type = '7'
+                        OR tr.record_type = '8'
                     THEN
                         tr.record_amount
                     WHEN
@@ -237,6 +242,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         OR tr.record_type = '4'
                         OR tr.record_type = '5'
                         OR tr.record_type = '6'
+                        OR tr.record_type = '7'
+                        OR tr.record_type = '8'
                     THEN
                         tr.record_amount
                     WHEN

@@ -106,7 +106,8 @@ public class SysAppController extends BaseController {
     public AjaxResult checkPayPwd(@RequestBody CheckPayPwdReqVO vo)
     {
         LoginUser loginUser = getLoginUser();
-        String payPassword = loginUser.getUser().getPayPassword();
+        SysUser user = userService.selectUserById(loginUser.getUser().getUserId());
+        String payPassword = user.getPayPassword();
         if (!SecurityUtils.matchesPassword(vo.getPayPassword(), payPassword))
         {
             return error("支付密码错误");
@@ -183,6 +184,26 @@ public class SysAppController extends BaseController {
         searchUser.setDeptId(user.getDeptId());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("userList", userService.selectUserList(searchUser).stream().filter(r -> r.getUserId().compareTo(user.getUserId()) != 0).collect(Collectors.toList()));
+        return ajax;
+    }
+
+    /**
+     * 获取代理用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping("getAgentUserList")
+    public AjaxResult getAgentUserList()
+    {
+
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        Long merchantUserId = sysAppService.parentMerchantUserId(user.getUserId());
+        SysUser merchantUser = userService.selectUserById(merchantUserId);
+
+        SysUser searchUser = new SysUser();
+        searchUser.setDeptId(merchantUser.getDeptId());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("userList", userService.selectUserList(searchUser).stream().filter(r -> StringUtils.equals(r.getUserType(),"03")).collect(Collectors.toList()));
         return ajax;
     }
 

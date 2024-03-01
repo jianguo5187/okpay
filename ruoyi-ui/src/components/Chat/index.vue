@@ -541,7 +541,8 @@ export default {
           chatToUserId: this.loginUserId,
           nickName: actUser.ninickName,
           avatar: actUser.avatar,
-          content: message.content
+          content: message.content,
+          type: "chat"
         };
         this.userInfoList.push(chatContext);
         actUser.chatContent = this.userInfoList;

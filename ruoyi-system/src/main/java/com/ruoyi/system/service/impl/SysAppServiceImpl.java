@@ -368,7 +368,7 @@ public class SysAppServiceImpl implements ISysAppService {
                     SysTransactionRecord newCommissiontransactionRecord = new SysTransactionRecord();
                     newCommissiontransactionRecord.setUserId(userId);
                     newCommissiontransactionRecord.setSaleId(sysSaleCoin.getSaleId());
-                    newCommissiontransactionRecord.setRecordType("8"); //手续费退款扣费
+                    newCommissiontransactionRecord.setRecordType("5"); //手续费退款扣费
                     newCommissiontransactionRecord.setRecordAmount(remainCommissionAmount);
                     newCommissiontransactionRecord.setUserRemainAmount(merchantUser.getAmount() - remainCommissionAmount);
                     newCommissiontransactionRecord.setStatus("0");
@@ -461,8 +461,9 @@ public class SysAppServiceImpl implements ISysAppService {
             supportBuyArg = vo.getSupportBuyType().split(",");
         }
         Long merchantUserId  = parentMerchantUserId(userId);
+        SysUser merchantUser = sysUserService.selectUserById(merchantUserId);
 
-        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,merchantUserId, deptId, vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        List<SaleDetailInfoRespVO> saleList  = sysSaleCoinMapper.getSaleList(userId,merchantUserId, merchantUser.getDeptId(), vo.getSaleAmountFrom(), vo.getSaleAmountTo(), vo.getSaleSplitType(), supportBuyArg, (vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
 //        for(SaleDetailInfoRespVO respVO : saleList){
 //
 //            if(StringUtils.isNotEmpty(respVO.getSaleUserAvatar())){
@@ -830,9 +831,17 @@ public class SysAppServiceImpl implements ISysAppService {
     public Long addRechargeToUser(Long userId, RechargeToUserReqVO vo) {
         SysUser rechargeFromUser = sysUserService.selectUserById(userId);
         SysUser rechargeToUser = sysUserService.selectUserById(vo.getUserId());
+        Long merchantUserId  = parentMerchantUserId(userId);
+        SysUser merchantUser = sysUserService.selectUserById(merchantUserId);
+        Float rechargeCommission = 0f;
+        if(rechargeToUser.getRechargeCommission() > 0){
+            Float f = (vo.getRechargeAmount() * rechargeToUser.getRechargeCommission())/100;
+            BigDecimal b = new BigDecimal(f);
+            rechargeCommission = b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
+        }
 
         Float rechargeFromUserRemainAmount = rechargeFromUser.getAmount() - vo.getRechargeAmount();
-        Float rechargeToUserRemainAmount = rechargeToUser.getAmount() - vo.getRechargeAmount();
+        Float rechargeToUserRemainAmount = rechargeToUser.getAmount() + vo.getRechargeAmount() - rechargeCommission;
 
         SysRecharge recharge = new SysRecharge();
         recharge.setFromUserId(userId);
@@ -865,12 +874,26 @@ public class SysAppServiceImpl implements ISysAppService {
         rechargeToUserRecord.setUserId(vo.getUserId());
         rechargeToUserRecord.setRechargeId(recharge.getRechargeId());
         rechargeToUserRecord.setRecordType("6"); //充值To方
-        rechargeToUserRecord.setRecordAmount(vo.getRechargeAmount());
+        rechargeToUserRecord.setRecordAmount(vo.getRechargeAmount()- rechargeCommission);
         rechargeToUserRecord.setUserRemainAmount(rechargeFromUserRemainAmount);
         rechargeToUserRecord.setStatus("0");
         rechargeToUserRecord.setCreateBy(vo.getCreateBy());
         sysTransactionRecordMapper.insertSysTransactionRecord(rechargeToUserRecord);
 
+        if(rechargeCommission > 0){
+            // 更新余额
+            userMapper.updateUserAmount(merchantUser.getUserId(), merchantUser.getAmount() + rechargeCommission);
+            //充值手续费交易记录
+            SysTransactionRecord rechargeCommissionRecord = new SysTransactionRecord();
+            rechargeCommissionRecord.setUserId(merchantUser.getUserId());
+            rechargeCommissionRecord.setRechargeId(recharge.getRechargeId());
+            rechargeCommissionRecord.setRecordType("8"); //充值手续费
+            rechargeCommissionRecord.setRecordAmount(rechargeCommission);
+            rechargeCommissionRecord.setUserRemainAmount(merchantUser.getAmount() + rechargeCommission);
+            rechargeCommissionRecord.setStatus("0");
+            rechargeCommissionRecord.setCreateBy(vo.getCreateBy());
+            sysTransactionRecordMapper.insertSysTransactionRecord(rechargeCommissionRecord);
+        }
         return recharge.getRechargeId();
     }
 

@@ -138,10 +138,15 @@
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
+<!--          <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />-->
           <el-table-column label="登录账号" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="商户" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户类型" align="center" prop="userType">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.user_type" :value="scope.row.userType"/>
+            </template>
+          </el-table-column>
+<!--          <el-table-column label="所属商户" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />-->
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
@@ -153,11 +158,11 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
-            <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.createTime) }}</span>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">-->
+<!--            <template slot-scope="scope">-->
+<!--              <span>{{ parseTime(scope.row.createTime) }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <el-table-column
             label="操作"
             align="center"
@@ -172,13 +177,13 @@
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']"
               >修改</el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-                v-hasPermi="['system:user:remove']"
-              >删除</el-button>
+<!--              <el-button-->
+<!--                size="mini"-->
+<!--                type="text"-->
+<!--                icon="el-icon-delete"-->
+<!--                @click="handleDelete(scope.row)"-->
+<!--                v-hasPermi="['system:user:remove']"-->
+<!--              >删除</el-button>-->
               <el-button
                 size="mini"
                 type="text"
@@ -186,6 +191,12 @@
                 @click="handleResetPwd(scope.row)"
                 v-hasPermi="['system:user:resetPwd']"
               >重置密码</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-key"
+                @click="handleResetPayPwd(scope.row)"
+              >重置支付密码</el-button>
 <!--              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">-->
 <!--                <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>-->
 <!--                <el-dropdown-menu slot="dropdown">-->
@@ -333,6 +344,13 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row v-if="form.userType=='03'">
+          <el-col :span="12">
+              <el-form-item label="代理转账手续费" prop="rechargeCommission">
+                <el-input-number v-model="form.rechargeCommission" controls-position="right" :min="0"/>
+              </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
 <!--          <el-col :span="12">-->
 <!--            <el-form-item label="岗位">-->
@@ -408,14 +426,14 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect } from "@/api/system/user";
+import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, resetUserPayPwd, changeUserStatus, deptTreeSelect } from "@/api/system/user";
 import { getToken } from "@/utils/auth";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "User",
-  dicts: ['sys_normal_disable', 'sys_user_sex'],
+  dicts: ['sys_normal_disable', 'sys_user_sex', 'user_type'],
   components: { Treeselect },
   data() {
     return {
@@ -597,6 +615,8 @@ export default {
         unionpayAccount: undefined,
         unionpayCard: undefined,
         status: "0",
+        rechargeCommission:0,
+        userType: undefined,
         remark: undefined,
         postIds: [],
         roleIds: []
@@ -676,6 +696,20 @@ export default {
             this.$modal.msgSuccess("修改成功，新密码是：" + value);
           });
         }).catch(() => {});
+    },
+    /** 重置支付密码按钮操作 */
+    handleResetPayPwd(row) {
+      this.$prompt('请输入"' + row.userName + '"的新支付密码', "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnClickModal: false,
+        inputPattern: /^.{1,6}$/,
+        inputErrorMessage: "用户密码长度必须介于 1 和 6 之间"
+      }).then(({ value }) => {
+        resetUserPayPwd(row.userId, value).then(response => {
+          this.$modal.msgSuccess("修改成功，新密码是：" + value);
+        });
+      }).catch(() => {});
     },
     /** 分配角色操作 */
     handleAuthRole: function(row) {

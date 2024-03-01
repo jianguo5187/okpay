@@ -36,6 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="parentUserId"    column="parent_user_id"   />
 		<result property="ungentCommission" column="ungent_commission"   />
 		<result property="normalCommission" column="normal_commission"   />
+		<result property="rechargeCommission" column="recharge_commission"   />
 		<result property="createAgentFlg" column="create_agent_flg"   />
 		<result property="splitMinRate" column="split_min_rate"   />
 		<result property="splitMaxRate" column="split_max_rate"   />
@@ -84,10 +85,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectUserVo">
         select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
-        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
-        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
@@ -109,10 +110,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
 		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
-        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
-        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader
         ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 		from sys_user u
@@ -154,10 +155,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
 	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
-        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
-        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
         ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
@@ -186,10 +187,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
 	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
-        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_remark
+        , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
-        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
+        , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
         ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
@@ -286,6 +287,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">parent_user_id,</if>
 			<if test="ungentCommission != null and ungentCommission != 0">ungent_commission,</if>
 			<if test="normalCommission != null and normalCommission != 0">normal_commission,</if>
+		<if test="rechargeCommission != null and rechargeCommission != 0">recharge_commission,</if>
 			<if test="createAgentFlg != null and createAgentFlg != ''">create_agent_flg,</if>
 			<if test="splitMinRate != null">split_min_rate,</if>
 			<if test="splitMaxRate != null">split_max_rate,</if>
@@ -324,6 +326,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">#{parentUserId},</if>
 			<if test="ungentCommission != null and ungentCommission != 0">#{ungentCommission},</if>
 			<if test="normalCommission != null and normalCommission != 0">#{normalCommission},</if>
+		<if test="rechargeCommission != null and rechargeCommission != 0">#{rechargeCommission},</if>
 			<if test="createAgentFlg != null and createAgentFlg != ''">#{createAgentFlg},</if>
 			<if test="splitMinRate != null">#{splitMinRate},</if>
 			<if test="splitMaxRate != null">#{splitMaxRate},</if>
@@ -366,6 +369,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parentUserId != null and parentUserId != 0">parent_user_id = #{parentUserId},</if>
 			<if test="ungentCommission != null and ungentCommission != 0">ungent_commission = #{ungentCommission},</if>
 			<if test="normalCommission != null and normalCommission != 0">normal_commission = #{normalCommission},</if>
+			<if test="rechargeCommission != null and rechargeCommission != 0">recharge_commission = #{rechargeCommission},</if>
 			<if test="createAgentFlg != null and createAgentFlg != ''">create_agent_flg = #{createAgentFlg},</if>
 			<if test="splitMinRate != null">split_min_rate = #{splitMinRate},</if>
 			<if test="splitMaxRate != null">split_max_rate = #{splitMaxRate},</if>
