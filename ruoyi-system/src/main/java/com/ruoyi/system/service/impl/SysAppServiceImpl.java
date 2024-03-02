@@ -10,6 +10,7 @@ import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.core.vo.req.*;
 import com.ruoyi.common.core.vo.resp.*;
+import com.ruoyi.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,6 @@ import com.ruoyi.system.mapper.SysRechargeMapper;
 import com.ruoyi.system.mapper.SysSaleCoinMapper;
 import com.ruoyi.system.mapper.SysTransactionRecordMapper;
 import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.service.ISysAppService;
-import com.ruoyi.system.service.ISysSaleCoinService;
-import com.ruoyi.system.service.ISysUserPayTypeApproveService;
-import com.ruoyi.system.service.ISysUserService;
 
 @Service
 public class SysAppServiceImpl implements ISysAppService {
@@ -69,6 +66,9 @@ public class SysAppServiceImpl implements ISysAppService {
     @Autowired
     private ISysUserPayTypeApproveService sysUserPayTypeApproveService;
 
+    @Autowired
+    private ISysRoleService roleService;
+
     // 卖币订单自动取消时间（默认480分钟）
     @Value("${token.saleInfoAutoCancelTime}")
     private int saleInfoAutoCancelTime;
@@ -81,10 +81,11 @@ public class SysAppServiceImpl implements ISysAppService {
     @Value("${token.autoBuyFinishTime}")
     private int autoBuyFinishTime;
 
-    public boolean checkRoleExist(List<SysRole> roleList, Long checkValue){
+    public boolean checkRoleExist(Long userId, Long checkValue){
         boolean exist = false;
-        for(SysRole role : roleList){
-            if(role.getRoleId().compareTo(checkValue) == 0){
+        List<Long> roleIdList = roleService.selectRoleListByUserId(userId);
+        for(Long roleId : roleIdList){
+            if(roleId.compareTo(checkValue) == 0){
                 exist = true;
                 break;
             }
@@ -99,39 +100,48 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Override
     public int updatePayInfo(Long userId, UpdatePayInfoReqVO vo) {
-        SysUser user = sysUserService.selectUserById(userId);
-
-        user.setWechatPayRemark(vo.getWechatPayRemark());
-        user.setAlipayRemark(vo.getAlipayRemark());
-        user.setUnionpayRemark(vo.getUnionpayRemark());
-
-        if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
-            String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
-            if(StringUtils.isNotEmpty(wechatPayImgFileName)){
-                user.setWechatPayImg(wechatPayImgFileName);
-            }else{
-                throw new ServiceException("微信收款码图片地址上传失败");
-            }
-        }
-
-        if(StringUtils.isNotEmpty(vo.getAlipayImg())){
-            String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
-            if(StringUtils.isNotEmpty(alipayImgFileName)){
-                user.setAlipayImg(alipayImgFileName);
-            }else{
-                throw new ServiceException("支付宝收款码地址上传失败");
-            }
-        }
 
         if(StringUtils.isNotEmpty(vo.getUnionpayAccount())){
+
+            SysUser user = sysUserService.selectUserById(userId);
+
+            user.setUnionpayRemark(vo.getUnionpayRemark());
             user.setUnionpayAccount(vo.getUnionpayAccount());
-        }
-
-        if(StringUtils.isNotEmpty(vo.getUnionpayCard())){
             user.setUnionpayCard(vo.getUnionpayCard());
-        }
 
-        return userMapper.updateUser(user);
+            return userMapper.updateUser(user);
+        }else{
+
+            SysUserPayTypeApprove userPayTypeApprove = new SysUserPayTypeApprove();
+            if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
+
+                String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
+                if(StringUtils.isNotEmpty(wechatPayImgFileName)){
+                    userPayTypeApprove.setPayImg(wechatPayImgFileName);
+                    userPayTypeApprove.setPayType("1");
+                    userPayTypeApprove.setPayRemark(vo.getWechatPayRemark());
+                }else{
+                    throw new ServiceException("微信收款码图片地址上传失败");
+                }
+
+            }
+
+            if(StringUtils.isNotEmpty(vo.getAlipayImg())){
+                String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
+                if(StringUtils.isNotEmpty(alipayImgFileName)){
+                    userPayTypeApprove.setPayImg(alipayImgFileName);
+                    userPayTypeApprove.setPayType("1");
+                    userPayTypeApprove.setPayRemark(vo.getWechatPayRemark());
+                }else{
+                    throw new ServiceException("支付宝收款码地址上传失败");
+                }
+            }
+            userPayTypeApprove.setUserId(userId);
+            userPayTypeApprove.setStatus("0");
+            userPayTypeApprove.setCreateBy(vo.getUpdateBy());
+
+            return sysUserPayTypeApproveService.insertSysUserPayTypeApprove(userPayTypeApprove);
+        }
     }
 
     @Override
@@ -158,12 +168,12 @@ public class SysAppServiceImpl implements ISysAppService {
             SysUser user = sysUserService.selectUserById(userId);
 
             //商户
-            if(checkRoleExist(user.getRoles(), 3l)) {
+            if(checkRoleExist(userId, 3l)) {
                 return user.getUserId();
-            }else if(checkRoleExist(user.getRoles(), 4l)){
+            }else if(checkRoleExist(userId, 4l)){
                 //代理
                 return user.getParentUserId();
-            }else if(checkRoleExist(user.getRoles(), 5l)){
+            }else if(checkRoleExist(userId, 5l)){
                 //客户
                 SysUser agentUser = sysUserService.selectUserById(user.getParentUserId());
                 return agentUser.getParentUserId();

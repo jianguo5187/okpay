@@ -230,7 +230,7 @@ public class SysAppController extends BaseController {
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
-
+        vo.setUpdateBy(getUsername());
         int updateRow = sysAppService.updatePayInfo(user.getUserId(),vo);
         if (updateRow > 0){
             // 更新缓存用户信息

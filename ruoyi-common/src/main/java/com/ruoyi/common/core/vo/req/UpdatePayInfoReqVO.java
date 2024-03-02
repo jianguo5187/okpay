@@ -23,6 +23,8 @@ public class UpdatePayInfoReqVO {
     /** 银联收款卡号 */
     private String unionpayCard;
 
+    private String updateBy;
+
     public String getWechatPayRemark() {
         return wechatPayRemark;
     }
@@ -77,5 +79,13 @@ public class UpdatePayInfoReqVO {
 
     public void setUnionpayCard(String unionpayCard) {
         this.unionpayCard = unionpayCard;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 }
