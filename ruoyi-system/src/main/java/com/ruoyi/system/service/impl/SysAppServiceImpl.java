@@ -300,14 +300,17 @@ public class SysAppServiceImpl implements ISysAppService {
             sysTransactionRecordMapper.insertSysTransactionRecord(transactionRecord);
         	
         	//商家手续费交易记录生成
-            SysTransactionRecord commissiontransactionRecord = new SysTransactionRecord();
-            commissiontransactionRecord.setUserId(merchantUserId);
-            commissiontransactionRecord.setSaleId(sysSaleCoin.getSaleId());
-            commissiontransactionRecord.setRecordType("5"); //手续费
-            commissiontransactionRecord.setRecordAmount(merchantUser.getAmount() + sysSaleCoin.getCommissionAmount());
-            commissiontransactionRecord.setStatus("0");
-            commissiontransactionRecord.setCreateBy(vo.getUpdateBy());
-            sysTransactionRecordMapper.insertSysTransactionRecord(commissiontransactionRecord);
+            if(sysSaleCoin.getCommissionAmount() >0 ){
+                SysTransactionRecord commissiontransactionRecord = new SysTransactionRecord();
+                commissiontransactionRecord.setUserId(merchantUserId);
+                commissiontransactionRecord.setSaleId(sysSaleCoin.getSaleId());
+                commissiontransactionRecord.setRecordType("5"); //手续费
+                commissiontransactionRecord.setRecordAmount(sysSaleCoin.getCommissionAmount());
+                commissiontransactionRecord.setUserRemainAmount(merchantUser.getAmount() + sysSaleCoin.getCommissionAmount());
+                commissiontransactionRecord.setStatus("0");
+                commissiontransactionRecord.setCreateBy(vo.getUpdateBy());
+                sysTransactionRecordMapper.insertSysTransactionRecord(commissiontransactionRecord);
+            }
 
             merchantUser.setAmount(merchantUser.getAmount() + sysSaleCoin.getCommissionAmount());
             userMapper.updateUser(merchantUser);
@@ -573,9 +576,9 @@ public class SysAppServiceImpl implements ISysAppService {
         sysBuyCoin.setCreateBy(vo.getCreateBy());
 
         Float remainAmount = sysSaleCoin.getRemainAmount() - vo.getBuyAmount();
-        if(remainAmount == 0){
-            sysSaleCoin.setStatus("2");
-        }
+//        if(remainAmount == 0){
+//            sysSaleCoin.setStatus("2");
+//        }
         sysSaleCoin.setRemainAmount(remainAmount);
         sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 
@@ -641,13 +644,13 @@ public class SysAppServiceImpl implements ISysAppService {
                 buyRecord.setCreateBy("AUTO_FINISH");
                 sysTransactionRecordMapper.insertSysTransactionRecord(buyRecord);
 
-//                SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
-//                // 已经全部售出
-//                if(sysSaleCoin.getRemainAmount().compareTo(0f) == 0){
-//                    sysSaleCoin.setStatus("2"); //卖币完成
-//                }
-//                sysSaleCoin.setUpdateBy("AUTO_FINISH");
-//                sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
+                SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
+                // 已经全部售出
+                if(sysSaleCoin.getRemainAmount().compareTo(0f) == 0){
+                    sysSaleCoin.setStatus("2"); //卖币完成
+                }
+                sysSaleCoin.setUpdateBy("AUTO_FINISH");
+                sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 
                 // 解除卖币订单锁定
                 deleteSaleOrder(sysBuyCoin.getSaleId());
@@ -735,13 +738,13 @@ public class SysAppServiceImpl implements ISysAppService {
             buyRecord.setCreateBy(vo.getUpdateBy());
             sysTransactionRecordMapper.insertSysTransactionRecord(buyRecord);
 
-//            SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
-//            // 已经全部售出
-//            if(sysSaleCoin.getRemainAmount().compareTo(0f) == 0){
-//                sysSaleCoin.setStatus("2"); //卖币完成
-//            }
-//            sysSaleCoin.setUpdateBy(vo.getUpdateBy());
-//            sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
+            SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
+            // 已经全部售出
+            if(sysSaleCoin.getRemainAmount().compareTo(0f) == 0){
+                sysSaleCoin.setStatus("2"); //卖币完成
+            }
+            sysSaleCoin.setUpdateBy(vo.getUpdateBy());
+            sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 
             // 解除卖币订单锁定
             deleteSaleOrder(sysBuyCoin.getSaleId());

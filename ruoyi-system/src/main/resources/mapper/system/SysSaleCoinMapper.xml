@@ -299,6 +299,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
         )
         AND u.user_id != #{userId}
+        AND NOT EXISTS (
+            SELECT 1
+            FROM sys_buy_coin b
+            WHERE b.sale_id = s.sale_id
+            AND b.status not in('2','9')
+        )
         <if test="saleAmountFrom != null and saleAmountFrom != 0">
                 AND s.sale_amount >= #{saleAmountFrom}
             </if>
