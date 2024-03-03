@@ -310,7 +310,7 @@ public class SysAppServiceImpl implements ISysAppService {
             sysTransactionRecordMapper.insertSysTransactionRecord(commissiontransactionRecord);
 
             merchantUser.setAmount(merchantUser.getAmount() + sysSaleCoin.getCommissionAmount());
-            sysUserService.updateUser(merchantUser);
+            userMapper.updateUser(merchantUser);
         }else if(StringUtils.equals(vo.getStatus(), "9")) {
             if(StringUtils.equals(sysSaleCoin.getStatus(),"2")){
                 throw new ServiceException("卖币订单已完成，不可取消。");
@@ -386,7 +386,7 @@ public class SysAppServiceImpl implements ISysAppService {
                     sysTransactionRecordMapper.insertSysTransactionRecord(newCommissiontransactionRecord);
 
                     merchantUser.setAmount(merchantUser.getAmount() - sysSaleCoin.getCommissionAmount());
-                    sysUserService.updateUser(merchantUser);
+                    userMapper.updateUser(merchantUser);
                 }
         	}
 
@@ -1111,7 +1111,7 @@ public class SysAppServiceImpl implements ISysAppService {
             	user.setWechatPayImg(userPayTypeApprove.getPayImg());
             	user.setWechatPayRemark(userPayTypeApprove.getPayRemark());
             }
-            sysUserService.updateUser(user);
+            userMapper.updateUser(user);
         }
     	userPayTypeApprove.setStatus(vo.getStatus());
     	userPayTypeApprove.setUpdateBy(vo.getUpdateBy());
