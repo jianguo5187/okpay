@@ -118,7 +118,7 @@ public class SysAppServiceImpl implements ISysAppService {
                 String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
                 if(StringUtils.isNotEmpty(wechatPayImgFileName)){
                     userPayTypeApprove.setPayImg(wechatPayImgFileName);
-                    userPayTypeApprove.setPayType("1");
+                    userPayTypeApprove.setPayType("1"); //微信
                     userPayTypeApprove.setPayRemark(vo.getWechatPayRemark());
                 }else{
                     throw new ServiceException("微信收款码图片地址上传失败");
@@ -130,7 +130,7 @@ public class SysAppServiceImpl implements ISysAppService {
                 String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
                 if(StringUtils.isNotEmpty(alipayImgFileName)){
                     userPayTypeApprove.setPayImg(alipayImgFileName);
-                    userPayTypeApprove.setPayType("1");
+                    userPayTypeApprove.setPayType("0"); //支付宝
                     userPayTypeApprove.setPayRemark(vo.getWechatPayRemark());
                 }else{
                     throw new ServiceException("支付宝收款码地址上传失败");
