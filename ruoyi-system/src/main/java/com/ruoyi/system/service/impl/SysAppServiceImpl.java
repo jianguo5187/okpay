@@ -576,9 +576,6 @@ public class SysAppServiceImpl implements ISysAppService {
         sysBuyCoin.setCreateBy(vo.getCreateBy());
 
         Float remainAmount = sysSaleCoin.getRemainAmount() - vo.getBuyAmount();
-//        if(remainAmount == 0){
-//            sysSaleCoin.setStatus("2");
-//        }
         sysSaleCoin.setRemainAmount(remainAmount);
         sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 

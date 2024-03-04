@@ -392,7 +392,8 @@ export default {
         chatToUserId: actUser.userId,
         nickName: name,
         avatar: this.avatar,
-        content: this.textarea
+        content: this.textarea,
+        type: "chat"
       };
       this.userInfoList.push(chatContext);
       actUser.chatContent = this.userInfoList;

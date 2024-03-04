@@ -29,7 +29,7 @@
           />
         </el-select>
       </el-form-item>
-<!-- 
+<!--
       <el-form-item label="支付方式填充信息" prop="payRemark">
         <el-input
           v-model="queryParams.payRemark"
@@ -125,7 +125,7 @@
       <el-table-column label="收款码图片" align="center" >
       <template slot-scope="scope">
         <image-preview :src="scope.row.payImg" :width="50" :height="50"/>
-        </template> 
+        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -135,7 +135,6 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row,'1')"
-            v-hasPermi="['system:payApprove:edit']"
           >审核</el-button>
           <el-button
             v-if="scope.row.status == '0'"
@@ -143,12 +142,11 @@
             type="text"
             icon="el-icon-delete"
             @click="handleUpdate(scope.row,'9')"
-            v-hasPermi="['system:payApprove:remove']"
           >取消</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -163,11 +161,11 @@
         <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
         </el-form-item>
-       
+
         <el-form-item label="支付方式填充信息" prop="payRemark">
           <el-input v-model="form.payRemark" placeholder="请输入支付方式填充信息" />
         </el-form-item>
-        
+
         <el-form-item label="微信收款码" prop="payImg">
           <imageUpload v-model="form.payImg" :imgUrl="form.payImg" :limit="1"></imageUpload>
         </el-form-item>

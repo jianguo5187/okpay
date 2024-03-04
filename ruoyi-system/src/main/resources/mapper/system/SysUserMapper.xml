@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
-        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(alipayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
         from sys_user u
 		    left join sys_dept d on u.dept_id = d.dept_id
@@ -114,7 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
         , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader
-        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(alipayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 		from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
@@ -159,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
         , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
-        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(alipayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
@@ -191,7 +191,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_img else null end as alipay_img
         , u.unionpay_remark, u.unionpay_account, u.unionpay_card,  u.user_type, u.parent_user_id, u.ungent_commission, u.normal_commission, u.recharge_commission, u.create_agent_flg, u.split_min_rate, u.split_max_rate, u.single_buy_max_amount,  u.status, u.create_time
-        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
+        ,case when IFNULL(alipay.approveCnt,0) > 0 then '1' when IFNULL(alipayNoApprove.approveCnt,0) > 0 then '0' else '2' end as alipay_approve_flg
         ,case when IFNULL(wechatpay.approveCnt,0) > 0 then '1' when IFNULL(wechatpayNoApprove.approveCnt,0) > 0 then '0' else '2' end as wechat_pay_approve_flg
 	    from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
