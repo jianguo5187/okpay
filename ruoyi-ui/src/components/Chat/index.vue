@@ -536,34 +536,37 @@ export default {
       console.log("收到后台信息:", e.data);
       var message = JSON.parse(e.data);
       var actUser = this.userListData[this.actIndex];
-      if(actUser != undefined && message.chatFromUserId == actUser.userId){
-        var chatContext = {
-          chatFromUserId: message.chatFromUserId,
-          chatToUserId: this.loginUserId,
-          nickName: actUser.ninickName,
-          avatar: actUser.avatar,
-          content: message.content,
-          type: "chat"
-        };
-        this.userInfoList.push(chatContext);
-        actUser.chatContent = this.userInfoList;
-        actUser.content = message.content;
-        updateChatReaded({chatFromUser: message.chatFromUserId,chatToUser: this.loginUserId}).then(response => {
-        });
-        // 页面滚动到底部
-        this.$nextTick(() => { // 一定要用nextTick
-          this.setPageScrollTo();
-          //页面滚动条距离顶部高度等于这个盒子的高度
-          this.$refs.scrollBox.scrollTop = this.$refs.scrollBox.scrollHeight;
-        })
-      }else{
-        this.userListData.forEach(el => {
-          if(el.userId == message.chatFromUserId){
-            el.noReadMsgCount = el.noReadMsgCount + 1;
-            el.content = message.content;
-          }
-        })
-        this.getNoReadMsgCount();
+      if(message.type == "chat"){
+
+        if(actUser != undefined && message.chatFromUserId == actUser.userId){
+          var chatContext = {
+            chatFromUserId: message.chatFromUserId,
+            chatToUserId: this.loginUserId,
+            nickName: actUser.ninickName,
+            avatar: actUser.avatar,
+            content: message.content,
+            type: "chat"
+          };
+          this.userInfoList.push(chatContext);
+          actUser.chatContent = this.userInfoList;
+          actUser.content = message.content;
+          updateChatReaded({chatFromUser: message.chatFromUserId,chatToUser: this.loginUserId}).then(response => {
+          });
+          // 页面滚动到底部
+          this.$nextTick(() => { // 一定要用nextTick
+            this.setPageScrollTo();
+            //页面滚动条距离顶部高度等于这个盒子的高度
+            this.$refs.scrollBox.scrollTop = this.$refs.scrollBox.scrollHeight;
+          })
+        }else{
+          this.userListData.forEach(el => {
+            if(el.userId == message.chatFromUserId){
+              el.noReadMsgCount = el.noReadMsgCount + 1;
+              el.content = message.content;
+            }
+          })
+          this.getNoReadMsgCount();
+        }
       }
 
       this.reset(); //收到服务器信息，心跳重置

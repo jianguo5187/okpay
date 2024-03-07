@@ -1,12 +1,9 @@
-package com.ruoyi.web.code.component;
+package com.ruoyi.system.service;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-//import com.ruoyi.common.core.domain.entity.Chat;
 import com.ruoyi.common.core.domain.entity.SysChat;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.domain.server.Sys;
-import com.ruoyi.system.service.ISysChatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,7 +14,6 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -101,10 +97,23 @@ public class WebSocketServer {
         if (toSession != null) {
 
             JSONObject jsonObject = new JSONObject();
+
+            // 将json字符串转化为json对象
+            JSONObject messageObj = JSON.parseObject(message);
+
             // 设置消息来源的用户名
             jsonObject.put("from", userId);
+            // 设置消息类型
+            jsonObject.put("type", messageObj.get("type"));
             // 设置消息内容
-            jsonObject.put("text", message);
+            jsonObject.put("content", messageObj.get("message"));
+            if(messageObj.get("bussineType") != null){
+                // 设置消息业务类型
+                jsonObject.put("bussineType", messageObj.get("bussineType"));
+                // 设置消息业务ID
+                jsonObject.put("bussineId", messageObj.get("bussineId"));
+            }
+
             // 服务端发送消息给目标客户端
             this.sendMessage(jsonObject.toString(), toSession);
             log.info("发送消息给用户 {} ，消息内容是：{} ", toSession, jsonObject.toString());
@@ -186,6 +195,8 @@ public class WebSocketServer {
                 jsonObject.put("chatFromUserId", userId);
                 // 设置消息内容
                 jsonObject.put("content", text);
+                // 消息类型是聊天内容
+                jsonObject.put("type", "chat");
                 // 服务端发送消息给目标客户端
                 this.sendMessage(jsonObject.toString(), toSession);
                 log.info("发送消息给用户 {} ，消息内容是：{} ", toSession, jsonObject.toString());

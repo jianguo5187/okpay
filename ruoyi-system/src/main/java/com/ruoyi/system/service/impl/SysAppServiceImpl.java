@@ -1,11 +1,14 @@
 package com.ruoyi.system.service.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.core.vo.req.*;
@@ -68,6 +71,9 @@ public class SysAppServiceImpl implements ISysAppService {
 
     @Autowired
     private ISysRoleService roleService;
+
+    @Autowired
+    private WebSocketServer webSocketService;
 
     // 卖币订单自动取消时间（默认480分钟）
     @Value("${token.saleInfoAutoCancelTime}")
@@ -584,6 +590,16 @@ public class SysAppServiceImpl implements ISysAppService {
         // 买币订单超时设定
         createBuyOrderNoPay(sysBuyCoin.getBuyId());
 
+        //给卖家推送消息
+        String sendMessage = "{}";
+        JSONObject saleJsonObject = JSON.parseObject(sendMessage);
+        saleJsonObject.put("type", "buyCoinStart");
+        saleJsonObject.put("bussineType", "buyCoin");
+        saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+        saleJsonObject.put("message", "买家下单");
+        sendMessageToUser(0l,sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
+
+
         return sysBuyCoin.getBuyId();
     }
 
@@ -611,6 +627,24 @@ public class SysAppServiceImpl implements ISysAppService {
                 sysBuyCoin.setStatus("9");
                 sysBuyCoin.setUpdateBy("AUTO_CANCEL");
                 sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+
+
+                String sendMessage = "{}";
+                //给买家推送消息
+                JSONObject buyJsonObject = JSON.parseObject(sendMessage);
+                buyJsonObject.put("type", "buyCoinAutoCancel");
+                buyJsonObject.put("bussineType", "buyCoin");
+                buyJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                buyJsonObject.put("message", "订单超时，自动取消");
+                sendMessageToUser(0l,sysBuyCoin.getBuyUserId(),buyJsonObject.toString());
+
+                //给卖家推送消息
+                JSONObject saleJsonObject = JSON.parseObject(sendMessage);
+                saleJsonObject.put("type", "buyCoinAutoCancel");
+                saleJsonObject.put("bussineType", "buyCoin");
+                saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                saleJsonObject.put("message", "订单超时，自动取消");
+                sendMessageToUser(0l,sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
             }
         }
     }
@@ -656,6 +690,24 @@ public class SysAppServiceImpl implements ISysAppService {
                 sysBuyCoin.setStatus("2");
                 sysBuyCoin.setUpdateBy("AUTO_FINISH");
                 sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+
+                String sendMessage = "{}";
+
+                //给买家推送消息
+                JSONObject buyJsonObject = JSON.parseObject(sendMessage);
+                buyJsonObject.put("type", "buyCoinAutoFinish");
+                buyJsonObject.put("bussineType", "buyCoin");
+                buyJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                buyJsonObject.put("message", "订单确认超时，自动完成");
+                sendMessageToUser(0l,sysBuyCoin.getBuyUserId(),buyJsonObject.toString());
+
+                //给卖家推送消息
+                JSONObject saleJsonObject = JSON.parseObject(sendMessage);
+                saleJsonObject.put("type", "buyCoinAutoFinish");
+                saleJsonObject.put("bussineType", "buyCoin");
+                saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                saleJsonObject.put("message", "订单确认超时，自动完成");
+                sendMessageToUser(0l,sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
             }
         }
     }
@@ -667,12 +719,16 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNull(sysBuyCoin)){
             throw new ServiceException("买币信息不存在，请联系管理员");
         }
+        SysUser user = sysUserService.selectUserById(userId);
 
         if(StringUtils.equals(vo.getStatus(),"9")){
+            // 商户可直接驳回买单
             // 订单状态是1买家已付款或2卖家已确认(买币完成)，不可取消
-            if(StringUtils.equals(sysBuyCoin.getStatus(),"1")
-                || StringUtils.equals(sysBuyCoin.getStatus(),"2")){
-                throw new ServiceException("买家已付款，不可取消，请联系管理员");
+            if(StringUtils.equals(user.getUserType(),"03") || StringUtils.equals(user.getUserType(),"04")){
+                if(StringUtils.equals(sysBuyCoin.getStatus(),"1")
+                        || StringUtils.equals(sysBuyCoin.getStatus(),"2")){
+                    throw new ServiceException("买家已付款，不可取消，请联系管理员");
+                }
             }
             // 解除卖币订单锁定
             deleteSaleOrder(sysBuyCoin.getSaleId());
@@ -693,6 +749,44 @@ public class SysAppServiceImpl implements ISysAppService {
             sysSaleCoin.setUpdateBy(vo.getUpdateBy());
             sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
 
+            String sendMessage = "{}";
+            if(userId.compareTo(sysBuyCoin.getBuyUserId()) == 0){
+                //买家取消
+                //给卖家推送消息
+                JSONObject jsonObject = JSON.parseObject(sendMessage);
+                jsonObject.put("type", "buyCoinBuyUserCancel");
+                jsonObject.put("bussineType", "buyCoin");
+                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                jsonObject.put("message", "买家取消");
+                sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
+            }else if(userId.compareTo(sysBuyCoin.getSaleUserId()) == 0){
+                //卖家取消
+                //给买家推送消息
+                JSONObject jsonObject = JSON.parseObject(sendMessage);
+                jsonObject.put("type", "buyCoinSaleUserCancel");
+                jsonObject.put("bussineType", "buyCoin");
+                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                jsonObject.put("message", "卖家取消");
+                sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
+            }else{
+                //商户取消
+                //给买家推送消息
+                JSONObject buyJsonObject = JSON.parseObject(sendMessage);
+                buyJsonObject.put("type", "buyCoinMerchantUserCancel");
+                buyJsonObject.put("bussineType", "buyCoin");
+                buyJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                buyJsonObject.put("message", "商户取消");
+                sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),buyJsonObject.toString());
+
+                //给卖家推送消息
+                JSONObject saleJsonObject = JSON.parseObject(sendMessage);
+                saleJsonObject.put("type", "buyCoinMerchantUserCancel");
+                saleJsonObject.put("bussineType", "buyCoin");
+                saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                saleJsonObject.put("message", "商户取消");
+                sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
+            }
+
 //            //买币记录取消
 //            SysTransactionRecord buyRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("0", sysBuyCoin.getBuyId(), null, null);
 //            if(StringUtils.isNull(buyRecord)) {
@@ -707,6 +801,15 @@ public class SysAppServiceImpl implements ISysAppService {
             // 刷新超时时间
             createBuyOrderNoPay(sysBuyCoin.getBuyId());
 
+            //给买家推送消息
+            String sendMessage = "{}";
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinConfirm");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "卖家已确认售卖");
+            sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
+
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"3") && StringUtils.equals(vo.getStatus(),"1")){
             //3卖家已确认 ⇒ 1买家已付款
             // 解除买家未付款超时
@@ -715,13 +818,22 @@ public class SysAppServiceImpl implements ISysAppService {
             // 新增自动收款超时限制
             createBuyOrderNoFinish(sysBuyCoin.getBuyId());
 
+            //给卖家推送消息
+            String sendMessage = "{}";
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinPayed");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "买家已付款");
+            sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
+
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")){
 
             //1买家已付款 ⇒ 2卖家已确认(买币完成)
             SysTransactionRecord buyRecord = new SysTransactionRecord();
 
             //更新买家用户余额
-            SysUser user = sysUserService.selectUserById(sysBuyCoin.getBuyUserId());
+            user = sysUserService.selectUserById(sysBuyCoin.getBuyUserId());
             Float remainAmount = user.getAmount() + sysBuyCoin.getBuyAmount();
             userMapper.updateUserAmount(user.getUserId(), remainAmount);
 
@@ -747,11 +859,28 @@ public class SysAppServiceImpl implements ISysAppService {
             deleteSaleOrder(sysBuyCoin.getSaleId());
             // 解除自动收款超时锁定
             deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
+
+            //给买家推送消息
+            String sendMessage = "{}";
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinFinish");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "卖家已确认收款，订单完成");
+            sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
         }
         sysBuyCoin.setStatus(vo.getStatus());
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
 
         return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+    }
+
+    public void sendMessageToUser(Long fromUserId, Long toUserId, String message){
+        try {
+            webSocketService.sendMessageTo(fromUserId.toString(),toUserId.toString(),message);
+        } catch (IOException e) {
+//            throw new RuntimeException(e);
+        }
     }
 
 

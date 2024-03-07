@@ -89,7 +89,7 @@
       </span>
     </el-row>
 
-    <el-table v-loading="loading" :data="transactionRecordList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="transactionRecordList">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="记录ID" align="center" prop="recordId" />-->
 <!--      <el-table-column label="交易用户ID" align="center" prop="userId" />-->

@@ -172,12 +172,12 @@
             @click="handleConfirmPayment(scope.row,'2')"
           >确认收款</el-button>
           <el-button
-            v-if="scope.row.status == '0'"
+            v-if="scope.row.buyUserId != loginUserId && scope.row.status != '9'"
             size="mini"
             type="text"
             icon="el-icon-finished"
             @click="handleConfirmPayment(scope.row,'9')"
-          >取消买币</el-button>
+          >买币驳回</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -112,7 +112,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <span style="font-size: 20px;font-weight: bolder;color: red;">点击名称，查看流水明细</span>
-    <el-table v-loading="loading" :data="transactionRecordList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="transactionRecordList">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="交易用户" align="center" prop="userNickName">
         <template slot-scope="scope">

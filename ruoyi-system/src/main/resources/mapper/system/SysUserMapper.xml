@@ -367,9 +367,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="unionpayCard != null and unionpayCard != ''">unionpay_card = #{unionpayCard},</if>
 			<if test="userType != null and userType != ''">user_type = #{userType},</if>
 			<if test="parentUserId != null and parentUserId != 0">parent_user_id = #{parentUserId},</if>
-			<if test="ungentCommission != null and ungentCommission != 0">ungent_commission = #{ungentCommission},</if>
-			<if test="normalCommission != null and normalCommission != 0">normal_commission = #{normalCommission},</if>
-			<if test="rechargeCommission != null and rechargeCommission != 0">recharge_commission = #{rechargeCommission},</if>
+			<if test="ungentCommission != null">ungent_commission = #{ungentCommission},</if>
+			<if test="normalCommission != null">normal_commission = #{normalCommission},</if>
+			<if test="rechargeCommission != null">recharge_commission = #{rechargeCommission},</if>
 			<if test="createAgentFlg != null and createAgentFlg != ''">create_agent_flg = #{createAgentFlg},</if>
 			<if test="splitMinRate != null">split_min_rate = #{splitMinRate},</if>
 			<if test="splitMaxRate != null">split_max_rate = #{splitMaxRate},</if>
