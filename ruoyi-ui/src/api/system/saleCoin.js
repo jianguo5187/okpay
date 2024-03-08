@@ -82,7 +82,7 @@ export function saleShoppingCoin(data) {
 // 用户列表
 export function selectSaleUser() {
   return request({
-    url: '/system/user/list',
+    url: '/system/app/getAllUserList',
     method: 'get',
   })
 }

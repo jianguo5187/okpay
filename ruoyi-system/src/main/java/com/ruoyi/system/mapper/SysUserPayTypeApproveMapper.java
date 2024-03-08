@@ -58,4 +58,12 @@ public interface SysUserPayTypeApproveMapper
      * @return 结果
      */
     public int deleteSysUserPayTypeApproveByPayTypeApproveIds(Long[] payTypeApproveIds);
+
+    /**
+     * 查询用户支付方式审核数据是否存在
+     *
+     * @param sysUserPayTypeApprove 用户支付方式审核
+     * @return 用户支付方式审核
+     */
+    public SysUserPayTypeApprove checkExistsApproveInfo(SysUserPayTypeApprove sysUserPayTypeApprove);
 }

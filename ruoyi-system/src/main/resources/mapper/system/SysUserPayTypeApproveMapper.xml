@@ -98,4 +98,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{payTypeApproveId}
         </foreach>
     </delete>
+
+    <select id="checkExistsApproveInfo" parameterType="SysUserPayTypeApprove" resultMap="SysUserPayTypeApproveResult">
+        select a.user_id, a.pay_type
+        from sys_user_pay_type_approve a
+        where a.del_flag = '0'
+        <if test="userId != null "> and a.user_id = #{userId}</if>
+        <if test="payType != null  and payType != ''"> and a.pay_type = #{payType}</if>
+        <if test="status != null  and status != ''"> and a.status = #{status}</if>
+        limit 1
+    </select>
 </mapper>

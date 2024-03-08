@@ -171,6 +171,23 @@ public class SysAppController extends BaseController {
     }
 
     /**
+     * 获取下属全部用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping("getAllUserList")
+    public AjaxResult getAllUserList()
+    {
+
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        SysUser searchUser = new SysUser();
+        searchUser.setDeptId(user.getDeptId());
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("rows", userService.selectUserList(searchUser));
+        return ajax;
+    }
+
+    /**
      * 获取用户信息
      *
      * @return 用户信息

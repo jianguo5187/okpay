@@ -120,6 +120,14 @@ public class SysAppServiceImpl implements ISysAppService {
 
             SysUserPayTypeApprove userPayTypeApprove = new SysUserPayTypeApprove();
             if(StringUtils.isNotEmpty(vo.getWechatPayImg())){
+                SysUserPayTypeApprove searchUserPayTypeApprove = new SysUserPayTypeApprove();
+                searchUserPayTypeApprove.setUserId(userId);
+                searchUserPayTypeApprove.setPayType("1"); //微信
+                searchUserPayTypeApprove.setStatus("0"); //未承认
+                if(sysUserPayTypeApproveService.checkExistsApproveInfo(searchUserPayTypeApprove)){
+                    throw new ServiceException("已有一笔未承认的微信收款码记录，请先联系管理员进行审核。");
+                }
+
 
                 String wechatPayImgFileName = ImageUtils.savaBase64ImageFile(vo.getWechatPayImg());
                 if(StringUtils.isNotEmpty(wechatPayImgFileName)){
@@ -133,6 +141,15 @@ public class SysAppServiceImpl implements ISysAppService {
             }
 
             if(StringUtils.isNotEmpty(vo.getAlipayImg())){
+
+                SysUserPayTypeApprove searchUserPayTypeApprove = new SysUserPayTypeApprove();
+                searchUserPayTypeApprove.setUserId(userId);
+                searchUserPayTypeApprove.setPayType("0"); //支付宝
+                searchUserPayTypeApprove.setStatus("0"); //未承认
+                if(sysUserPayTypeApproveService.checkExistsApproveInfo(searchUserPayTypeApprove)){
+                    throw new ServiceException("已有一笔未承认的支付宝收款码记录，请先联系管理员进行审核。");
+                }
+
                 String alipayImgFileName = ImageUtils.savaBase64ImageFile(vo.getAlipayImg());
                 if(StringUtils.isNotEmpty(alipayImgFileName)){
                     userPayTypeApprove.setPayImg(alipayImgFileName);
@@ -142,6 +159,11 @@ public class SysAppServiceImpl implements ISysAppService {
                     throw new ServiceException("支付宝收款码地址上传失败");
                 }
             }
+
+            if(StringUtils.isEmpty(userPayTypeApprove.getPayType())){
+                throw new ServiceException("收款码未上传");
+            }
+
             userPayTypeApprove.setUserId(userId);
             userPayTypeApprove.setStatus("0");
             userPayTypeApprove.setCreateBy(vo.getUpdateBy());
@@ -321,6 +343,10 @@ public class SysAppServiceImpl implements ISysAppService {
             merchantUser.setAmount(merchantUser.getAmount() + sysSaleCoin.getCommissionAmount());
             userMapper.updateUser(merchantUser);
         }else if(StringUtils.equals(vo.getStatus(), "9")) {
+            // 挂单已取消，直接返回
+            if(StringUtils.equals(sysSaleCoin.getStatus(), "9")){
+                return 1;
+            }
             if(StringUtils.equals(sysSaleCoin.getStatus(),"2")){
                 throw new ServiceException("卖币订单已完成，不可取消。");
             }
@@ -722,6 +748,10 @@ public class SysAppServiceImpl implements ISysAppService {
         SysUser user = sysUserService.selectUserById(userId);
 
         if(StringUtils.equals(vo.getStatus(),"9")){
+            //DB的买单状态已取消，直接返回
+            if(StringUtils.equals(sysBuyCoin.getStatus(),"9")){
+                return 1;
+            }
             // 商户可直接驳回买单
             // 订单状态是1买家已付款或2卖家已确认(买币完成)，不可取消
             if(StringUtils.equals(user.getUserType(),"03") || StringUtils.equals(user.getUserType(),"04")){
@@ -811,6 +841,7 @@ public class SysAppServiceImpl implements ISysAppService {
             sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
 
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"3") && StringUtils.equals(vo.getStatus(),"1")){
+
             //3卖家已确认 ⇒ 1买家已付款
             // 解除买家未付款超时
             deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
@@ -828,7 +859,6 @@ public class SysAppServiceImpl implements ISysAppService {
             sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
 
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")){
-
             //1买家已付款 ⇒ 2卖家已确认(买币完成)
             SysTransactionRecord buyRecord = new SysTransactionRecord();
 

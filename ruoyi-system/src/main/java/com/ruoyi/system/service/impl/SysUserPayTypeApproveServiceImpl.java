@@ -1,7 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysUserPayTypeApproveMapper;
@@ -92,5 +95,15 @@ public class SysUserPayTypeApproveServiceImpl implements ISysUserPayTypeApproveS
     public int deleteSysUserPayTypeApproveByPayTypeApproveId(Long payTypeApproveId)
     {
         return sysUserPayTypeApproveMapper.deleteSysUserPayTypeApproveByPayTypeApproveId(payTypeApproveId);
+    }
+
+    @Override
+    public boolean checkExistsApproveInfo(SysUserPayTypeApprove sysUserPayTypeApprove) {
+        SysUserPayTypeApprove info = sysUserPayTypeApproveMapper.checkExistsApproveInfo(sysUserPayTypeApprove);
+        if (StringUtils.isNotNull(info))
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -58,4 +58,6 @@ public interface ISysUserPayTypeApproveService
      * @return 结果
      */
     public int deleteSysUserPayTypeApproveByPayTypeApproveId(Long payTypeApproveId);
+
+    public boolean checkExistsApproveInfo(SysUserPayTypeApprove sysUserPayTypeApprove);
 }
