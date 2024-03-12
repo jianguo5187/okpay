@@ -51,48 +51,48 @@
       </el-dropdown>
     </div>
 
-    <el-dialog title="" :visible.sync="open" width="600px" append-to-body>
-      <!-- <div class="chatAppBody">
-          <div class="chatTitle">标题</div>
-          <div class="chatBox">
-              <div class="chatRow">
-                  <el-avatar class="chatAvatar" :size="30" src="https://goflychat.oss-cn-hangzhou.aliyuncs.com/static/upload/avator/2022June/32a988a3c2f8700119fa1f5da1b6a4bd.png"></el-avatar>
-                  <div class="chatMsgContent">
-                      <div class="chatUsername">唯一客服系统</div>
-                      <div class="chatContent">有什么可以帮您?</div>
-                  </div>
-              </div>
-              <div class="chatRow chatRowMe">
-                  <div class="chatContent">你好，这个客服系统多少钱？</div>
-              </div>
-          </div>
-          <div class="chatBottom">输入框区域</div>
-      </div> -->
-       <!--消息整体-->
-      <div class="chatAppBody">
-       <div :class="message.sender==='me'?'chat-message-me':'chat-message-other'"
-             :style="{'padding-bottom':messages.length-1===index?'2rem':'none'}"
-             v-for="(message, index) in messages"
-             :key="index">
-            <!--消息头像-->
-            <div :class="message.sender==='me'?'message-me-asWhole-headPortrait':'message-other-asWhole-headPortrait'">
-              <img src="/static/img/profile.473f5971.jpg" class="examineeFace_logo_style">
-            </div>
-            <!--消息-->
-            <div :class="message.sender==='me'?'message-me-asWhole-right':'message-other-asWhole-right'">
-              <!--消息上面-->
-              <div :class="message.sender==='me'?'message-me-asWhole-top':'message-other-asWhole-top'">
-                考生
-              </div>
-              <!--消息内容-->
-              <div :class="message.sender==='me'?'message-me':'message-other'">
-                {{ message.content }}
-              </div>
-            </div>
-        </div>
-      </div>
+<!--    <el-dialog title="" :visible.sync="open" width="600px" append-to-body>-->
+<!--      &lt;!&ndash; <div class="chatAppBody">-->
+<!--          <div class="chatTitle">标题</div>-->
+<!--          <div class="chatBox">-->
+<!--              <div class="chatRow">-->
+<!--                  <el-avatar class="chatAvatar" :size="30" src="https://goflychat.oss-cn-hangzhou.aliyuncs.com/static/upload/avator/2022June/32a988a3c2f8700119fa1f5da1b6a4bd.png"></el-avatar>-->
+<!--                  <div class="chatMsgContent">-->
+<!--                      <div class="chatUsername">唯一客服系统</div>-->
+<!--                      <div class="chatContent">有什么可以帮您?</div>-->
+<!--                  </div>-->
+<!--              </div>-->
+<!--              <div class="chatRow chatRowMe">-->
+<!--                  <div class="chatContent">你好，这个客服系统多少钱？</div>-->
+<!--              </div>-->
+<!--          </div>-->
+<!--          <div class="chatBottom">输入框区域</div>-->
+<!--      </div> &ndash;&gt;-->
+<!--       &lt;!&ndash;消息整体&ndash;&gt;-->
+<!--      <div class="chatAppBody">-->
+<!--       <div :class="message.sender==='me'?'chat-message-me':'chat-message-other'"-->
+<!--             :style="{'padding-bottom':messages.length-1===index?'2rem':'none'}"-->
+<!--             v-for="(message, index) in messages"-->
+<!--             :key="index">-->
+<!--            &lt;!&ndash;消息头像&ndash;&gt;-->
+<!--            <div :class="message.sender==='me'?'message-me-asWhole-headPortrait':'message-other-asWhole-headPortrait'">-->
+<!--              <img src="/static/img/profile.473f5971.jpg" class="examineeFace_logo_style">-->
+<!--            </div>-->
+<!--            &lt;!&ndash;消息&ndash;&gt;-->
+<!--            <div :class="message.sender==='me'?'message-me-asWhole-right':'message-other-asWhole-right'">-->
+<!--              &lt;!&ndash;消息上面&ndash;&gt;-->
+<!--              <div :class="message.sender==='me'?'message-me-asWhole-top':'message-other-asWhole-top'">-->
+<!--                考生-->
+<!--              </div>-->
+<!--              &lt;!&ndash;消息内容&ndash;&gt;-->
+<!--              <div :class="message.sender==='me'?'message-me':'message-other'">-->
+<!--                {{ message.content }}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
-    </el-dialog>
+<!--    </el-dialog>-->
   </div>
 </template>
 

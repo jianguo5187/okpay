@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="saleId"    column="sale_id"    />
         <result property="rechargeId"    column="recharge_id"    />
         <result property="recordAmount"    column="record_amount"    />
+        <result property="saleRemainAmount"    column="sale_remain_amount"    />
         <result property="showRecordAmount"    column="show_record_amount"    />
         <result property="status"    column="status"    />
     </resultMap>
@@ -174,20 +175,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="getMyTransactionList" resultMap="TransactionDetailInfoResult">
-        select record_id
-             , user_id
-             , record_time
-             , record_type
-             , buy_id
-             , sale_id
-             , recharge_id
-             , record_amount
-             , user_remain_amount
-             , status
-        from sys_transaction_record
-        where user_id = #{userId}
-        and status = '0'
-        order by record_time DESC
+        select r.record_id
+             , r.user_id
+             , r.record_time
+             , r.record_type
+             , r.buy_id
+             , r.sale_id
+             , r.recharge_id
+             , r.record_amount
+             , case when r.record_type = '1' and s.`status` = '1' then s.remain_amount else 0 end as sale_remain_amount
+             , r.user_remain_amount
+             , r.status
+        from sys_transaction_record r
+        left join sys_sale_coin s on s.sale_id = r.sale_id
+        where r.user_id = #{userId}
+        and r.status = '0'
+        order by r.record_time DESC
         <if test="pageNumber != null">
             limit #{pageNumber} , #{pageRowCount}
         </if>

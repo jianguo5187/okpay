@@ -353,9 +353,23 @@ public class SysAppServiceImpl implements ISysAppService {
 
         	// 订单取消
         	// 判断是否有买币记录存在
-            SysBuyCoin dbBuyCoin = sysBuyCoinMapper.checkNofinishBuyInfoExist(userId);
+            boolean existBuyInfo = false;
+            SysBuyCoin dbBuyCoin = sysBuyCoinMapper.checkNofinishBuyInfoExistBySaleId(sysSaleCoin.getSaleId());
             if(StringUtils.isNotNull(dbBuyCoin) && dbBuyCoin.getBuyId() > 0){
-                throw new ServiceException("存在交易中订单，不可取消，请先取消交易中订单。");
+                // 存在卖币信息
+                UpdateBuyStatusReqVO updateBuyStatusReqVO = new UpdateBuyStatusReqVO();
+                updateBuyStatusReqVO.setBuyId(dbBuyCoin.getBuyId());
+                updateBuyStatusReqVO.setStatus("9"); // 买币取消
+                updateBuyStatusReqVO.setUpdateBy(vo.getUpdateBy());
+                cancelBuyCoin(userId,updateBuyStatusReqVO);
+
+                dbBuyCoin.setStatus("9");
+                dbBuyCoin.setUpdateBy(vo.getUpdateBy());
+                sysBuyCoinMapper.updateSysBuyCoin(dbBuyCoin);
+
+                //重新获取修正后的卖币情报
+                sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(vo.getSaleId());
+                existBuyInfo = true;
             }
 
             // 应退还的手续费
@@ -382,20 +396,27 @@ public class SysAppServiceImpl implements ISysAppService {
 
             if(StringUtils.isNotNull(transactionRecord)){
                 // 被交易过（订单剩余金额 != 扣除手续费可交易金额）
-                if(sysSaleCoin.getSaleAmountWithoutCommission().compareTo(sysSaleCoin.getRemainAmount()) != 0){
-                    // 取消卖币交易记录生成
-                    SysTransactionRecord newTransactionRecord = new SysTransactionRecord();
-                    newTransactionRecord.setUserId(userId);
-                    newTransactionRecord.setSaleId(sysSaleCoin.getSaleId());
-                    newTransactionRecord.setRecordType("7"); //卖币退款
-                    newTransactionRecord.setRecordAmount(sysSaleCoin.getRemainAmount() + remainCommissionAmount);
-                    newTransactionRecord.setUserRemainAmount(remainAmount);
-                    newTransactionRecord.setStatus("0");
-                    newTransactionRecord.setCreateBy(vo.getUpdateBy());
-                    sysTransactionRecordMapper.insertSysTransactionRecord(newTransactionRecord);
+                if(existBuyInfo || sysSaleCoin.getSaleAmountWithoutCommission().compareTo(sysSaleCoin.getRemainAmount()) != 0){
+                    Float recordAmount = sysSaleCoin.getRemainAmount() + remainCommissionAmount;
+                    if(recordAmount.compareTo(0f) != 0){
+                        // 取消卖币交易记录生成
+                        SysTransactionRecord newTransactionRecord = new SysTransactionRecord();
+                        newTransactionRecord.setUserId(userId);
+                        newTransactionRecord.setSaleId(sysSaleCoin.getSaleId());
+                        newTransactionRecord.setRecordType("7"); //卖币退款
+                        newTransactionRecord.setRecordAmount(sysSaleCoin.getRemainAmount() + remainCommissionAmount);
+                        newTransactionRecord.setUserRemainAmount(remainAmount);
+                        newTransactionRecord.setStatus("0");
+                        newTransactionRecord.setCreateBy(vo.getUpdateBy());
+                        sysTransactionRecordMapper.insertSysTransactionRecord(newTransactionRecord);
+                    }
+                    // 交易过
+                    existBuyInfo = true;
                 }
 
-                transactionRecord.setStatus("9");
+                if(!existBuyInfo){
+                    transactionRecord.setStatus("9");
+                }
                 transactionRecord.setUpdateBy(vo.getUpdateBy());
                 sysTransactionRecordMapper.updateSysTransactionRecord(transactionRecord);
             }
@@ -738,6 +759,81 @@ public class SysAppServiceImpl implements ISysAppService {
         }
     }
 
+    public void cancelBuyCoin(Long userId, UpdateBuyStatusReqVO vo){
+
+        SysBuyCoin sysBuyCoin = sysBuyCoinMapper.selectSysBuyCoinByBuyId(vo.getBuyId());
+        SysUser user = sysUserService.selectUserById(userId);
+        //DB的买单状态已取消，直接返回
+        if(StringUtils.equals(sysBuyCoin.getStatus(),"9")){
+            return;
+        }
+        // 商户可直接驳回买单
+        // 订单状态是1买家已付款或2卖家已确认(买币完成)，不可取消
+        if(StringUtils.equals(user.getUserType(),"03") || StringUtils.equals(user.getUserType(),"04")){
+            if(StringUtils.equals(sysBuyCoin.getStatus(),"1")
+                    || StringUtils.equals(sysBuyCoin.getStatus(),"2")){
+                throw new ServiceException("买家已付款，不可取消，请联系管理员");
+            }
+        }
+        // 解除卖币订单锁定
+        deleteSaleOrder(sysBuyCoin.getSaleId());
+        // 解除买家未付款超时
+        deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+        // 解除自动收款超时锁定
+//            deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
+//
+//            //取消
+//            if(StringUtils.equals(sysBuyCoin.getStatus(),"2")){
+//                throw new ServiceException("买币完成，不可取消，请联系管理员");
+//            }
+
+        //卖单取消
+        SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
+        sysSaleCoin.setStatus("1");
+        sysSaleCoin.setRemainAmount(sysSaleCoin.getRemainAmount() + sysBuyCoin.getBuyAmount());
+        sysSaleCoin.setUpdateBy(vo.getUpdateBy());
+        sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
+
+        String sendMessage = "{}";
+        if(userId.compareTo(sysBuyCoin.getBuyUserId()) == 0){
+            //买家取消
+            //给卖家推送消息
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinBuyUserCancel");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "买家取消");
+            sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
+        }else if(userId.compareTo(sysBuyCoin.getSaleUserId()) == 0){
+            //卖家取消
+            //给买家推送消息
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinSaleUserCancel");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "卖家取消");
+            sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
+        }else{
+            //商户取消
+            //给买家推送消息
+            JSONObject buyJsonObject = JSON.parseObject(sendMessage);
+            buyJsonObject.put("type", "buyCoinMerchantUserCancel");
+            buyJsonObject.put("bussineType", "buyCoin");
+            buyJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            buyJsonObject.put("message", "商户取消");
+            sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),buyJsonObject.toString());
+
+            //给卖家推送消息
+            JSONObject saleJsonObject = JSON.parseObject(sendMessage);
+            saleJsonObject.put("type", "buyCoinMerchantUserCancel");
+            saleJsonObject.put("bussineType", "buyCoin");
+            saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            saleJsonObject.put("message", "商户取消");
+            sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
+        }
+    }
+
+
     @Override
     public int updateBuyStatus(Long userId, UpdateBuyStatusReqVO vo) {
 
@@ -748,75 +844,8 @@ public class SysAppServiceImpl implements ISysAppService {
         SysUser user = sysUserService.selectUserById(userId);
 
         if(StringUtils.equals(vo.getStatus(),"9")){
-            //DB的买单状态已取消，直接返回
-            if(StringUtils.equals(sysBuyCoin.getStatus(),"9")){
-                return 1;
-            }
-            // 商户可直接驳回买单
-            // 订单状态是1买家已付款或2卖家已确认(买币完成)，不可取消
-            if(StringUtils.equals(user.getUserType(),"03") || StringUtils.equals(user.getUserType(),"04")){
-                if(StringUtils.equals(sysBuyCoin.getStatus(),"1")
-                        || StringUtils.equals(sysBuyCoin.getStatus(),"2")){
-                    throw new ServiceException("买家已付款，不可取消，请联系管理员");
-                }
-            }
-            // 解除卖币订单锁定
-            deleteSaleOrder(sysBuyCoin.getSaleId());
-            // 解除买家未付款超时
-            deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
-            // 解除自动收款超时锁定
-//            deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
-//
-//            //取消
-//            if(StringUtils.equals(sysBuyCoin.getStatus(),"2")){
-//                throw new ServiceException("买币完成，不可取消，请联系管理员");
-//            }
 
-            //卖单取消
-            SysSaleCoin sysSaleCoin = sysSaleCoinMapper.selectSysSaleCoinBySaleId(sysBuyCoin.getSaleId());
-            sysSaleCoin.setStatus("1");
-            sysSaleCoin.setRemainAmount(sysSaleCoin.getRemainAmount() + sysBuyCoin.getBuyAmount());
-            sysSaleCoin.setUpdateBy(vo.getUpdateBy());
-            sysSaleCoinMapper.updateSysSaleCoin(sysSaleCoin);
-
-            String sendMessage = "{}";
-            if(userId.compareTo(sysBuyCoin.getBuyUserId()) == 0){
-                //买家取消
-                //给卖家推送消息
-                JSONObject jsonObject = JSON.parseObject(sendMessage);
-                jsonObject.put("type", "buyCoinBuyUserCancel");
-                jsonObject.put("bussineType", "buyCoin");
-                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
-                jsonObject.put("message", "买家取消");
-                sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
-            }else if(userId.compareTo(sysBuyCoin.getSaleUserId()) == 0){
-                //卖家取消
-                //给买家推送消息
-                JSONObject jsonObject = JSON.parseObject(sendMessage);
-                jsonObject.put("type", "buyCoinSaleUserCancel");
-                jsonObject.put("bussineType", "buyCoin");
-                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
-                jsonObject.put("message", "卖家取消");
-                sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
-            }else{
-                //商户取消
-                //给买家推送消息
-                JSONObject buyJsonObject = JSON.parseObject(sendMessage);
-                buyJsonObject.put("type", "buyCoinMerchantUserCancel");
-                buyJsonObject.put("bussineType", "buyCoin");
-                buyJsonObject.put("bussineId", sysBuyCoin.getBuyId());
-                buyJsonObject.put("message", "商户取消");
-                sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),buyJsonObject.toString());
-
-                //给卖家推送消息
-                JSONObject saleJsonObject = JSON.parseObject(sendMessage);
-                saleJsonObject.put("type", "buyCoinMerchantUserCancel");
-                saleJsonObject.put("bussineType", "buyCoin");
-                saleJsonObject.put("bussineId", sysBuyCoin.getBuyId());
-                saleJsonObject.put("message", "商户取消");
-                sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),saleJsonObject.toString());
-            }
-
+            cancelBuyCoin(userId,vo);
 //            //买币记录取消
 //            SysTransactionRecord buyRecord = sysTransactionRecordMapper.selectTransactionRecordByRecordTypeAndId("0", sysBuyCoin.getBuyId(), null, null);
 //            if(StringUtils.isNull(buyRecord)) {
@@ -1063,6 +1092,16 @@ public class SysAppServiceImpl implements ISysAppService {
             rechargeCommissionRecord.setCreateBy(vo.getCreateBy());
             sysTransactionRecordMapper.insertSysTransactionRecord(rechargeCommissionRecord);
         }
+
+        //给被充值的人 推送消息
+        String sendMessage = "{}";
+        JSONObject jsonObject = JSON.parseObject(sendMessage);
+        jsonObject.put("type", "rechargeFinish");
+        jsonObject.put("bussineType", "recharge");
+        jsonObject.put("bussineId", recharge.getRechargeId());
+        jsonObject.put("message", "充值完成");
+        sendMessageToUser(userId,vo.getUserId(),jsonObject.toString());
+
         return recharge.getRechargeId();
     }
 

@@ -84,6 +84,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and status not in ('2','9')
         limit 1
     </select>
+
+    <select id="checkNofinishBuyInfoExistBySaleId" parameterType="Long" resultMap="SysBuyCoinResult">
+        <include refid="selectSysBuyCoinVo"/>
+        where sale_id = #{saleId}
+        and status not in ('2','9')
+        limit 1
+    </select>
         
     <insert id="insertSysBuyCoin" parameterType="SysBuyCoin" useGeneratedKeys="true" keyProperty="buyId">
         insert into sys_buy_coin(

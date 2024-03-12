@@ -59,7 +59,7 @@ CREATE TABLE `sys_sale_coin` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`sale_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='卖币表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='卖币表';
 
 DROP TABLE IF EXISTS `sys_transaction_record`;
 CREATE TABLE `sys_transaction_record` (
