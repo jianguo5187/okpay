@@ -768,13 +768,17 @@ public class SysAppServiceImpl implements ISysAppService {
             return;
         }
         // 商户可直接驳回买单
-        // 订单状态是1买家已付款或2卖家已确认(买币完成)，不可取消
+        // 订单状态是1买家已付款或2卖家已确认(买币完成)或4异议单，不可取消
         if(StringUtils.equals(user.getUserType(),"03") || StringUtils.equals(user.getUserType(),"04")){
             if(StringUtils.equals(sysBuyCoin.getStatus(),"1")
                     || StringUtils.equals(sysBuyCoin.getStatus(),"2")){
                 throw new ServiceException("买家已付款，不可取消，请联系管理员");
             }
+            if(StringUtils.equals(sysBuyCoin.getStatus(),"4")){
+                throw new ServiceException("订单存在异议，不可取消，请联系管理员");
+            }
         }
+
         // 解除卖币订单锁定
         deleteSaleOrder(sysBuyCoin.getSaleId());
         // 解除买家未付款超时
@@ -843,7 +847,36 @@ public class SysAppServiceImpl implements ISysAppService {
         }
         SysUser user = sysUserService.selectUserById(userId);
 
-        if(StringUtils.equals(vo.getStatus(),"9")){
+        if(StringUtils.equals(vo.getStatus(),"4")) {
+            if(StringUtils.equals("9",sysBuyCoin.getStatus())){
+                throw new ServiceException("买币订单已被取消，无法提出异议");
+            }
+
+            // 解除买家未付款超时
+            deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+
+            String sendMessage = "{}";
+            if(sysBuyCoin.getBuyUserId().compareTo(userId) == 0){
+
+                //给卖家推送消息
+                JSONObject jsonObject = JSON.parseObject(sendMessage);
+                jsonObject.put("type", "buyCoinObjection");
+                jsonObject.put("bussineType", "buyCoin");
+                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                jsonObject.put("message", "买家有异议，管理员审核中");
+                sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
+            }else if(sysBuyCoin.getBuyUserId().compareTo(userId) == 0){
+
+                //给买家推送消息
+                JSONObject jsonObject = JSON.parseObject(sendMessage);
+                jsonObject.put("type", "buyCoinObjection");
+                jsonObject.put("bussineType", "buyCoin");
+                jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+                jsonObject.put("message", "卖家有异议，管理员审核中");
+                sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
+            }
+
+        }else if(StringUtils.equals(vo.getStatus(),"9")){
 
             cancelBuyCoin(userId,vo);
 //            //买币记录取消
