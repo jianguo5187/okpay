@@ -920,8 +920,12 @@ public class SysAppServiceImpl implements ISysAppService {
             jsonObject.put("message", "买家已付款");
             sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
 
-        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")){
+        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"1") && StringUtils.equals(vo.getStatus(),"2")
+            || StringUtils.equals(sysBuyCoin.getStatus(),"4") && StringUtils.equals(vo.getStatus(),"2")){
+
             //1买家已付款 ⇒ 2卖家已确认(买币完成)
+            //4异议 ⇒ 2卖家已确认(买币完成)
+
             SysTransactionRecord buyRecord = new SysTransactionRecord();
 
             //更新买家用户余额

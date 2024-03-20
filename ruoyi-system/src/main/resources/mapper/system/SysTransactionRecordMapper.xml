@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="rechargeId"    column="recharge_id"    />
         <result property="recordAmount"    column="record_amount"    />
         <result property="saleRemainAmount"    column="sale_remain_amount"    />
+        <result property="userRemainAmount"    column="user_remain_amount"    />
         <result property="showRecordAmount"    column="show_record_amount"    />
         <result property="status"    column="status"    />
     </resultMap>

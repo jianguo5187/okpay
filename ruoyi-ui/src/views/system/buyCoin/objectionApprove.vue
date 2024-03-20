@@ -294,11 +294,20 @@ export default {
     },
     /** 确认收款按钮操作 */
     handleConfirmPayment(row,status) {
-      this.$modal.confirm('是否确认已经打款').then(function() {
+      var message1 = "";
+      var message2 = "";
+      if(status == '2'){
+        message1 = '是否确认已经打款';
+        message2 = "确认打款完成";
+      }else{
+        message1 = "是否确认驳回异议";
+        message2 = "异议驳回完成";
+      }
+      this.$modal.confirm(message1).then(function() {
         return confirmPayment({"buyId":row.buyId,"status":status});
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("确认打款完成");
+        this.$modal.msgSuccess(message2);
       }).catch((e) => {
         // console.log(error);
       });
