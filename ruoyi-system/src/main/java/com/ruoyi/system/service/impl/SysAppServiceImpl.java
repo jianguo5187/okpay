@@ -1095,6 +1095,7 @@ public class SysAppServiceImpl implements ISysAppService {
         rechargeFromRecord.setRechargeId(recharge.getRechargeId());
         rechargeFromRecord.setRecordType("3"); //充值From方
         rechargeFromRecord.setRecordAmount(vo.getRechargeAmount());
+        rechargeFromRecord.setUserRemainAmount(rechargeFromUserRemainAmount);
         rechargeFromRecord.setStatus("0");
         rechargeFromRecord.setCreateBy(vo.getCreateBy());
         sysTransactionRecordMapper.insertSysTransactionRecord(rechargeFromRecord);
@@ -1110,7 +1111,7 @@ public class SysAppServiceImpl implements ISysAppService {
         rechargeToUserRecord.setRechargeId(recharge.getRechargeId());
         rechargeToUserRecord.setRecordType("6"); //充值To方
         rechargeToUserRecord.setRecordAmount(vo.getRechargeAmount()- rechargeCommission);
-        rechargeToUserRecord.setUserRemainAmount(rechargeFromUserRemainAmount);
+        rechargeToUserRecord.setUserRemainAmount(rechargeToUserRemainAmount);
         rechargeToUserRecord.setStatus("0");
         rechargeToUserRecord.setCreateBy(vo.getCreateBy());
         sysTransactionRecordMapper.insertSysTransactionRecord(rechargeToUserRecord);
