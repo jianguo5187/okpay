@@ -1,17 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
-      <el-form-item label="卖币No" prop="saleNo">
-        <el-input
-          v-model="queryParams.saleNo"
-          placeholder="请输入卖币No"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
 
       <el-form-item label="买币用户" prop="buyUserId">
-        <el-select v-model="queryParams.buyUserId" placeholder="请选择买币用户">
+        <el-select v-model="queryParams.buyUserId" placeholder="请选择买币用户" filterable>
           <el-option
             clearable
             v-for="item in userListOptions"
@@ -20,6 +12,14 @@
             :value="item.userId"
           ></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="卖币No" prop="saleNo">
+        <el-input
+          v-model="queryParams.saleNo"
+          placeholder="请输入卖币No"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

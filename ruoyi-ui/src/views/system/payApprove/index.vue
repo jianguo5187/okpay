@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="用户" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择用户"
+        <el-select v-model="queryParams.userId" placeholder="请选择用户" filterable
           @change="handleQuery">
           <el-option
             clearable

@@ -1,6 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
+      <el-form-item label="卖币用户" prop="saleUserId">
+        <el-select v-model="queryParams.saleUserId" placeholder="请选择卖币用户" filterable>
+          <el-option
+            clearable
+            v-for="item in userListOptions"
+            :key="item.userId"
+            :label="item.nickName"
+            :value="item.userId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="卖币开始日" prop="startSaleTime">
         <el-date-picker clearable
           v-model="queryParams.startSaleTime"
@@ -24,18 +36,6 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-
-      <el-form-item label="卖币用户" prop="saleUserId">
-        <el-select v-model="queryParams.saleUserId" placeholder="请选择卖币用户">
-          <el-option
-            clearable
-            v-for="item in userListOptions"
-            :key="item.userId"
-            :label="item.nickName"
-            :value="item.userId"
-          ></el-option>
-        </el-select>
       </el-form-item>
 
       <el-form-item label="是否可拆分" prop="saleSplitType">
