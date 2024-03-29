@@ -1,37 +1,55 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="交易用户" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择买币用户" @change="handleQuery" filterable>
-          <el-option
-            clearable
-            v-for="item in userListOptions"
-            :key="item.userId"
-            :label="item.nickName"
-            :value="item.userId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="交易用户" prop="userId">-->
+<!--        <el-select v-model="queryParams.userId" placeholder="请选择买币用户" @change="handleQuery" filterable>-->
+<!--          <el-option-->
+<!--            clearable-->
+<!--            v-for="item in userListOptions"-->
+<!--            :key="item.userId"-->
+<!--            :label="item.nickName"-->
+<!--            :value="item.userId"-->
+<!--          ></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="交易用户" prop="userId">
+            <treeselect
+              v-model="queryParams.userId"
+              :options="userListOptions"
+              :normalizer="normalizer"
+              :show-count="true"
+              @select="handleQuery"
+              placeholder="请选择买币用户"
+              style="width: 320px;"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="交易类型" prop="recordType">
+            <el-select
+              v-model="queryParams.recordType"
+              placeholder="交易类型"
+              clearable
+              style="width: 240px"
+              @change="handleQuery">
+              <el-option
+                v-for="dict in dict.type.transaction_record_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
-      <el-form-item label="交易类型" prop="recordType">
-        <el-select
-          v-model="queryParams.recordType"
-          placeholder="交易类型"
-          clearable
-          style="width: 240px"
-          @change="handleQuery">
-          <el-option
-            v-for="dict in dict.type.transaction_record_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
@@ -184,14 +202,21 @@ import {
   getUserTotalAmount
 } from "@/api/system/transactionRecord";
 import {selectSaleUser} from "@/api/system/saleCoin";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "TransactionRecord",
+  components: {Treeselect},
   dicts: ['transaction_record_type'],
   data() {
     return {
       // 遮罩层
       loading: true,
+      // 登录用户ID
+      loginUserId: this.$store.state.user.id,
+      // 登录用户Name
+      loginUserName: this.$store.state.user.name,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -246,9 +271,24 @@ export default {
         this.loading = false;
       });
     },
+    /** 转换菜单数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.userId,
+        label: node.nickName,
+        children: node.children
+      };
+    },
     getUserList(){
       selectSaleUser().then(response => {
-        this.userListOptions = response.rows;
+        // this.userListOptions = response.rows;;
+        this.userListOptions = [];
+        const menu = { userId: this.loginUserId, nickName: this.loginUserName, children: [] };
+        menu.children = this.handleTree(response.rows, "userId", "parentUserId");
+        this.userListOptions.push(menu);
         this.queryParams.userId = parseInt(this.defaultUserId);
         this.getList();
       });

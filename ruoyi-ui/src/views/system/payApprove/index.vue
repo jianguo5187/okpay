@@ -1,18 +1,32 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="用户" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择用户" filterable
-          @change="handleQuery">
-          <el-option
-            clearable
-            v-for="item in userListOptions"
-            :key="item.userId"
-            :label="item.nickName"
-            :value="item.userId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="用户" prop="userId">-->
+<!--        <el-select v-model="queryParams.userId" placeholder="请选择用户" filterable-->
+<!--          @change="handleQuery">-->
+<!--          <el-option-->
+<!--            clearable-->
+<!--            v-for="item in userListOptions"-->
+<!--            :key="item.userId"-->
+<!--            :label="item.nickName"-->
+<!--            :value="item.userId"-->
+<!--          ></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="用户" prop="userId">
+            <treeselect
+              v-model="queryParams.userId"
+              :options="userListOptions"
+              :normalizer="normalizer"
+              @select="handleQuery"
+              :show-count="true"
+              placeholder="请选择用户"
+              style="width: 320px;"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-form-item label="状态" prop="status">
         <el-select
@@ -181,9 +195,12 @@
 <script>
 import { listPayApprove, getPayApprove, delPayApprove, addPayApprove, updatePayApprove, updatePayType } from "@/api/system/payApprove";
 import {selectSaleUser} from "@/api/system/saleCoin";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "PayApprove",
+  components: {Treeselect},
   dicts: ['pay_type_approve','pay_type'],
   data() {
     return {
@@ -191,6 +208,10 @@ export default {
       baseApi: process.env.VUE_APP_BASE_API,
       // 遮罩层
       loading: true,
+      // 登录用户ID
+      loginUserId: this.$store.state.user.id,
+      // 登录用户Name
+      loginUserName: this.$store.state.user.name,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -247,9 +268,24 @@ export default {
         this.loading = false;
       });
     },
+    /** 转换菜单数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.userId,
+        label: node.nickName,
+        children: node.children
+      };
+    },
     getUserList(){
       selectSaleUser().then(response => {
-        this.userListOptions = response.rows;;
+        // this.userListOptions = response.rows;;
+        this.userListOptions = [];
+        const menu = { userId: this.loginUserId, nickName: this.loginUserName, children: [] };
+        menu.children = this.handleTree(response.rows, "userId", "parentUserId");
+        this.userListOptions.push(menu);
       });
     },
     // 取消按钮

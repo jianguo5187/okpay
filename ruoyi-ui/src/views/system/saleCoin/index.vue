@@ -1,17 +1,20 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="128px">
-      <el-form-item label="卖币用户" prop="saleUserId">
-        <el-select v-model="queryParams.saleUserId" placeholder="请选择卖币用户" filterable>
-          <el-option
-            clearable
-            v-for="item in userListOptions"
-            :key="item.userId"
-            :label="item.nickName"
-            :value="item.userId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="卖币用户" prop="saleUserId">
+            <treeselect
+              v-model="queryParams.saleUserId"
+              :options="userListOptions"
+              :normalizer="normalizer"
+              @select="handleQuery"
+              :show-count="true"
+              placeholder="请选择卖币用户"
+              style="width: 320px;"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-form-item label="卖币开始日" prop="startSaleTime">
         <el-date-picker clearable
@@ -401,6 +404,7 @@ import {
   selectSaleUser
 } from "@/api/system/saleCoin";
 import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {delUser} from "@/api/system/user";
 
 export default {
@@ -413,6 +417,8 @@ export default {
       loading: true,
       // 登录用户ID
       loginUserId: this.$store.state.user.id,
+      // 登录用户Name
+      loginUserName: this.$store.state.user.name,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -508,9 +514,24 @@ export default {
         this.loading = false;
       });
     },
+    /** 转换菜单数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.userId,
+        label: node.nickName,
+        children: node.children
+      };
+    },
     getUserList(){
       selectSaleUser().then(response => {
-        this.userListOptions = response.rows;;
+        // this.userListOptions = response.rows;
+        this.userListOptions = [];
+        const menu = { userId: this.loginUserId, nickName: this.loginUserName, children: [] };
+        menu.children = this.handleTree(response.rows, "userId", "parentUserId");
+        this.userListOptions.push(menu);
       });
     },
     // 取消按钮

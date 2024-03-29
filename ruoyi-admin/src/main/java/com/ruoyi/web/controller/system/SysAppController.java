@@ -20,6 +20,7 @@ import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -183,7 +184,10 @@ public class SysAppController extends BaseController {
         SysUser searchUser = new SysUser();
         searchUser.setDeptId(user.getDeptId());
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("rows", userService.selectUserList(searchUser));
+        ajax.put("rows", userService.selectUserList(searchUser).stream()
+                .sorted(Comparator.comparing(SysUser::getUserId))
+                .filter(r -> r.getUserId().compareTo(user.getUserId()) != 0)
+                .collect(Collectors.toList()));
         return ajax;
     }
 
