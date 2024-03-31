@@ -68,6 +68,9 @@ export default {
   created() {
     this.getCashFlow();
   },
+  mounted() {
+    setInterval(this.getCashFlow, 15000); //每15s刷新列表
+  },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");

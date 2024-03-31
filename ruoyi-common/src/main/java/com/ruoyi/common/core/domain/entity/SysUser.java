@@ -79,6 +79,9 @@ public class SysUser extends BaseEntity
     /** 余额 */
     private Float amount;
 
+    /** 可售金额 */
+    private Float sellableAmount;
+
     /** 邀请码 */
     private String inviteCode;
 
@@ -359,6 +362,14 @@ public class SysUser extends BaseEntity
 
     public void setAmount(Float amount) {
         this.amount = amount;
+    }
+
+    public Float getSellableAmount() {
+        return sellableAmount;
+    }
+
+    public void setSellableAmount(Float sellableAmount) {
+        this.sellableAmount = sellableAmount;
     }
 
     public String getInviteCode() {

@@ -33,6 +33,8 @@ public interface ISysAppService {
 
     public int updateBuyStatus(Long userId, UpdateBuyStatusReqVO vo);
 
+    public void extendBuyTimeOutNoPay(ExtendBuyTimeOutNoPayReqVO vo);
+
     public int uploadBuyVoucher(Long userId, UploadBuyVoucherReqVO vo);
 
     public BuyDetailInfoRespVO getBuyDetailInfo(Long buyId);

@@ -83,6 +83,14 @@ public class SysAppServiceImpl implements ISysAppService {
     @Value("${token.noPayAutoCancelTime}")
     private int noPayAutoCancelTime;
 
+    // 未付款订单可撤单等待时间（6分钟）
+    @Value("${token.noPayWaitCancelableTime}")
+    private int noPayWaitCancelableTime;
+
+    // 等待付款订单自动取消默认时间（10分钟）
+    @Value("${token.waitPayAutoCancelTime}")
+    private int waitPayAutoCancelTime;
+
     // 自动确认（默认30分钟）
     @Value("${token.autoBuyFinishTime}")
     private int autoBuyFinishTime;
@@ -777,12 +785,22 @@ public class SysAppServiceImpl implements ISysAppService {
             if(StringUtils.equals(sysBuyCoin.getStatus(),"4")){
                 throw new ServiceException("订单存在异议，不可取消，请联系管理员");
             }
+            if(StringUtils.equals(sysBuyCoin.getStatus(),"5")){
+
+                String buyIdKey = getNoPayWaitCancelabledOrderKey(vo.getBuyId());
+                Long buyKey = redisCache.getCacheObject(buyIdKey);
+                if(StringUtils.isNotNull(buyKey)){
+                    throw new ServiceException("买家付款中，不可取消，请联系管理员");
+                }
+            }
         }
 
         // 解除卖币订单锁定
         deleteSaleOrder(sysBuyCoin.getSaleId());
         // 解除买家未付款超时
         deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+        // 解除不可撤单订单
+        deleteNoPayWaitCancelabled(sysBuyCoin.getBuyId());
         // 解除自动收款超时锁定
 //            deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
 //
@@ -890,8 +908,11 @@ public class SysAppServiceImpl implements ISysAppService {
 
         }else if(StringUtils.equals(sysBuyCoin.getStatus(),"0") && StringUtils.equals(vo.getStatus(),"3")){
             //0买家下单 ⇒ 3卖家已确认
-            // 刷新超时时间
-            createBuyOrderNoPay(sysBuyCoin.getBuyId());
+
+            // 刷新未付款超时取消时常
+            flushBuyOrderNoPay(sysBuyCoin.getBuyId());
+            // 新增不可撤单订单
+            createNoPayWaitCancelabled(sysBuyCoin.getBuyId());
 
             //给买家推送消息
             String sendMessage = "{}";
@@ -902,11 +923,25 @@ public class SysAppServiceImpl implements ISysAppService {
             jsonObject.put("message", "卖家已确认售卖");
             sendMessageToUser(sysBuyCoin.getSaleUserId(),sysBuyCoin.getBuyUserId(),jsonObject.toString());
 
-        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"3") && StringUtils.equals(vo.getStatus(),"1")){
+        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"3") && StringUtils.equals(vo.getStatus(),"5")){
+            //3卖家已确认 ⇒ 5买家付款中
 
-            //3卖家已确认 ⇒ 1买家已付款
+            //给卖家推送消息
+            String sendMessage = "{}";
+            JSONObject jsonObject = JSON.parseObject(sendMessage);
+            jsonObject.put("type", "buyCoinPayed");
+            jsonObject.put("bussineType", "buyCoin");
+            jsonObject.put("bussineId", sysBuyCoin.getBuyId());
+            jsonObject.put("message", "买家正在付款中");
+            sendMessageToUser(sysBuyCoin.getBuyUserId(),sysBuyCoin.getSaleUserId(),jsonObject.toString());
+
+        }else if(StringUtils.equals(sysBuyCoin.getStatus(),"5") && StringUtils.equals(vo.getStatus(),"1")){
+
+            //5买家付款中 ⇒ 1买家已付款
             // 解除买家未付款超时
             deleteBuyOrderNoPay(sysBuyCoin.getBuyId());
+            // 解除不可撤单订单
+            deleteNoPayWaitCancelabled(sysBuyCoin.getBuyId());
 
             // 新增自动收款超时限制
             createBuyOrderNoFinish(sysBuyCoin.getBuyId());
@@ -955,6 +990,8 @@ public class SysAppServiceImpl implements ISysAppService {
             deleteSaleOrder(sysBuyCoin.getSaleId());
             // 解除自动收款超时锁定
             deleteBuyOrderNoFinish(sysBuyCoin.getBuyId());
+            // 解除不可撤单订单
+            deleteNoPayWaitCancelabled(sysBuyCoin.getBuyId());
 
             //给买家推送消息
             String sendMessage = "{}";
@@ -969,6 +1006,12 @@ public class SysAppServiceImpl implements ISysAppService {
         sysBuyCoin.setUpdateBy(vo.getUpdateBy());
 
         return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+    }
+
+    @Override
+    public void extendBuyTimeOutNoPay(ExtendBuyTimeOutNoPayReqVO vo) {
+        // 刷新不可撤单时间到订单结束
+        extendNoPayWaitCancelabled(vo.getBuyId());
     }
 
     public void sendMessageToUser(Long fromUserId, Long toUserId, String message){
@@ -995,7 +1038,16 @@ public class SysAppServiceImpl implements ISysAppService {
                 throw new ServiceException("上传买币支付凭证失败");
             }
         }
-        return sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+        int updateRow = sysBuyCoinMapper.updateSysBuyCoin(sysBuyCoin);
+        if(updateRow >0){
+            UpdateBuyStatusReqVO updateBuyStatusReqVO = new UpdateBuyStatusReqVO();
+            updateBuyStatusReqVO.setStatus("1"); //买家已付款
+            updateBuyStatusReqVO.setBuyId(vo.getBuyId());
+            updateBuyStatusReqVO.setUpdateBy(vo.getUpdateBy());
+            updateBuyStatus(userId,updateBuyStatusReqVO);
+        }
+
+        return updateRow;
     }
 
     @Override
@@ -1298,6 +1350,30 @@ public class SysAppServiceImpl implements ISysAppService {
     private void deleteSaleOrder(Long saleId){
         String saleIdKey = getSaleOrderKey(saleId);
         redisCache.deleteObject(saleIdKey);
+    }
+
+    private String getNoPayWaitCancelabledOrderKey(Long buyId){
+        return CacheConstants.BUY_ICON_ORDER_ID_NO_PAY_WAIT_CANCELABLE + buyId;
+    }
+
+    private void createNoPayWaitCancelabled(Long buyId){
+        String buyIdKey = getNoPayWaitCancelabledOrderKey(buyId);
+        redisCache.setCacheObject(buyIdKey, buyId, noPayWaitCancelableTime, TimeUnit.MINUTES);
+    }
+
+    private void extendNoPayWaitCancelabled(Long buyId){
+        String buyIdKey = getNoPayWaitCancelabledOrderKey(buyId);
+        redisCache.setCacheObject(buyIdKey, buyId, waitPayAutoCancelTime, TimeUnit.MINUTES);
+    }
+
+    private void deleteNoPayWaitCancelabled(Long buyId){
+        String buyIdKey = getNoPayWaitCancelabledOrderKey(buyId);
+        redisCache.deleteObject(buyIdKey);
+    }
+
+    private void flushBuyOrderNoPay(Long buyId){
+        String buyIdKey = getNoPayOrderKey(buyId);
+        redisCache.setCacheObject(buyIdKey, buyId, waitPayAutoCancelTime, TimeUnit.MINUTES);
     }
 
     private String getNoPayOrderKey(Long buyId){

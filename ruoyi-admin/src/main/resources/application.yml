@@ -103,6 +103,10 @@ token:
   saleInfoAutoCancelTime: 480
   # 未付款订单自动取消默认时间（2分钟）
   noPayAutoCancelTime: 2
+  # 未付款订单可撤单等待时间（6分钟）
+  noPayWaitCancelableTime: 6
+  # 等待付款订单自动取消默认时间（10分钟）
+  waitPayAutoCancelTime: 10
   # 自动确认（30分钟）
   autoBuyFinishTime: 30
 

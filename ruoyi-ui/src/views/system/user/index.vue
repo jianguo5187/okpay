@@ -259,6 +259,18 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row v-if="form.userId != undefined" >
+          <el-col :span="12">
+            <el-form-item label="余额" prop="amount">
+              <el-input v-model="form.amount" readonly :disabled="true"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="可售金额" prop="sellableAmount">
+              <el-input v-model="form.sellableAmount" readonly :disabled="true"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item v-if="form.userId != undefined" label="邀请码" prop="inviteCode">
@@ -603,6 +615,8 @@ export default {
         password: undefined,
         phonenumber: undefined,
         email: undefined,
+        amount:undefined,
+        sellableAmount:undefined,
         inviteCode:undefined,
         walletAddress:undefined,
         sex: undefined,

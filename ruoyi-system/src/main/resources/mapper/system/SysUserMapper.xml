@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="faceImg"         column="face_img"        />
 		<result property="walletAddress"   column="wallet_address"  />
 		<result property="amount"          column="amount"          />
+		<result property="sellableAmount"          column="sellable_amount"          />
 		<result property="inviteCode"      column="invite_code"     />
 		<result property="wechatPayImg"    column="wechat_pay_img"  />
 		<result property="alipayImg"       column="alipay_img"      />
@@ -83,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectUserVo">
-        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.sellable_amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
@@ -108,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.sellable_amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
@@ -153,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.sellable_amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
@@ -185,7 +186,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.invite_code
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber,u.pay_password, u.real_name, u.idcard_no, u.idcard_front_img, u.idcard_back_img, u.face_img, u.wallet_address, u.amount, u.sellable_amount, u.invite_code
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_remark else null end as wechat_pay_remark
         , case when IFNULL(wechatpay.approveCnt,0) > 0 then u.wechat_pay_img else null end as wechat_pay_img
         , case when IFNULL(alipay.approveCnt,0) > 0 then u.alipay_remark else null end as alipay_remark
@@ -275,6 +276,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="faceImg != null and faceImg != ''">face_img,</if>
 			<if test="walletAddress != null and walletAddress != ''">wallet_address,</if>
 			<if test="amount != null">amount,</if>
+			<if test="sellableAmount != null">sellable_amount,</if>
 			<if test="inviteCode != null and inviteCode != ''">invite_code,</if>
 		<if test="wechatPayRemark != null and wechatPayRemark != ''">wechat_pay_remark,</if>
 			<if test="wechatPayImg != null and wechatPayImg != ''">wechat_pay_img,</if>
@@ -314,6 +316,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="faceImg != null and faceImg != ''">#{faceImg},</if>
 			<if test="walletAddress != null and walletAddress != ''">#{walletAddress},</if>
 			<if test="amount != null">#{amount},</if>
+			<if test="sellableAmount != null">#{sellableAmount},</if>
 			<if test="inviteCode != null and inviteCode != ''">#{inviteCode},</if>
 		<if test="wechatPayRemark != null and wechatPayRemark != ''">#{wechatPayRemark},</if>
 			<if test="wechatPayImg != null and wechatPayImg != ''">#{wechatPayImg},</if>
@@ -357,6 +360,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="faceImg != null and faceImg != ''">face_img = #{faceImg},</if>
 			<if test="walletAddress != null and walletAddress != ''">wallet_address = #{walletAddress},</if>
 			<if test="amount != null">amount = #{amount},</if>
+			<if test="sellableAmount != null">sellable_amount = #{sellableAmount},</if>
 			<if test="inviteCode != null and inviteCode != ''">invite_code = #{inviteCode},</if>
 			<if test="wechatPayRemark != null and wechatPayRemark != ''">wechat_pay_remark = #{wechatPayRemark},</if>
 			<if test="wechatPayImg != null and wechatPayImg != ''">wechat_pay_img = #{wechatPayImg},</if>

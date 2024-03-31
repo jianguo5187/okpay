@@ -445,6 +445,16 @@ public class SysAppController extends BaseController {
         }
         return error("更新卖币状态失败，请联系管理员");
     }
+    /**
+     * 延长未付款买币超时时间接口
+     */
+    @PostMapping("/extendBuyTimeOutNoPay")
+    public AjaxResult extendBuyTimeOutNoPay(@RequestBody ExtendBuyTimeOutNoPayReqVO vo)
+    {
+        sysAppService.extendBuyTimeOutNoPay(vo);
+        AjaxResult ajax = AjaxResult.success();
+        return ajax;
+    }
 
     /**
      * 上传买币支付凭证接口

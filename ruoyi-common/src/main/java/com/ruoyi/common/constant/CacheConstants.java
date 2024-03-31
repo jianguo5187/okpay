@@ -57,6 +57,11 @@ public class CacheConstants
     public static final String BUY_ICON_ORDER_ID_NO_PAY = "buy_icon_id_no_pay:";
 
     /**
+     * 不可撤单订单id redis key
+     */
+    public static final String BUY_ICON_ORDER_ID_NO_PAY_WAIT_CANCELABLE = "buy_icon_id_no_pay_wait_cancelable:";
+
+    /**
      * 付款完自动确认订单id redis key
      */
     public static final String BUY_ICON_ORDER_ID_AUTO_FINISH = "buy_icon_id_auto_finish:";
