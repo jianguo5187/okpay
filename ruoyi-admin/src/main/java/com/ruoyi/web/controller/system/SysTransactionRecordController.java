@@ -4,7 +4,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,10 @@ public class SysTransactionRecordController extends BaseController
     public TableDataInfo list(SysTransactionRecord sysTransactionRecord)
     {
         startPage();
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            SysUser user = SecurityUtils.getLoginUser().getUser();
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
         List<SysTransactionRecord> list = sysTransactionRecordService.selectSysTransactionRecordList(sysTransactionRecord);
         return getDataTable(list);
     }
@@ -111,6 +118,10 @@ public class SysTransactionRecordController extends BaseController
     public TableDataInfo userTransactionlist(SysTransactionRecord sysTransactionRecord)
     {
         startPage();
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            SysUser user = SecurityUtils.getLoginUser().getUser();
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
         List<UserTransactionTotalRespVO> list = sysTransactionRecordService.selectUserTransactionlist(sysTransactionRecord);
         return getDataTable(list);
     }
@@ -122,7 +133,11 @@ public class SysTransactionRecordController extends BaseController
     public AjaxResult getUserTotalAmount(SysTransactionRecord sysTransactionRecord)
     {
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("totalAmount",sysTransactionRecordService.getUserTotalAmount(sysTransactionRecord.getUserId()));
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            SysUser user = SecurityUtils.getLoginUser().getUser();
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
+        ajax.put("totalAmount",sysTransactionRecordService.getUserTotalAmount(sysTransactionRecord));
         return ajax;
     }
 }

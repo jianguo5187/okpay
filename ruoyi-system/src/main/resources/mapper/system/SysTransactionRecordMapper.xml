@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SysTransactionRecord" id="SysTransactionRecordResult">
         <result property="recordId"    column="record_id"    />
         <result property="userId"    column="user_id"    />
+        <result property="userNickName"    column="user_nick_name"    />
         <result property="recordTime"    column="record_time"    />
         <result property="recordType"    column="record_type"    />
         <result property="recordTypeName"    column="record_type_name"    />
@@ -81,9 +82,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             tr.update_by,
             tr.update_time,
             tr.remark,
-            d.dict_label as record_type_name
+            d.dict_label as record_type_name,
+            u.nick_name AS user_nick_name
         from sys_transaction_record tr
         left join sys_dict_data d on d.dict_type = 'transaction_record_type' and d.dict_value = tr.record_type
+        INNER JOIN sys_user u ON u.user_id = tr.user_id
+        LEFT JOIN sys_dept de ON u.dept_id = de.dept_id
     </sql>
 
     <select id="selectSysTransactionRecordList" parameterType="SysTransactionRecord" resultMap="SysTransactionRecordResult">
@@ -98,6 +102,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recordAmount != null "> and tr.record_amount = #{recordAmount}</if>
             <if test="userRemainAmount != null "> and tr.user_remain_amount = #{userRemainAmount}</if>
             <if test="status != null  and status != ''"> and tr.status = #{status}</if>
+            <if test="startTime != null">
+                and date_format(tr.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null">
+                and date_format(tr.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
+            </if>
+            <if test="transactionFlg != null and deptId != null">
+                and
+                (
+                u.user_id = 1
+                or
+                de.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+                )
+            </if>
         </where>
         order by record_time desc
     </select>
@@ -236,10 +254,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM
             sys_transaction_record tr
         INNER JOIN sys_user u ON u.user_id = tr.user_id
+        LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
         WHERE
             tr.STATUS = '0'
             <if test="userId != null ">
                 and tr.user_id = #{userId}
+            </if>
+            <if test="transactionFlg != null and deptId != null">
+                and
+                (
+                u.user_id = 1
+                or
+                d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+                )
+            </if>
+            <if test="startTime != null">
+                and date_format(tr.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null">
+                and date_format(tr.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
             </if>
             <if test="recordType != null ">
                 and tr.record_type = #{recordType}
@@ -272,9 +305,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             END ) AS record_amount
         FROM
             sys_transaction_record tr
+        INNER JOIN sys_user u ON u.user_id = tr.user_id
+        LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
         WHERE
             tr.STATUS = '0'
-        and tr.user_id = #{userId}
+        <if test="deptId != null ">
+        and
+        (
+        u.user_id = 1
+        or
+        d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+        )
+        </if>
+        <if test="userId != null ">
+            and tr.user_id = #{userId}
+        </if>
         <if test="todayFlg != null">
             and date_format(tr.record_time,'%y%m%d') &lt;= date_format(sysdate(),'%y%m%d')
             and date_format(tr.record_time,'%y%m%d') &gt;= date_format(sysdate(),'%y%m%d')
@@ -283,7 +328,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and date_format(tr.record_time,'%y%m%d') &lt;= date_format(sysdate() - INTERVAL 1 DAY,'%y%m%d')
             and date_format(tr.record_time,'%y%m%d') &gt;= date_format(sysdate() - INTERVAL 1 DAY,'%y%m%d')
         </if>
+        <if test="userId != null ">
         GROUP BY
             tr.user_id
+        </if>
     </select>
 </mapper>

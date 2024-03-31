@@ -20,7 +20,12 @@
           <div class="total-frame">
             <img :src="img_home_yesterday_amount" class="total-icon">
             <div class="total-title">昨日收入总额</div>
-            <div class="total-value">￥{{ yesterdayTotalAmount }}</div>
+            <div class="total-value">￥{{ yesterdayTotalAmount }}
+            <a @click.prevent="handleLink('/system/transaction-search/index')" style="font-size: 8pt;color: blue;">更多</a>
+            </div>
+<!--            <router-link :to="'/system/transaction-search/index'" class="link-type">-->
+<!--              <span>...更多</span>-->
+<!--            </router-link>-->
           </div>
         </el-col>
 
@@ -81,6 +86,9 @@ export default {
         this.todayTotalAmount = response.userCashFlow.todayTotalAmount;
         this.yesterdayTotalAmount = response.userCashFlow.yesterdayTotalAmount;
       });
+    },
+    handleLink(path) {
+      this.$router.push({ path: path});
     },
   }
 };

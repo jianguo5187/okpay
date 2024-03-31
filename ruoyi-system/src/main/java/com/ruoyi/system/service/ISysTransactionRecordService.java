@@ -62,5 +62,5 @@ public interface ISysTransactionRecordService
 
     public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
 
-    public Float getUserTotalAmount (Long userId);
+    public Float getUserTotalAmount (SysTransactionRecord sysTransactionRecord);
 }

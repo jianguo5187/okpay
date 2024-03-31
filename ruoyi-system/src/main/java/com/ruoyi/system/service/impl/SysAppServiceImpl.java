@@ -1293,14 +1293,15 @@ public class SysAppServiceImpl implements ISysAppService {
     @Override
     public CashFlowRespVO getUserCashFlow(Long userId) {
         CashFlowRespVO respVO = new CashFlowRespVO();
+        SysUser user = sysUserService.selectUserById(userId);
         SysTransactionRecord searchRecord = new SysTransactionRecord();
         searchRecord.setUserId(userId);
         searchRecord.setStatus("0");
 //        List<SysTransactionRecord> list = sysTransactionRecordMapper.selectSysTransactionRecordList(searchRecord);
-        Float totalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,null,null);
+        Float totalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,null);
 //        Float commissionAmount = 0f;
-        Float todayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,"0",null);
-        Float yesterdayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(userId,null,"1");
+        Float todayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),"0",null);
+        Float yesterdayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,"1");
 
 //        for(SysTransactionRecord transactionRecord : list){
 //            if(StringUtils.equals(transactionRecord.getRecordType(),"0")

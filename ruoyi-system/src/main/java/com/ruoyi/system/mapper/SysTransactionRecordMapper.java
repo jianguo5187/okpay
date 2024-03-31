@@ -77,5 +77,5 @@ public interface SysTransactionRecordMapper
 
     public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
 
-    public Float getTransactonAmountTotal(@Param("userId")Long userId, @Param("todayFlg")String todayFlg, @Param("yesterdayFlg")String yesterdayFlg);
+    public Float getTransactonAmountTotal(@Param("userId")Long userId, @Param("deptId")Long deptId, @Param("todayFlg")String todayFlg, @Param("yesterdayFlg")String yesterdayFlg);
 }

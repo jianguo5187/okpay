@@ -149,6 +149,20 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/system/transaction-search',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:transactionRecord:list'],
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/system/transactionRecord/transactionSearch'),
+        name: 'transactionSearch',
+        meta: { title: '流水明细', activeMenu: '/system/transactionRecord' }
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,

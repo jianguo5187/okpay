@@ -64,7 +64,59 @@ public class SysTransactionRecord extends BaseEntity
     @Excel(name = "记录状态", readConverterExp = "0=正常,1=取消")
     private String status;
 
-    public void setRecordId(Long recordId) 
+    /** 开始时间 */
+    private String startTime;
+
+    /** 结束 */
+    private String endTime;
+
+    private String userNickName;
+
+    private String transactionFlg;
+
+    private Long deptId;
+
+    public String getTransactionFlg() {
+        return transactionFlg;
+    }
+
+    public void setTransactionFlg(String transactionFlg) {
+        this.transactionFlg = transactionFlg;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getUserNickName() {
+        return userNickName;
+    }
+
+    public void setUserNickName(String userNickName) {
+        this.userNickName = userNickName;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setRecordId(Long recordId)
     {
         this.recordId = recordId;
     }

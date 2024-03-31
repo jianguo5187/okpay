@@ -101,13 +101,18 @@ public class SysTransactionRecordServiceImpl implements ISysTransactionRecordSer
     }
 
     @Override
-    public Float getUserTotalAmount(Long userId) {
+    public Float getUserTotalAmount(SysTransactionRecord sysTransactionRecord) {
         SysTransactionRecord searchRecord = new SysTransactionRecord();
-        searchRecord.setUserId(userId);
+        searchRecord.setUserId(sysTransactionRecord.getUserId());
+        searchRecord.setStartTime(sysTransactionRecord.getStartTime());
+        searchRecord.setEndTime(sysTransactionRecord.getEndTime());
+        searchRecord.setDeptId(sysTransactionRecord.getDeptId());
+        searchRecord.setTransactionFlg(sysTransactionRecord.getTransactionFlg());
+        searchRecord.setRecordType(sysTransactionRecord.getRecordType());
         List<UserTransactionTotalRespVO> list = sysTransactionRecordMapper.selectUserTransactionlist(searchRecord);
         Float totalAmount = 0f;
         for(UserTransactionTotalRespVO respVO : list){
-            totalAmount = respVO.getRecordAmount();
+            totalAmount += respVO.getRecordAmount();
         }
         return totalAmount;
     }

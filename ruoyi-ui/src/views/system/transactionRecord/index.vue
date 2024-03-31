@@ -250,6 +250,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        transactionFlg:"1",
         userId: null,
         recordType: null
       },
