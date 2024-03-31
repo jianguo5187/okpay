@@ -190,6 +190,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from sys_transaction_record r
         left join sys_sale_coin s on s.sale_id = r.sale_id
         where r.user_id = #{userId}
+        <if test="recordType != null and recordType.length >0">
+            AND
+            <foreach collection="recordType" item="dictCode" open="(" separator="OR" close=")">
+                (r.record_type = #{dictCode})
+            </foreach>
+        </if>
+        <if test="recordTimeFrom != null">
+            and date_format(r.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{recordTimeFrom}, '%Y-%m-%d')
+        </if>
+        <if test="recordTimeTo != null">
+            and date_format(r.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{recordTimeTo}, '%Y-%m-%d')
+        </if>
         and r.status = '0'
         order by r.record_time DESC
         <if test="pageNumber != null">

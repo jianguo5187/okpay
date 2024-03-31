@@ -1231,7 +1231,11 @@ public class SysAppServiceImpl implements ISysAppService {
         if(StringUtils.isNull(vo.getPageRowCount())){
             vo.setPageRowCount(20);
         }
-        return sysTransactionRecordMapper.getMyTransactionList(userId,(vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
+        String[] recordTypeArg = new String[]{};
+        if(vo.getRecordType() != null){
+            recordTypeArg = vo.getRecordType().split(",");
+        }
+        return sysTransactionRecordMapper.getMyTransactionList(userId,recordTypeArg,vo.getRecordTimeFrom(), vo.getRecordTimeTo(),(vo.getPageNumber()-1)*vo.getPageRowCount(),vo.getPageRowCount());
     }
 
     @Override

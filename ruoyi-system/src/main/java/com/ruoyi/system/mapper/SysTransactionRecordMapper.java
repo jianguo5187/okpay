@@ -73,7 +73,7 @@ public interface SysTransactionRecordMapper
      */
     public SysTransactionRecord selectTransactionRecordByRecordTypeAndId(@Param("recordType") String recordType,@Param("buyId") Long buyId,@Param("saleId") Long saleId,@Param("rechargeId") Long rechargeId);
 
-    public List<TransactionDetailInfoRespVO> getMyTransactionList(@Param("userId") Long userId, @Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
+    public List<TransactionDetailInfoRespVO> getMyTransactionList(@Param("userId") Long userId, @Param("recordType")String[] recordType,@Param("recordTimeFrom")String recordTimeFrom,@Param("recordTimeTo")String recordTimeTo,@Param("pageNumber") Integer pageNumber, @Param("pageRowCount") Integer pageRowCount);
 
     public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
 
