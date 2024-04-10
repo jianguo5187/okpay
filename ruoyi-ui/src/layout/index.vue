@@ -47,6 +47,8 @@ export default {
     return {
       // 是否显示弹出层
       openChat: false,
+      loginUserId: this.$store.state.user.id,
+      imUrl: process.env.VUE_APP_IM_URL, // 聊天室服务器地址
     }
   },
   mixins: [ResizeMixin],
@@ -76,7 +78,22 @@ export default {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     },
     handleClick(){
-      this.openChat = !this.openChat;
+      const params = {
+        userId: this.loginUserId,
+        terminal: 0
+      };
+
+      // 将参数对象转换为查询字符串
+      const queryString = Object.keys(params)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+
+      // 新窗口打开的URL
+      console.log(1);
+      const url = this.imUrl + `/thirdLogin?${queryString}`;
+      // 打开新窗口
+      window.open(url, '_blank');
+      // this.openChat = !this.openChat;
     }
   }
 }

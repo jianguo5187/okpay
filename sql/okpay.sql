@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 02/03/2024 16:40:22
+ Date: 11/04/2024 00:00:38
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +44,7 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table
@@ -55,6 +55,7 @@ INSERT INTO `gen_table` VALUES (13, 'sys_notice_user', '公告和用户关联表
 INSERT INTO `gen_table` VALUES (15, 'sys_sale_coin', '卖币表', NULL, NULL, 'SysSaleCoin', 'crud', 'element-ui', 'com.ruoyi.system', 'system', 'saleCoin', '卖币', 'ruoyi', '0', '/', '{}', 'admin', '2024-01-22 13:31:02', '', '2024-01-22 13:31:10', NULL);
 INSERT INTO `gen_table` VALUES (17, 'sys_recharge', '充值表', NULL, NULL, 'SysRecharge', 'crud', '', 'com.ruoyi.system', 'system', 'recharge', '充值', 'ruoyi', '0', '/', NULL, 'admin', '2024-02-02 23:28:53', '', NULL, NULL);
 INSERT INTO `gen_table` VALUES (18, 'sys_transaction_record', '交易记录表', NULL, NULL, 'SysTransactionRecord', 'crud', 'element-ui', 'com.ruoyi.system', 'system', 'transactionRecord', '交易记录', 'ruoyi', '0', '/', '{}', 'admin', '2024-02-02 23:29:12', '', '2024-02-02 23:29:17', NULL);
+INSERT INTO `gen_table` VALUES (19, 'im_user', '用户', NULL, NULL, 'ImUser', 'crud', 'element-ui', 'com.ruoyi.system', 'system', 'user', '用户', 'ruoyi', '0', '/', '{}', 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -84,7 +85,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 202 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -157,6 +158,197 @@ INSERT INTO `gen_table_column` VALUES (198, 18, 'create_time', '创建时间', '
 INSERT INTO `gen_table_column` VALUES (199, 18, 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', '0', '1', '1', NULL, NULL, 'EQ', 'input', '', 13, 'admin', '2024-02-02 23:29:12', '', '2024-02-02 23:29:17');
 INSERT INTO `gen_table_column` VALUES (200, 18, 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', '0', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 14, 'admin', '2024-02-02 23:29:12', '', '2024-02-02 23:29:17');
 INSERT INTO `gen_table_column` VALUES (201, 18, 'remark', '备注', 'varchar(500)', 'String', 'remark', '0', '0', '0', '1', '1', '1', NULL, 'EQ', 'textarea', '', 15, 'admin', '2024-02-02 23:29:12', '', '2024-02-02 23:29:17');
+INSERT INTO `gen_table_column` VALUES (202, 19, 'id', 'id', 'bigint(20)', 'Long', 'id', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (203, 19, 'user_name', '用户名', 'varchar(255)', 'String', 'userName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (204, 19, 'nick_name', '用户昵称', 'varchar(255)', 'String', 'nickName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (205, 19, 'head_image', '用户头像', 'varchar(255)', 'String', 'headImage', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'imageUpload', '', 4, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (206, 19, 'head_image_thumb', '用户头像缩略图', 'varchar(255)', 'String', 'headImageThumb', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (207, 19, 'password', '密码(明文)', 'varchar(255)', 'String', 'password', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (208, 19, 'sex', '性别 0:男 1:女', 'tinyint(1)', 'Integer', 'sex', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'select', '', 7, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (209, 19, 'type', '用户类型 1:普通用户 2:审核账户', 'smallint(6)', 'Integer', 'type', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'select', '', 8, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (210, 19, 'signature', '个性签名', 'varchar(1024)', 'String', 'signature', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'textarea', '', 9, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (211, 19, 'last_login_time', '最后登录时间', 'datetime', 'Date', 'lastLoginTime', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'datetime', '', 10, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (212, 19, 'created_time', '创建时间', 'datetime', 'Date', 'createdTime', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'datetime', '', 11, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+INSERT INTO `gen_table_column` VALUES (213, 19, 'third_user_id', '第三方用户id', 'bigint(20)', 'Long', 'thirdUserId', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2024-04-10 23:40:46', '', '2024-04-10 23:44:18');
+
+-- ----------------------------
+-- Table structure for im_friend
+-- ----------------------------
+DROP TABLE IF EXISTS `im_friend`;
+CREATE TABLE `im_friend`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `friend_id` bigint(20) NOT NULL COMMENT '好友id',
+  `friend_nick_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '好友昵称',
+  `friend_head_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '好友头像',
+  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_friend_id`(`friend_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '好友' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_friend
+-- ----------------------------
+INSERT INTO `im_friend` VALUES (1, 2, 1, '平台客服', 'http://127.0.0.1:9000/box-im/image/20240410/1712762346338.png', '2024-04-09 20:37:33');
+INSERT INTO `im_friend` VALUES (2, 1, 2, '测试2', '', '2024-04-09 20:37:33');
+INSERT INTO `im_friend` VALUES (3, 1, 4, '聊天测试账号1', '', '2024-04-09 23:59:09');
+INSERT INTO `im_friend` VALUES (4, 4, 1, '平台客服', 'http://127.0.0.1:9000/box-im/image/20240410/1712762346338.png', '2024-04-09 23:59:09');
+
+-- ----------------------------
+-- Table structure for im_group
+-- ----------------------------
+DROP TABLE IF EXISTS `im_group`;
+CREATE TABLE `im_group`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群名字',
+  `owner_id` bigint(20) NOT NULL COMMENT '群主id',
+  `head_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '群头像',
+  `head_image_thumb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '群头像缩略图',
+  `notice` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '群公告',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '群备注',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '是否已删除',
+  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '群' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_group
+-- ----------------------------
+INSERT INTO `im_group` VALUES (1, '测试群组', 1, '', '', '', '', 0, '2024-04-10 22:05:00');
+
+-- ----------------------------
+-- Table structure for im_group_member
+-- ----------------------------
+DROP TABLE IF EXISTS `im_group_member`;
+CREATE TABLE `im_group_member`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `group_id` bigint(20) NOT NULL COMMENT '群id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `alias_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '组内显示名称',
+  `head_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '用户头像',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
+  `quit` tinyint(1) NULL DEFAULT 0 COMMENT '是否已退出',
+  `quit_time` datetime NULL DEFAULT NULL COMMENT '退出时间',
+  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_group_id`(`group_id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '群成员' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_group_member
+-- ----------------------------
+INSERT INTO `im_group_member` VALUES (1, 1, 1, '平台客服', 'http://127.0.0.1:9000/box-im/image/20240410/1712762346338.png', '测试群组', 0, NULL, '2024-04-10 22:05:00');
+INSERT INTO `im_group_member` VALUES (2, 1, 2, '测试2', '', '测试群组', 0, NULL, '2024-04-10 22:05:06');
+INSERT INTO `im_group_member` VALUES (3, 1, 4, '聊天测试账号1', '', '测试群组', 0, NULL, '2024-04-10 22:05:06');
+
+-- ----------------------------
+-- Table structure for im_group_message
+-- ----------------------------
+DROP TABLE IF EXISTS `im_group_message`;
+CREATE TABLE `im_group_message`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `group_id` bigint(20) NOT NULL COMMENT '群id',
+  `send_id` bigint(20) NOT NULL COMMENT '发送用户id',
+  `send_nick_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '发送用户昵称',
+  `recv_ids` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '接收用户id,逗号分隔，为空表示发给所有成员',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '发送内容',
+  `at_user_ids` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '被@的用户id列表，逗号分隔',
+  `receipt` tinyint(4) NULL DEFAULT 0 COMMENT '是否回执消息',
+  `receipt_ok` tinyint(4) NULL DEFAULT 0 COMMENT '回执消息是否完成',
+  `type` tinyint(1) NOT NULL COMMENT '消息类型 0:文字 1:图片 2:文件 3:语音 4:视频 10:系统提示',
+  `status` tinyint(1) NULL DEFAULT 0 COMMENT '状态 0:未发出 1:已送达  2:撤回 3:已读',
+  `send_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发送时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_group_id`(`group_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '群消息' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_group_message
+-- ----------------------------
+INSERT INTO `im_group_message` VALUES (1, 1, 1, '平台客服', '1,2,4', '\'平台客服\'邀请\'测试2,聊天测试账号1\'加入了群聊', NULL, 0, 0, 21, 0, '2024-04-10 22:05:06');
+INSERT INTO `im_group_message` VALUES (2, 1, 1, '平台客服', '', 'hello', NULL, 0, 0, 0, 0, '2024-04-10 22:05:13');
+INSERT INTO `im_group_message` VALUES (3, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (4, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (5, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (6, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (7, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (8, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (9, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (10, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (11, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (12, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (13, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (14, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (15, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (16, 1, 1, '平台客服', '', '@全体成员 ', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (17, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (18, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (19, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (20, 1, 2, '测试2', '', '#爱心;', NULL, 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (21, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (22, 1, 1, '平台客服', '', '@全体成员 12', '-1', 0, 0, 0, 0, '2024-04-10 22:06:21');
+INSERT INTO `im_group_message` VALUES (23, 1, 1, '平台客服', '', '@全体成员 ', '-1', 0, 0, 0, 0, '2024-04-10 22:06:45');
+
+-- ----------------------------
+-- Table structure for im_private_message
+-- ----------------------------
+DROP TABLE IF EXISTS `im_private_message`;
+CREATE TABLE `im_private_message`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `send_id` bigint(20) NOT NULL COMMENT '发送用户id',
+  `recv_id` bigint(20) NOT NULL COMMENT '接收用户id',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '发送内容',
+  `type` tinyint(1) NOT NULL COMMENT '消息类型 0:文字 1:图片 2:文件 3:语音 10:系统提示',
+  `status` tinyint(1) NOT NULL COMMENT '状态 0:未读 1:已读 2:撤回',
+  `send_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发送时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_send_recv_id`(`send_id`, `recv_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '私聊消息' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_private_message
+-- ----------------------------
+INSERT INTO `im_private_message` VALUES (7, 2, 1, '1231', 0, 3, '2024-04-09 22:57:15');
+INSERT INTO `im_private_message` VALUES (8, 1, 2, '{\"originUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712674641591.jpeg\",\"thumbUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712674641591.jpeg\"}', 1, 3, '2024-04-09 22:57:22');
+INSERT INTO `im_private_message` VALUES (9, 2, 1, '{\"originUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712674650603.jpeg\",\"thumbUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712674650603.jpeg\"}', 1, 3, '2024-04-09 22:57:31');
+INSERT INTO `im_private_message` VALUES (10, 1, 4, 'hello', 0, 3, '2024-04-09 23:59:18');
+INSERT INTO `im_private_message` VALUES (11, 4, 1, '{\"originUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712678365110.jpeg\",\"thumbUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712678365110.jpeg\"}', 1, 3, '2024-04-09 23:59:25');
+INSERT INTO `im_private_message` VALUES (12, 1, 4, '{\"originUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712678382552.jpeg\",\"thumbUrl\":\"http://127.0.0.1:9000/box-im/image/20240409/1712678382552.jpeg\"}', 1, 3, '2024-04-09 23:59:43');
+INSERT INTO `im_private_message` VALUES (13, 4, 1, '#爱心;', 0, 3, '2024-04-09 23:59:50');
+INSERT INTO `im_private_message` VALUES (14, 2, 1, '123', 0, 3, '2024-04-10 22:02:49');
+
+-- ----------------------------
+-- Table structure for im_user
+-- ----------------------------
+DROP TABLE IF EXISTS `im_user`;
+CREATE TABLE `im_user`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `nick_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户昵称',
+  `head_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '用户头像',
+  `head_image_thumb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '用户头像缩略图',
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码(明文)',
+  `sex` tinyint(1) NULL DEFAULT 0 COMMENT '性别 0:男 1:女',
+  `type` smallint(6) NULL DEFAULT 1 COMMENT '用户类型 1:普通用户 2:审核账户',
+  `signature` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '个性签名',
+  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `third_user_id` bigint(20) NULL DEFAULT NULL COMMENT '第三方用户id',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_user_name`(`user_name`) USING BTREE,
+  INDEX `idx_nick_name`(`nick_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of im_user
+-- ----------------------------
+INSERT INTO `im_user` VALUES (1, 'lxh1', '平台客服1', 'http://127.0.0.1:9000/box-im/image/20240410/1712762346338.png', 'http://127.0.0.1:9000/box-im/image/20240410/1712762346338.png', '$2a$10$z2dG2VGv728.g7C2sPtlg.0S1qsgYAOxtTbVRd.7y7bVq2aWma8a6', 0, 2, '', NULL, '2024-04-09 20:18:54', 1);
+INSERT INTO `im_user` VALUES (2, 'lxh2', '测试2', '', '', '$2a$10$Zx.3MGTvRiwF/SVSPaNc1u91rpFpNaCl2xau5h.gOcH7H5jrH74Py', 0, 1, '', NULL, '2024-04-09 20:37:07', 2);
+INSERT INTO `im_user` VALUES (3, 'lxh3', '测试3', '', '', '$2a$10$CkfptRrYTrsMQfYW5XxCeuxoq6oErgOjbvQyqG0bsG1xseb7hoKim', 0, 1, '', NULL, '2024-04-09 21:14:12', 3);
+INSERT INTO `im_user` VALUES (4, 'ceshi1', '聊天测试账号1', '', '', '$2a$10$gkuegoiIEMIIZLT2Dgxw7uE3ARCEOdjM52BH3NGVot316INjLmMfq', 0, 1, '', NULL, '2024-04-09 23:58:12', 4);
+INSERT INTO `im_user` VALUES (5, 'ceshi4', '测试商户5', '', '', '$2a$10$DxNmTvme7H9gcV.cBFob3ecpU3VlfWF27QeTYzDhjqBXZ3hpEp6nS', 0, 1, '', NULL, '2024-04-10 23:56:23', 18);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -388,32 +580,28 @@ CREATE TABLE `sys_buy_coin`  (
   `buy_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '支付方式（0支付宝 1微信 2银联）',
   `buy_amount` float(10, 2) NULL DEFAULT 0.00 COMMENT '买币金额',
   `buy_voucher` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付凭证',
-  `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '买币状态（0进行中 1买家已付款 2卖家已确认(买币完成) 3卖家已确认 9已取消）',
+  `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '买币状态（0进行中 1买家已付款 2卖家已确认(买币完成) 3卖家已确认 4异议单 9已取消）',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`buy_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '买币表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '买币表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_buy_coin
 -- ----------------------------
-INSERT INTO `sys_buy_coin` VALUES (4, 9, 7, 11, '2024-01-23 15:17:23', '2', 100.00, NULL, '2', '', '2024-01-23 15:17:23', 'liao3', '2024-01-23 15:24:14', NULL);
-INSERT INTO `sys_buy_coin` VALUES (5, 10, 11, 7, '2024-01-23 15:31:36', '0', 47.50, NULL, '2', 'liao3', '2024-01-23 15:31:36', '', NULL, NULL);
-INSERT INTO `sys_buy_coin` VALUES (6, 13, 7, 11, '2024-01-23 18:53:31', '1', 180.00, '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '2', 'kehu1', '2024-01-23 18:53:31', 'liao3', '2024-02-27 21:17:09', NULL);
-INSERT INTO `sys_buy_coin` VALUES (10, 11, 11, 7, '2024-01-23 19:36:55', '0', 10.00, NULL, '2', 'liao3', '2024-01-23 19:36:55', '', NULL, NULL);
-INSERT INTO `sys_buy_coin` VALUES (11, 15, 10, 11, '2024-02-27 21:42:30', '1', 70.00, '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '2', 'kehu1', '2024-02-27 21:42:30', 'admin', '2024-02-27 22:25:24', NULL);
-INSERT INTO `sys_buy_coin` VALUES (12, 14, 11, 10, '2024-02-28 22:30:25', '1', 20.00, NULL, '9', 'agent1', '2024-02-28 22:30:25', 'agent1', '2024-02-28 23:53:55', NULL);
-INSERT INTO `sys_buy_coin` VALUES (13, 14, 11, 10, '2024-02-28 23:54:05', '1', 20.00, NULL, '9', 'agent1', '2024-02-28 23:54:05', 'agent1', '2024-02-28 23:57:28', NULL);
-INSERT INTO `sys_buy_coin` VALUES (14, 14, 11, 10, '2024-02-28 23:57:33', '1', 20.00, NULL, '9', 'agent1', '2024-02-28 23:57:33', 'agent1', '2024-02-28 23:57:39', NULL);
-INSERT INTO `sys_buy_coin` VALUES (15, 15, 10, 11, '2024-02-29 20:02:10', '1', 20.00, NULL, '9', 'kehu1', '2024-02-29 20:02:10', 'agent1', '2024-02-29 20:11:21', NULL);
-INSERT INTO `sys_buy_coin` VALUES (16, 15, 10, 11, '2024-02-29 20:10:50', '1', 20.00, NULL, '9', 'kehu1', '2024-02-29 20:10:50', 'AUTO', '2024-02-29 20:14:00', NULL);
-INSERT INTO `sys_buy_coin` VALUES (17, 15, 10, 11, '2024-02-29 20:21:01', '1', 15.00, '/profile/upload/2024/02/29/image_20240229202252A001.jpeg', '2', 'kehu1', '2024-02-29 20:21:01', 'kehu1', '2024-02-29 20:22:52', NULL);
-INSERT INTO `sys_buy_coin` VALUES (18, 15, 10, 11, '2024-02-29 20:38:36', '1', 5.00, '/profile/upload/2024/02/29/image_20240229203954A001.jpeg', '2', 'kehu1', '2024-02-29 20:38:36', 'AUTO', '2024-02-29 20:41:54', NULL);
-INSERT INTO `sys_buy_coin` VALUES (19, 18, 10, 11, '2024-02-29 20:50:59', '1', 90.00, '/profile/upload/2024/02/29/image_20240229205157A001.jpeg', '2', 'kehu1', '2024-02-29 20:50:59', 'AUTO_FINISH', '2024-02-29 20:53:42', NULL);
-INSERT INTO `sys_buy_coin` VALUES (20, 19, 10, 11, '2024-02-29 20:56:56', '1', 20.00, '/profile/upload/2024/02/29/image_20240229210319A001.jpeg', '2', 'kehu1', '2024-02-29 20:56:56', 'agent1', '2024-02-29 21:04:02', NULL);
+INSERT INTO `sys_buy_coin` VALUES (1, 1, 10, 11, '2024-03-12 21:30:37', '1', 1000.00, NULL, '2', 'kehu1', '2024-03-12 21:30:37', 'agent1', '2024-03-12 21:31:14', NULL);
+INSERT INTO `sys_buy_coin` VALUES (2, 2, 10, 11, '2024-03-12 21:33:45', '1', 500.00, NULL, '2', 'kehu1', '2024-03-12 21:33:45', 'agent1', '2024-03-12 21:34:13', NULL);
+INSERT INTO `sys_buy_coin` VALUES (3, 3, 10, 11, '2024-03-12 21:35:30', '1', 500.00, NULL, '9', 'kehu1', '2024-03-12 21:35:30', 'AUTO_CANCEL', '2024-03-12 21:55:30', NULL);
+INSERT INTO `sys_buy_coin` VALUES (4, 4, 10, 11, '2024-03-13 19:31:11', '1', 500.00, NULL, '9', 'kehu1', '2024-03-13 19:31:11', 'liao3', '2024-03-13 19:39:16', NULL);
+INSERT INTO `sys_buy_coin` VALUES (5, 4, 10, 11, '2024-03-13 21:57:28', '1', 500.00, NULL, '2', 'kehu1', '2024-03-13 21:57:28', 'liao3', '2024-03-13 21:58:23', NULL);
+INSERT INTO `sys_buy_coin` VALUES (6, 4, 10, 11, '2024-03-13 22:01:27', '1', 300.00, NULL, '2', 'kehu1', '2024-03-13 22:01:27', 'liao3', '2024-03-13 22:02:05', NULL);
+INSERT INTO `sys_buy_coin` VALUES (7, 4, 10, 11, '2024-03-13 22:08:16', '1', 200.00, NULL, '2', 'kehu1', '2024-03-13 22:08:16', 'liao3', '2024-03-13 22:09:00', NULL);
+INSERT INTO `sys_buy_coin` VALUES (8, 5, 10, 11, '2024-03-31 21:08:34', '1', 200.00, '/profile/upload/2024/03/31/image_20240331211104A001.jpeg', '2', 'kehu1', '2024-03-31 21:08:34', 'agent1', '2024-03-31 21:11:54', NULL);
+INSERT INTO `sys_buy_coin` VALUES (9, 5, 10, 11, '2024-03-31 21:12:59', '1', 50.00, NULL, '9', 'kehu1', '2024-03-31 21:12:59', 'agent1', '2024-03-31 21:15:14', NULL);
+INSERT INTO `sys_buy_coin` VALUES (10, 5, 10, 11, '2024-03-31 21:15:35', '1', 50.00, NULL, '9', 'kehu1', '2024-03-31 21:15:35', 'agent1', '2024-03-31 21:20:34', NULL);
 
 -- ----------------------------
 -- Table structure for sys_chat
@@ -428,7 +616,7 @@ CREATE TABLE `sys_chat`  (
   `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
   PRIMARY KEY (`chat_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chat
@@ -466,10 +654,21 @@ INSERT INTO `sys_chat` VALUES (30, 7, 2, '你真厉害', '1', '0', '2024-01-07 1
 INSERT INTO `sys_chat` VALUES (31, 7, 2, '牛呀', '1', '0', '2024-01-07 18:47:07');
 INSERT INTO `sys_chat` VALUES (32, 7, 11, '你好', '1', '0', '2024-01-21 10:48:00');
 INSERT INTO `sys_chat` VALUES (33, 11, 7, '你好呀', '1', '0', '2024-01-21 10:48:48');
-INSERT INTO `sys_chat` VALUES (34, 3, 2, '1231', '0', '0', '2024-01-31 21:32:04');
+INSERT INTO `sys_chat` VALUES (34, 3, 2, '1231', '1', '0', '2024-01-31 21:32:04');
 INSERT INTO `sys_chat` VALUES (35, 2, 3, '`12', '0', '0', '2024-01-31 21:32:19');
 INSERT INTO `sys_chat` VALUES (36, 2, 3, '4444', '0', '0', '2024-01-31 21:32:28');
 INSERT INTO `sys_chat` VALUES (37, 1, 2, '12312', '0', '0', '2024-02-03 00:09:58');
+INSERT INTO `sys_chat` VALUES (38, 11, 7, '你好呀', '1', '0', '2024-03-04 21:40:19');
+INSERT INTO `sys_chat` VALUES (39, 7, 11, '1', '0', '0', '2024-03-04 21:49:09');
+INSERT INTO `sys_chat` VALUES (40, 11, 7, '你好呀', '1', '0', '2024-03-07 21:41:43');
+INSERT INTO `sys_chat` VALUES (41, 11, 2, '你好呀', '1', '0', '2024-03-07 21:42:19');
+INSERT INTO `sys_chat` VALUES (42, 11, 2, '你好呀', '1', '0', '2024-03-07 21:42:53');
+INSERT INTO `sys_chat` VALUES (43, 11, 2, '你好呀', '1', '0', '2024-03-07 21:52:34');
+INSERT INTO `sys_chat` VALUES (44, 11, 2, '你好呀', '1', '0', '2024-03-07 21:52:55');
+INSERT INTO `sys_chat` VALUES (45, 11, 1, '你好呀', '1', '0', '2024-03-07 21:53:37');
+INSERT INTO `sys_chat` VALUES (46, 11, 1, '你好呀', '1', '0', '2024-03-07 21:53:43');
+INSERT INTO `sys_chat` VALUES (47, 11, 1, '你好呀', '1', '0', '2024-03-07 22:11:32');
+INSERT INTO `sys_chat` VALUES (48, 11, 1, '你好呀', '1', '0', '2024-03-07 22:11:43');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -520,7 +719,7 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 222 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 225 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -529,15 +728,18 @@ INSERT INTO `sys_dept` VALUES (100, 0, 2, '0', 'OKPAY平台', 0, '若依', '1588
 INSERT INTO `sys_dept` VALUES (200, 100, 3, '0,100', '测试商户1', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-02 22:48:39', 'admin', '2024-02-26 22:51:31');
 INSERT INTO `sys_dept` VALUES (201, 200, 0, '0,100,200', '测试商户1代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-02 22:48:39', '', NULL);
 INSERT INTO `sys_dept` VALUES (202, 201, 0, '0,100,200,201', '测试商户1客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:05:25', '', NULL);
-INSERT INTO `sys_dept` VALUES (207, 100, 4, '0,100', '测试商户2', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:05:25', '', NULL);
+INSERT INTO `sys_dept` VALUES (207, 100, 4, '0,100', '测试商户2', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:05:25', 'okadmin', '2024-03-07 21:16:58');
 INSERT INTO `sys_dept` VALUES (208, 207, 0, '0,100,207', '测试商户2代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:05:25', '', NULL);
 INSERT INTO `sys_dept` VALUES (209, 208, 0, '0,100,207,208', '测试商户2客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:05:25', '', NULL);
-INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '测试商户3', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', 'admin', '2024-01-05 21:44:38');
+INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '测试商户3', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', 'admin', '2024-03-12 20:33:55');
 INSERT INTO `sys_dept` VALUES (217, 216, 0, '0,100,216', '测试商户3代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
 INSERT INTO `sys_dept` VALUES (218, 217, 0, '0,100,216,217', '测试商户3客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
 INSERT INTO `sys_dept` VALUES (219, 100, 12, '0,100', '测试商户4', 0, NULL, NULL, NULL, '0', '0', 'okadmin', '2024-01-19 22:53:21', '', '2024-01-19 22:53:21');
 INSERT INTO `sys_dept` VALUES (220, 219, 0, '0,100,219', '测试商户4代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-19 22:53:21', '', NULL);
 INSERT INTO `sys_dept` VALUES (221, 220, 0, '0,100,219,220', '测试商户4客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-19 22:53:21', '', NULL);
+INSERT INTO `sys_dept` VALUES (222, 100, 18, '0,100', '测试商户5', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-04-10 23:56:23', '', '2024-04-10 23:56:23');
+INSERT INTO `sys_dept` VALUES (223, 222, 0, '0,100,222', '测试商户5代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-04-10 23:56:23', '', NULL);
+INSERT INTO `sys_dept` VALUES (224, 223, 0, '0,100,222,223', '测试商户5客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-04-10 23:56:23', '', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -559,7 +761,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -604,8 +806,8 @@ INSERT INTO `sys_dict_data` VALUES (37, 1, '交易中', '1', 'sale_status', NULL
 INSERT INTO `sys_dict_data` VALUES (38, 2, '已完成', '2', 'sale_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 12:23:18', 'admin', '2024-01-23 12:23:49', '卖币状态(已完成)');
 INSERT INTO `sys_dict_data` VALUES (39, 9, '已取消', '9', 'sale_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 12:23:44', '', NULL, '卖币状态(已取消)');
 INSERT INTO `sys_dict_data` VALUES (40, 0, '买家未付款', '0', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 17:58:45', 'admin', '2024-01-23 17:59:34', '买币状态(买家未付款)');
-INSERT INTO `sys_dict_data` VALUES (41, 2, '买家已付款', '1', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 17:59:17', 'admin', '2024-02-29 19:54:07', '买币状态(买家已付款)');
-INSERT INTO `sys_dict_data` VALUES (42, 3, '卖家已收款', '2', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 18:01:42', 'admin', '2024-02-29 19:54:16', '买币状态(卖家已收款)');
+INSERT INTO `sys_dict_data` VALUES (41, 3, '买家已付款', '1', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 17:59:17', 'admin', '2024-03-31 20:10:09', '买币状态(买家已付款)');
+INSERT INTO `sys_dict_data` VALUES (42, 4, '卖家已收款', '2', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 18:01:42', 'admin', '2024-03-31 20:10:32', '买币状态(卖家已收款)');
 INSERT INTO `sys_dict_data` VALUES (43, 9, '已取消', '9', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-01-23 18:02:22', '', NULL, '买币状态(已取消)');
 INSERT INTO `sys_dict_data` VALUES (44, 0, '买币', '0', 'transaction_record_type', NULL, 'default', 'N', '0', 'admin', '2024-01-24 20:47:21', '', NULL, NULL);
 INSERT INTO `sys_dict_data` VALUES (45, 1, '卖币', '1', 'transaction_record_type', NULL, 'default', 'N', '0', 'admin', '2024-01-24 20:47:29', '', NULL, NULL);
@@ -625,6 +827,8 @@ INSERT INTO `sys_dict_data` VALUES (58, 4, '代理', '03', 'user_type', NULL, 'd
 INSERT INTO `sys_dict_data` VALUES (59, 5, '客户', '04', 'user_type', NULL, 'default', 'N', '0', 'admin', '2024-03-01 22:09:24', '', NULL, NULL);
 INSERT INTO `sys_dict_data` VALUES (60, 7, '卖币取消退款', '7', 'transaction_record_type', NULL, 'default', 'N', '0', 'admin', '2024-03-01 22:47:01', '', NULL, NULL);
 INSERT INTO `sys_dict_data` VALUES (61, 8, '充值手续费', '8', 'transaction_record_type', NULL, 'default', 'N', '0', 'admin', '2024-03-01 22:47:31', '', NULL, NULL);
+INSERT INTO `sys_dict_data` VALUES (62, 5, '订单异议', '4', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-03-13 19:11:43', 'admin', '2024-03-31 20:10:21', NULL);
+INSERT INTO `sys_dict_data` VALUES (63, 2, '买家付款中', '5', 'buy_status', NULL, 'default', 'N', '0', 'admin', '2024-03-31 20:10:02', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -731,7 +935,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 290 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 392 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -926,6 +1130,108 @@ INSERT INTO `sys_logininfor` VALUES (286, 'agent3', '127.0.0.1', '内网IP', 'Un
 INSERT INTO `sys_logininfor` VALUES (287, 'kehu3', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '注册成功', '2024-03-01 22:59:10');
 INSERT INTO `sys_logininfor` VALUES (288, 'kehu4', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '注册成功', '2024-03-01 22:59:28');
 INSERT INTO `sys_logininfor` VALUES (289, 'kehu3', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-01 23:00:46');
+INSERT INTO `sys_logininfor` VALUES (290, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-02 17:38:51');
+INSERT INTO `sys_logininfor` VALUES (291, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-02 18:32:10');
+INSERT INTO `sys_logininfor` VALUES (292, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-03 20:41:44');
+INSERT INTO `sys_logininfor` VALUES (293, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-04 21:32:28');
+INSERT INTO `sys_logininfor` VALUES (294, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-04 21:32:44');
+INSERT INTO `sys_logininfor` VALUES (295, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-04 21:34:44');
+INSERT INTO `sys_logininfor` VALUES (296, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-04 21:35:25');
+INSERT INTO `sys_logininfor` VALUES (297, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-04 22:04:08');
+INSERT INTO `sys_logininfor` VALUES (298, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-04 22:04:15');
+INSERT INTO `sys_logininfor` VALUES (299, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-07 21:16:21');
+INSERT INTO `sys_logininfor` VALUES (300, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-07 21:26:57');
+INSERT INTO `sys_logininfor` VALUES (301, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-07 21:27:04');
+INSERT INTO `sys_logininfor` VALUES (302, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-07 21:45:15');
+INSERT INTO `sys_logininfor` VALUES (303, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-07 21:45:19');
+INSERT INTO `sys_logininfor` VALUES (304, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-08 23:01:29');
+INSERT INTO `sys_logininfor` VALUES (305, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-08 23:02:30');
+INSERT INTO `sys_logininfor` VALUES (306, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-08 23:14:34');
+INSERT INTO `sys_logininfor` VALUES (307, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-08 23:17:44');
+INSERT INTO `sys_logininfor` VALUES (308, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-08 23:17:53');
+INSERT INTO `sys_logininfor` VALUES (309, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '退出成功', '2024-03-09 00:08:24');
+INSERT INTO `sys_logininfor` VALUES (310, 'kehu1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-09 00:08:32');
+INSERT INTO `sys_logininfor` VALUES (311, 'kehu1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '退出成功', '2024-03-09 00:09:45');
+INSERT INTO `sys_logininfor` VALUES (312, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-09 00:09:49');
+INSERT INTO `sys_logininfor` VALUES (313, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-09 00:20:41');
+INSERT INTO `sys_logininfor` VALUES (314, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-09 00:32:49');
+INSERT INTO `sys_logininfor` VALUES (315, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-09 00:32:52');
+INSERT INTO `sys_logininfor` VALUES (316, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-09 00:44:13');
+INSERT INTO `sys_logininfor` VALUES (317, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-09 00:44:17');
+INSERT INTO `sys_logininfor` VALUES (318, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-09 00:44:26');
+INSERT INTO `sys_logininfor` VALUES (319, 'liao1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-09 00:44:31');
+INSERT INTO `sys_logininfor` VALUES (320, 'liao1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-09 00:44:52');
+INSERT INTO `sys_logininfor` VALUES (321, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-09 00:44:56');
+INSERT INTO `sys_logininfor` VALUES (322, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-12 19:59:26');
+INSERT INTO `sys_logininfor` VALUES (323, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-12 20:17:35');
+INSERT INTO `sys_logininfor` VALUES (324, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-12 20:33:17');
+INSERT INTO `sys_logininfor` VALUES (325, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-13 19:04:46');
+INSERT INTO `sys_logininfor` VALUES (326, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-13 19:29:53');
+INSERT INTO `sys_logininfor` VALUES (327, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-13 19:30:52');
+INSERT INTO `sys_logininfor` VALUES (328, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-13 19:38:53');
+INSERT INTO `sys_logininfor` VALUES (329, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-13 19:38:57');
+INSERT INTO `sys_logininfor` VALUES (330, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-13 20:34:43');
+INSERT INTO `sys_logininfor` VALUES (331, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-13 20:34:47');
+INSERT INTO `sys_logininfor` VALUES (332, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-13 21:56:21');
+INSERT INTO `sys_logininfor` VALUES (333, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-13 21:56:24');
+INSERT INTO `sys_logininfor` VALUES (334, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-13 21:57:02');
+INSERT INTO `sys_logininfor` VALUES (335, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-13 21:57:12');
+INSERT INTO `sys_logininfor` VALUES (336, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-20 18:02:34');
+INSERT INTO `sys_logininfor` VALUES (337, 'agent1', '127.0.0.1', '内网IP', 'Chrome Mobile', 'Android 6.x', '0', '登录成功', '2024-03-20 18:03:14');
+INSERT INTO `sys_logininfor` VALUES (338, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 22:53:15');
+INSERT INTO `sys_logininfor` VALUES (339, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 22:58:54');
+INSERT INTO `sys_logininfor` VALUES (340, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 22:58:58');
+INSERT INTO `sys_logininfor` VALUES (341, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 23:04:06');
+INSERT INTO `sys_logininfor` VALUES (342, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 23:04:09');
+INSERT INTO `sys_logininfor` VALUES (343, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 23:09:51');
+INSERT INTO `sys_logininfor` VALUES (344, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 23:10:10');
+INSERT INTO `sys_logininfor` VALUES (345, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 23:27:00');
+INSERT INTO `sys_logininfor` VALUES (346, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 23:27:04');
+INSERT INTO `sys_logininfor` VALUES (347, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 23:36:42');
+INSERT INTO `sys_logininfor` VALUES (348, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 23:36:46');
+INSERT INTO `sys_logininfor` VALUES (349, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-29 23:40:55');
+INSERT INTO `sys_logininfor` VALUES (350, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-29 23:40:58');
+INSERT INTO `sys_logininfor` VALUES (351, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-30 00:20:55');
+INSERT INTO `sys_logininfor` VALUES (352, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-30 00:20:59');
+INSERT INTO `sys_logininfor` VALUES (353, 'agent1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-30 00:47:28');
+INSERT INTO `sys_logininfor` VALUES (354, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 18:53:41');
+INSERT INTO `sys_logininfor` VALUES (355, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 20:00:21');
+INSERT INTO `sys_logininfor` VALUES (356, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 20:00:24');
+INSERT INTO `sys_logininfor` VALUES (357, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 20:09:12');
+INSERT INTO `sys_logininfor` VALUES (358, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 20:09:16');
+INSERT INTO `sys_logininfor` VALUES (359, 'agent1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 21:06:51');
+INSERT INTO `sys_logininfor` VALUES (360, 'kehu1', '127.0.0.1', '内网IP', 'Unknown', 'Unknown', '0', '登录成功', '2024-03-31 21:07:22');
+INSERT INTO `sys_logininfor` VALUES (361, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 21:45:31');
+INSERT INTO `sys_logininfor` VALUES (362, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 21:45:34');
+INSERT INTO `sys_logininfor` VALUES (363, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 22:26:12');
+INSERT INTO `sys_logininfor` VALUES (364, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 22:26:16');
+INSERT INTO `sys_logininfor` VALUES (365, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 22:33:21');
+INSERT INTO `sys_logininfor` VALUES (366, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 22:33:24');
+INSERT INTO `sys_logininfor` VALUES (367, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:03:44');
+INSERT INTO `sys_logininfor` VALUES (368, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:04:07');
+INSERT INTO `sys_logininfor` VALUES (369, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:04:15');
+INSERT INTO `sys_logininfor` VALUES (370, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:04:18');
+INSERT INTO `sys_logininfor` VALUES (371, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:04:22');
+INSERT INTO `sys_logininfor` VALUES (372, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:09:30');
+INSERT INTO `sys_logininfor` VALUES (373, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:09:45');
+INSERT INTO `sys_logininfor` VALUES (374, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:09:48');
+INSERT INTO `sys_logininfor` VALUES (375, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:09:53');
+INSERT INTO `sys_logininfor` VALUES (376, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:18:01');
+INSERT INTO `sys_logininfor` VALUES (377, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:32:26');
+INSERT INTO `sys_logininfor` VALUES (378, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:32:29');
+INSERT INTO `sys_logininfor` VALUES (379, 'liao2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:39:52');
+INSERT INTO `sys_logininfor` VALUES (380, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:39:55');
+INSERT INTO `sys_logininfor` VALUES (381, 'liao3', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:40:03');
+INSERT INTO `sys_logininfor` VALUES (382, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:40:08');
+INSERT INTO `sys_logininfor` VALUES (383, 'okadmin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-03-31 23:40:24');
+INSERT INTO `sys_logininfor` VALUES (384, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-03-31 23:40:27');
+INSERT INTO `sys_logininfor` VALUES (385, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-04-10 22:17:00');
+INSERT INTO `sys_logininfor` VALUES (386, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-04-10 23:56:50');
+INSERT INTO `sys_logininfor` VALUES (387, 'ceshi4', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-04-10 23:56:57');
+INSERT INTO `sys_logininfor` VALUES (388, 'ceshi4', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-04-10 23:57:00');
+INSERT INTO `sys_logininfor` VALUES (389, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-04-10 23:57:17');
+INSERT INTO `sys_logininfor` VALUES (390, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-04-10 23:57:29');
+INSERT INTO `sys_logininfor` VALUES (391, 'ceshi4', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-04-10 23:57:34');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -952,7 +1258,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1070 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1071 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1047,10 +1353,11 @@ INSERT INTO `sys_menu` VALUES (1062, '卖币查询', 1061, 1, '#', '', NULL, 1, 
 INSERT INTO `sys_menu` VALUES (1063, '交易中心', 0, 2, 'shopping', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'shopping', 'admin', '2024-01-23 08:07:11', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1064, '买币列表', 1063, 2, 'buyCoin', 'system/buyCoin/index', NULL, 1, 0, 'C', '0', '0', 'system:buyCoin:list', 'drag', 'admin', '2024-01-23 18:04:44', 'admin', '2024-01-23 18:32:08', '买币菜单');
 INSERT INTO `sys_menu` VALUES (1065, '买币查询', 1064, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'system:buyCoin:query', '#', 'admin', '2024-01-23 18:04:44', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1066, '交易记录', 1063, 3, 'transactionRecord', 'system/transactionRecord/index', NULL, 1, 0, 'C', '0', '0', 'system:transactionRecord:list', 'skill', 'admin', '2024-01-24 19:30:23', 'admin', '2024-01-24 19:31:03', '交易记录菜单');
+INSERT INTO `sys_menu` VALUES (1066, '交易记录', 1063, 3, 'transactionRecord', 'system/transactionRecord/index', NULL, 1, 0, 'C', '0', '0', 'system:transactionRecord:list', 'skill', 'admin', '2024-01-24 19:30:23', 'admin', '2024-03-31 22:33:18', '交易记录菜单');
 INSERT INTO `sys_menu` VALUES (1067, '交易记录查询', 1066, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'system:transactionRecord:query', '#', 'admin', '2024-01-24 19:30:23', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1068, '支付审核', 1, 10, 'payApprove', 'system/payApprove/index', NULL, 1, 0, 'C', '0', '0', 'system:payApprove:list', 'money', 'admin', '2024-02-29 11:33:46', 'admin', '2024-02-29 11:40:35', '用户支付方式审核菜单');
 INSERT INTO `sys_menu` VALUES (1069, '支付审核查询', 1068, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'system:payApprove:query', '#', 'admin', '2024-02-29 11:34:15', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1070, '异议单审核', 1063, 4, 'objectionApprove', 'system/buyCoin/objectionApprove', NULL, 1, 0, 'C', '0', '0', 'system:buyCoin:list', 'list', 'admin', '2024-01-23 08:05:33', 'admin', '2024-03-13 19:18:31', '交易市场');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1118,7 +1425,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 317 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1340,6 +1647,26 @@ INSERT INTO `sys_oper_log` VALUES (313, '字典数据', 1, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (314, '字典数据', 1, 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"卖币取消退款\",\"dictSort\":7,\"dictType\":\"transaction_record_type\",\"dictValue\":\"7\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-01 22:47:01', 76);
 INSERT INTO `sys_oper_log` VALUES (315, '字典数据', 2, 'com.ruoyi.web.controller.system.SysDictDataController.edit()', 'PUT', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2024-01-24 20:48:32\",\"default\":false,\"dictCode\":49,\"dictLabel\":\"卖币手续费\",\"dictSort\":5,\"dictType\":\"transaction_record_type\",\"dictValue\":\"5\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-01 22:47:17', 329);
 INSERT INTO `sys_oper_log` VALUES (316, '字典数据', 1, 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"充值手续费\",\"dictSort\":8,\"dictType\":\"transaction_record_type\",\"dictValue\":\"8\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-01 22:47:32', 331);
+INSERT INTO `sys_oper_log` VALUES (317, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'okadmin', 'OKPAY平台', '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"deptId\":207,\"deptName\":\"测试商户2\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"singleBuyMaxAmount\":0.0,\"splitMaxRate\":0,\"splitMinRate\":0,\"status\":\"0\",\"ungentCommission\":0,\"updateBy\":\"okadmin\",\"userId\":4,\"userName\":\"liao2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-07 21:16:44', 27);
+INSERT INTO `sys_oper_log` VALUES (318, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'okadmin', 'OKPAY平台', '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"deptId\":207,\"deptName\":\"测试商户2\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"singleBuyMaxAmount\":0.0,\"splitMaxRate\":0,\"splitMinRate\":0,\"status\":\"0\",\"ungentCommission\":1,\"updateBy\":\"okadmin\",\"userId\":4,\"userName\":\"liao2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-07 21:16:52', 28);
+INSERT INTO `sys_oper_log` VALUES (319, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'okadmin', 'OKPAY平台', '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"deptId\":207,\"deptName\":\"测试商户2\",\"normalCommission\":5,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"singleBuyMaxAmount\":0.0,\"splitMaxRate\":0,\"splitMinRate\":0,\"status\":\"0\",\"ungentCommission\":0,\"updateBy\":\"okadmin\",\"userId\":4,\"userName\":\"liao2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-07 21:16:58', 42);
+INSERT INTO `sys_oper_log` VALUES (320, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"1\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":0,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"singleBuyMaxAmount\":2000.0,\"splitMaxRate\":0,\"splitMinRate\":15,\"status\":\"0\",\"ungentCommission\":0,\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"该商户包含未停用的其他代理！\",\"code\":500}', 0, NULL, '2024-03-12 20:33:28', 7);
+INSERT INTO `sys_oper_log` VALUES (321, '商户管理', 2, 'com.ruoyi.web.controller.system.SysDeptController.edit()', 'PUT', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"deptId\":216,\"deptName\":\"测试商户3\",\"normalCommission\":0,\"orderNum\":0,\"params\":{},\"parentId\":100,\"parentName\":\"OKPAY平台\",\"singleBuyMaxAmount\":2000.0,\"splitMaxRate\":0,\"splitMinRate\":15,\"status\":\"0\",\"ungentCommission\":0,\"updateBy\":\"admin\",\"userId\":7,\"userName\":\"liao3\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-12 20:33:56', 17);
+INSERT INTO `sys_oper_log` VALUES (322, '字典数据', 1, 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"订单异议\",\"dictSort\":4,\"dictType\":\"buy_status\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-13 19:11:43', 9);
+INSERT INTO `sys_oper_log` VALUES (323, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/buyCoin/objectionApprove\",\"createTime\":\"2024-01-23 08:05:33\",\"icon\":\"list\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1070,\"menuName\":\"异议单审核\",\"menuType\":\"C\",\"orderNum\":4,\"params\":{},\"parentId\":1063,\"path\":\"objectionApprove\",\"perms\":\"system:buyCoin:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-13 19:18:31', 6);
+INSERT INTO `sys_oper_log` VALUES (324, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2024-01-02 21:22:09\",\"dataScope\":\"4\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,103,1016,1017,1018,1019,107,1035,1036,1037,1038,1068,1069,1063,1061,1062,1064,1065,1066,1067,1070],\"params\":{},\"remark\":\"OK平台管理员\",\"roleId\":2,\"roleKey\":\"okpayadmin\",\"roleName\":\"OK平台管理员\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-13 19:19:08', 22);
+INSERT INTO `sys_oper_log` VALUES (325, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2024-01-02 22:53:21\",\"dataScope\":\"4\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,1068,1069,1063,1061,1062,1064,1065,1066,1067,1070],\"params\":{},\"roleId\":3,\"roleKey\":\"merchant\",\"roleName\":\"商户\",\"roleSort\":3,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-13 19:19:13', 7);
+INSERT INTO `sys_oper_log` VALUES (326, '字典数据', 1, 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"买家付款中\",\"dictSort\":2,\"dictType\":\"buy_status\",\"dictValue\":\"5\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 20:10:02', 7);
+INSERT INTO `sys_oper_log` VALUES (327, '字典数据', 2, 'com.ruoyi.web.controller.system.SysDictDataController.edit()', 'PUT', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2024-01-23 17:59:17\",\"default\":false,\"dictCode\":41,\"dictLabel\":\"买家已付款\",\"dictSort\":3,\"dictType\":\"buy_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"买币状态(买家已付款)\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 20:10:09', 4);
+INSERT INTO `sys_oper_log` VALUES (328, '字典数据', 2, 'com.ruoyi.web.controller.system.SysDictDataController.edit()', 'PUT', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2024-03-13 19:11:43\",\"default\":false,\"dictCode\":62,\"dictLabel\":\"订单异议\",\"dictSort\":5,\"dictType\":\"buy_status\",\"dictValue\":\"4\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 20:10:21', 5);
+INSERT INTO `sys_oper_log` VALUES (329, '字典数据', 2, 'com.ruoyi.web.controller.system.SysDictDataController.edit()', 'PUT', 1, 'admin', NULL, '/system/dict/data', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2024-01-23 18:01:42\",\"default\":false,\"dictCode\":42,\"dictLabel\":\"卖家已收款\",\"dictSort\":4,\"dictType\":\"buy_status\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"买币状态(卖家已收款)\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 20:10:32', 6);
+INSERT INTO `sys_oper_log` VALUES (330, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/transactionRecord/transactionSearch\",\"createTime\":\"2024-01-24 19:30:23\",\"icon\":\"skill\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1066,\"menuName\":\"交易记录\",\"menuType\":\"C\",\"orderNum\":3,\"params\":{},\"parentId\":1063,\"path\":\"transactionRecord\",\"perms\":\"system:transactionRecord:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 22:26:38', 11);
+INSERT INTO `sys_oper_log` VALUES (331, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/transactionRecord/index\",\"createTime\":\"2024-01-24 19:30:23\",\"icon\":\"skill\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1066,\"menuName\":\"交易记录\",\"menuType\":\"C\",\"orderNum\":3,\"params\":{},\"parentId\":1063,\"path\":\"transactionRecord\",\"perms\":\"system:transactionRecord:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-03-31 22:33:18', 15);
+INSERT INTO `sys_oper_log` VALUES (332, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"im_user\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-04-10 23:40:46', 43);
+INSERT INTO `sys_oper_log` VALUES (333, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"user\",\"className\":\"ImUser\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"id\",\"columnId\":202,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2024-04-10 23:40:46\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"UserName\",\"columnComment\":\"用户名\",\"columnId\":203,\"columnName\":\"user_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-04-10 23:40:46\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"userName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"NickName\",\"columnComment\":\"用户昵称\",\"columnId\":204,\"columnName\":\"nick_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-04-10 23:40:46\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"nickName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":3,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"HeadImage\",\"columnComment\":\"用户头像\",\"columnId\":205,\"columnName\":\"head_image\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-04-10 23:40:46\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"imageUpload\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequi', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-04-10 23:44:18', 24);
+INSERT INTO `sys_oper_log` VALUES (334, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"im_user\"}', NULL, 0, NULL, '2024-04-10 23:44:22', 206);
+INSERT INTO `sys_oper_log` VALUES (335, '商户管理', 1, 'com.ruoyi.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"children\":[],\"createAgentFlg\":\"0\",\"deptName\":\"测试商户4\",\"normalCommission\":0,\"orderNum\":0,\"params\":{},\"parentId\":100,\"singleBuyMaxAmount\":1000.0,\"splitMinRate\":0,\"status\":\"0\",\"ungentCommission\":0,\"userName\":\"ceshi4\"}', '{\"msg\":\"新增商户\'测试商户4\'失败，商户名称已存在\",\"code\":500}', 0, NULL, '2024-04-10 23:56:14', 12);
+INSERT INTO `sys_oper_log` VALUES (336, '商户管理', 1, 'com.ruoyi.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createAgentFlg\":\"0\",\"createBy\":\"admin\",\"deptId\":222,\"deptName\":\"测试商户5\",\"normalCommission\":0,\"orderNum\":0,\"params\":{},\"parentId\":100,\"singleBuyMaxAmount\":1000.0,\"splitMinRate\":0,\"status\":\"0\",\"ungentCommission\":0,\"userName\":\"ceshi4\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-04-10 23:56:23', 111);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1387,19 +1714,11 @@ CREATE TABLE `sys_recharge`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`recharge_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充值表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '充值表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_recharge
 -- ----------------------------
-INSERT INTO `sys_recharge` VALUES (4, 10, 11, 1.10, '2024-01-24 19:26:37', '3', 0.00, 0.00, '1', 'agent1', '2024-01-24 19:26:37', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (5, 10, 11, 50.00, '2024-01-24 19:28:02', '3', 0.00, 0.00, '1', 'agent1', '2024-01-24 19:28:02', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (6, 10, 11, 50.00, '2024-02-02 23:15:35', '3', 0.00, 0.00, '1', 'agent1', '2024-02-02 23:15:35', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (7, 10, 11, 50.00, '2024-02-02 23:21:46', '3', 0.00, 0.00, '1', 'agent1', '2024-02-02 23:21:46', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (8, 10, 11, 50.00, '2024-02-02 23:37:29', '3', 298.90, 3.40, '1', 'agent1', '2024-02-02 23:37:29', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (9, 11, 10, 20.00, '2024-03-01 22:51:22', '3', 1298.40, 1256.90, '1', 'kehu1', '2024-03-01 22:51:22', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (10, 11, 10, 50.00, '2024-03-01 23:17:36', '3', 1248.40, 1301.90, '1', 'kehu1', '2024-03-01 23:17:36', '', NULL, NULL);
-INSERT INTO `sys_recharge` VALUES (11, 11, 10, 50.00, '2024-03-01 23:18:44', '3', 1198.40, 1346.90, '1', 'kehu1', '2024-03-01 23:18:44', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1427,8 +1746,8 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-01-24 19:31:21', 'OK平台管理员');
-INSERT INTO `sys_role` VALUES (3, '商户', 'merchant', 3, '4', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:21', 'admin', '2024-01-24 19:31:28', NULL);
+INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-03-13 19:19:08', 'OK平台管理员');
+INSERT INTO `sys_role` VALUES (3, '商户', 'merchant', 3, '4', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:21', 'admin', '2024-03-13 19:19:13', NULL);
 INSERT INTO `sys_role` VALUES (4, '代理', 'agent', 4, '1', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:36', '', '2024-01-04 22:45:05', NULL);
 INSERT INTO `sys_role` VALUES (5, '客户', 'customer', 5, '1', 1, 1, '0', '0', 'admin', '2024-01-04 22:44:34', '', '2024-01-04 22:44:59', NULL);
 
@@ -1487,6 +1806,7 @@ INSERT INTO `sys_role_menu` VALUES (2, 1066);
 INSERT INTO `sys_role_menu` VALUES (2, 1067);
 INSERT INTO `sys_role_menu` VALUES (2, 1068);
 INSERT INTO `sys_role_menu` VALUES (2, 1069);
+INSERT INTO `sys_role_menu` VALUES (2, 1070);
 INSERT INTO `sys_role_menu` VALUES (3, 1);
 INSERT INTO `sys_role_menu` VALUES (3, 100);
 INSERT INTO `sys_role_menu` VALUES (3, 1000);
@@ -1505,6 +1825,7 @@ INSERT INTO `sys_role_menu` VALUES (3, 1066);
 INSERT INTO `sys_role_menu` VALUES (3, 1067);
 INSERT INTO `sys_role_menu` VALUES (3, 1068);
 INSERT INTO `sys_role_menu` VALUES (3, 1069);
+INSERT INTO `sys_role_menu` VALUES (3, 1070);
 
 -- ----------------------------
 -- Table structure for sys_sale_coin
@@ -1532,23 +1853,16 @@ CREATE TABLE `sys_sale_coin`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`sale_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '卖币表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '卖币表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_sale_coin
 -- ----------------------------
-INSERT INTO `sys_sale_coin` VALUES (7, 'OK20240123145552604', '2024-01-23 14:55:52', 7, '0', '0,1,2', 500.00, 500.00, 0.00, 500.00, 0, 0, 0.00, '1', '0', 'liao3', '2024-01-23 14:55:52', '', NULL, NULL);
-INSERT INTO `sys_sale_coin` VALUES (8, 'OK20240123145602799', '2024-01-23 14:56:02', 7, '1', '1,2', 1200.00, 1200.00, 0.00, 1200.00, 0, 0, 0.00, '1', '0', 'liao3', '2024-01-23 14:56:02', '', NULL, NULL);
-INSERT INTO `sys_sale_coin` VALUES (9, 'OK20240123145622622', '2024-01-23 14:56:22', 7, '0', '2,1', 100.00, 100.00, 0.00, 100.00, 0, 0, 0.00, '2', '1', 'liao3', '2024-01-23 14:56:22', '', '2024-01-23 15:17:21', NULL);
-INSERT INTO `sys_sale_coin` VALUES (10, 'OK20240123152607140', '2024-01-23 15:26:07', 11, '0', '0,2', 50.00, 47.50, 2.50, 47.50, 0, 0, 0.00, '2', '0', 'kehu1', '2024-01-23 15:26:07', 'kehu1', '2024-01-23 15:31:36', NULL);
-INSERT INTO `sys_sale_coin` VALUES (11, 'OK20240123153942443', '2024-01-23 15:39:42', 11, '1', '0,1,2', 20.00, 18.00, 2.00, 8.00, 0, 0, 0.00, '1', '1', 'kehu1', '2024-01-23 15:39:42', 'kehu1', '2024-01-23 19:36:55', NULL);
-INSERT INTO `sys_sale_coin` VALUES (13, 'OK20240123185252742', '2024-01-23 18:52:52', 7, '0', '0,1', 180.00, 180.00, 0.00, 180.00, 0, 0, 0.00, '2', '0', 'liao3', '2024-01-23 18:52:52', '', '2024-01-23 18:53:30', NULL);
-INSERT INTO `sys_sale_coin` VALUES (14, 'OK20240227201741924', '2024-02-27 20:17:41', 11, '1', '0,1,2', 100.00, 90.00, 10.00, 90.00, 15, 0, 2000.00, '1', '1', 'kehu1', '2024-02-27 20:17:41', 'agent1', '2024-02-28 23:57:39', NULL);
-INSERT INTO `sys_sale_coin` VALUES (15, 'OK20240227213538654', '2024-02-27 21:35:38', 10, '1', '0,1,2', 100.00, 90.00, 10.00, 0.00, 15, 0, 2000.00, '2', '1', 'agent1', '2024-02-27 21:35:38', 'AUTO', '2024-02-29 20:38:36', NULL);
-INSERT INTO `sys_sale_coin` VALUES (16, 'OK20240228222147130', '2024-02-28 22:21:47', 10, '1', '0,1,2', 100.00, 90.00, 10.00, 90.00, 15, 0, 2000.00, '9', '1', 'agent1', '2024-02-28 22:21:47', 'agent1', '2024-02-28 22:25:42', NULL);
-INSERT INTO `sys_sale_coin` VALUES (17, 'OK20240228222553001', '2024-02-28 22:26:16', 10, '1', '0,1,2', 100.00, 90.00, 10.00, 90.00, 15, 0, 2000.00, '9', '1', 'agent1', '2024-02-28 22:26:16', 'agent1', '2024-02-28 22:26:51', NULL);
-INSERT INTO `sys_sale_coin` VALUES (18, 'OK20240229204213688', '2024-02-29 20:42:13', 10, '1', '0,1,2', 100.00, 90.00, 10.00, 0.00, 15, 0, 2000.00, '2', '1', 'agent1', '2024-02-29 20:42:13', 'AUTO_FINISH', '2024-02-29 20:53:42', NULL);
-INSERT INTO `sys_sale_coin` VALUES (19, 'OK20240229205633909', '2024-02-29 20:56:33', 10, '1', '0,1,2', 100.00, 90.00, 10.00, 70.00, 15, 0, 2000.00, '1', '1', 'agent1', '2024-02-29 20:56:33', 'agent1', '2024-02-29 20:56:56', NULL);
+INSERT INTO `sys_sale_coin` VALUES (1, 'OK20240312212925083', '2024-03-12 21:29:25', 10, '1', '01', 2000.00, 2000.00, 0.00, 1000.00, 15, 0, 2000.00, '9', '0', 'agent1', '2024-03-12 21:29:25', 'agent1', '2024-03-12 21:31:25', NULL);
+INSERT INTO `sys_sale_coin` VALUES (2, 'OK20240312213331976', '2024-03-12 21:33:31', 10, '1', '01', 500.00, 500.00, 0.00, 0.00, 15, 0, 2000.00, '2', '0', 'agent1', '2024-03-12 21:33:31', 'agent1', '2024-03-12 21:34:13', NULL);
+INSERT INTO `sys_sale_coin` VALUES (3, 'OK20240312213510690', '2024-03-12 21:35:10', 10, '1', '01', 1500.00, 1500.00, 0.00, 1500.00, 15, 0, 2000.00, '9', '0', 'agent1', '2024-03-12 21:35:10', 'agent1', '2024-03-13 19:30:06', NULL);
+INSERT INTO `sys_sale_coin` VALUES (4, 'OK20240313193044468', '2024-03-13 19:30:44', 10, '1', '10', 1000.00, 1000.00, 0.00, 0.00, 15, 0, 2000.00, '2', '0', 'agent1', '2024-03-13 19:30:44', 'liao3', '2024-03-13 22:09:00', NULL);
+INSERT INTO `sys_sale_coin` VALUES (5, 'OK20240331210815595', '2024-03-31 21:08:15', 10, '1', '102', 300.00, 300.00, 0.00, 100.00, 15, 0, 2000.00, '1', '0', 'agent1', '2024-03-31 21:08:15', 'agent1', '2024-03-31 21:20:34', NULL);
 
 -- ----------------------------
 -- Table structure for sys_transaction_record
@@ -1571,55 +1885,22 @@ CREATE TABLE `sys_transaction_record`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`record_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '交易记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '交易记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_transaction_record
 -- ----------------------------
-INSERT INTO `sys_transaction_record` VALUES (3, 7, '2024-01-23 14:55:52', '1', NULL, 7, NULL, 500.00, 0.00, '0', '', '2024-01-23 14:55:52', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (4, 7, '2024-01-23 14:56:02', '1', NULL, 8, NULL, 1200.00, 0.00, '0', '', '2024-01-23 14:56:02', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (5, 7, '2024-01-23 14:56:22', '1', NULL, 9, NULL, 100.00, 0.00, '0', '', '2024-01-23 14:56:22', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (8, 11, '2024-01-23 15:24:14', '0', 4, NULL, NULL, 100.00, 0.00, '0', '', '2024-01-23 15:24:14', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (9, 11, '2024-01-23 15:26:07', '1', NULL, 10, NULL, 50.00, 0.00, '0', '', '2024-01-23 15:26:07', 'kehu1', '2024-01-23 15:26:30', NULL);
-INSERT INTO `sys_transaction_record` VALUES (10, 7, '2024-01-23 15:26:31', '5', NULL, 10, NULL, 2.50, 0.00, '0', '', '2024-01-23 15:26:31', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (11, 7, '2024-01-23 15:31:36', '0', 5, NULL, NULL, 47.50, 0.00, '0', 'liao3', '2024-01-23 15:31:36', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (12, 11, '2024-01-23 15:39:42', '1', NULL, 11, NULL, 20.00, 0.00, '0', 'kehu1', '2024-01-23 15:39:42', 'kehu1', '2024-01-23 15:39:48', NULL);
-INSERT INTO `sys_transaction_record` VALUES (13, 7, '2024-01-23 15:39:48', '5', NULL, 11, NULL, 2.00, 0.00, '0', 'kehu1', '2024-01-23 15:39:48', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (15, 7, '2024-01-23 18:52:53', '1', NULL, 13, NULL, 180.00, 0.00, '0', '', '2024-01-23 18:52:53', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (20, 7, '2024-01-23 19:36:56', '0', 10, NULL, NULL, 10.00, 0.00, '0', 'liao3', '2024-01-23 19:36:56', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (27, 10, '2024-01-24 19:26:37', '3', NULL, NULL, 4, 1.10, 0.00, '0', 'agent1', '2024-01-24 19:26:37', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (28, 11, '2024-01-24 19:26:37', '6', NULL, NULL, 4, 1.10, 0.00, '0', 'agent1', '2024-01-24 19:26:37', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (29, 10, '2024-01-24 19:28:02', '3', NULL, NULL, 5, 50.00, 0.00, '0', 'agent1', '2024-01-24 19:28:02', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (30, 11, '2024-01-24 19:28:02', '6', NULL, NULL, 5, 50.00, 0.00, '0', 'agent1', '2024-01-24 19:28:02', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (31, 10, '2024-02-02 23:15:35', '3', NULL, NULL, 6, 50.00, 0.00, '0', 'agent1', '2024-02-02 23:15:35', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (32, 10, '2024-02-02 23:21:47', '3', NULL, NULL, 7, 50.00, 0.00, '0', 'agent1', '2024-02-02 23:21:47', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (33, 11, '2024-02-02 23:21:53', '6', NULL, NULL, 7, 50.00, 348.90, '0', 'agent1', '2024-02-02 23:21:53', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (34, 10, '2024-02-02 23:37:29', '3', NULL, NULL, 8, 50.00, 0.00, '0', 'agent1', '2024-02-02 23:37:29', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (35, 11, '2024-02-02 23:37:29', '6', NULL, NULL, 8, 50.00, 298.90, '0', 'agent1', '2024-02-02 23:37:29', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (36, 11, '2024-02-27 20:17:42', '1', NULL, 14, NULL, 100.00, 1103.40, '0', 'kehu1', '2024-02-27 20:17:42', 'kehu1', '2024-02-27 20:18:03', NULL);
-INSERT INTO `sys_transaction_record` VALUES (37, 7, '2024-02-27 20:18:03', '5', NULL, 14, NULL, 10.00, 0.00, '0', 'kehu1', '2024-02-27 20:18:03', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (38, 10, '2024-02-27 21:35:38', '1', NULL, 15, NULL, 100.00, 198.90, '0', 'agent1', '2024-02-27 21:35:38', 'agent1', '2024-02-27 21:36:00', NULL);
-INSERT INTO `sys_transaction_record` VALUES (39, 7, '2024-02-27 21:36:00', '5', NULL, 15, NULL, 10.00, 0.00, '0', 'agent1', '2024-02-27 21:36:00', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (40, 11, '2024-02-27 22:25:24', '0', 11, NULL, NULL, 70.00, 1173.40, '0', 'admin', '2024-02-27 22:25:24', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (41, 10, '2024-02-28 22:21:47', '1', NULL, 16, NULL, 100.00, 98.90, '9', 'agent1', '2024-02-28 22:21:47', 'agent1', '2024-02-28 22:25:41', NULL);
-INSERT INTO `sys_transaction_record` VALUES (42, 10, '2024-02-28 22:26:16', '1', NULL, 17, NULL, 100.00, 98.90, '9', 'agent1', '2024-02-28 22:26:16', 'agent1', '2024-02-28 22:26:51', NULL);
-INSERT INTO `sys_transaction_record` VALUES (43, 11, '2024-02-29 20:24:35', '0', 17, NULL, NULL, 15.00, 1188.40, '0', 'AUTO', '2024-02-29 20:24:35', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (44, 11, '2024-02-29 20:41:54', '0', 18, NULL, NULL, 5.00, 1208.40, '0', 'AUTO', '2024-02-29 20:41:54', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (45, 10, '2024-02-29 20:42:13', '1', NULL, 18, NULL, 100.00, 98.90, '0', 'agent1', '2024-02-29 20:42:13', 'agent1', '2024-02-29 20:44:28', NULL);
-INSERT INTO `sys_transaction_record` VALUES (46, 7, '2024-02-29 20:44:31', '5', NULL, 18, NULL, 10.00, 0.00, '0', 'agent1', '2024-02-29 20:44:31', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (47, 11, '2024-02-29 20:53:42', '0', 19, NULL, NULL, 90.00, 1298.40, '0', 'AUTO_FINISH', '2024-02-29 20:53:42', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (48, 10, '2024-02-29 20:56:37', '1', NULL, 19, NULL, 100.00, 1198.90, '0', 'agent1', '2024-02-29 20:56:37', 'agent1', '2024-02-29 20:56:43', NULL);
-INSERT INTO `sys_transaction_record` VALUES (49, 7, '2024-02-29 20:56:43', '5', NULL, 19, NULL, 10.00, 0.00, '0', 'agent1', '2024-02-29 20:56:43', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (50, 11, '2024-02-29 21:04:02', '0', 20, NULL, NULL, 20.00, 1318.40, '0', 'agent1', '2024-02-29 21:04:02', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (51, 10, '2024-02-29 22:06:59', '7', NULL, 19, NULL, 78.00, 1276.90, '0', 'agent1', '2024-02-29 22:06:59', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (52, 11, '2024-03-01 22:51:22', '3', NULL, NULL, 9, 20.00, 0.00, '0', 'kehu1', '2024-03-01 22:51:22', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (53, 10, '2024-03-01 22:51:22', '6', NULL, NULL, 9, 20.00, 1298.40, '0', 'kehu1', '2024-03-01 22:51:22', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (54, 11, '2024-03-01 23:17:36', '3', NULL, NULL, 10, 50.00, 0.00, '0', 'kehu1', '2024-03-01 23:17:36', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (55, 10, '2024-03-01 23:17:36', '6', NULL, NULL, 10, 45.00, 1248.40, '0', 'kehu1', '2024-03-01 23:17:36', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (56, 10, '2024-03-01 23:17:36', '8', NULL, NULL, 10, 5.00, 203.90, '0', 'kehu1', '2024-03-01 23:17:36', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (57, 11, '2024-03-01 23:18:44', '3', NULL, NULL, 11, 50.00, 0.00, '0', 'kehu1', '2024-03-01 23:18:44', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (58, 10, '2024-03-01 23:18:44', '6', NULL, NULL, 11, 45.00, 1198.40, '0', 'kehu1', '2024-03-01 23:18:44', '', NULL, NULL);
-INSERT INTO `sys_transaction_record` VALUES (59, 7, '2024-03-01 23:18:44', '8', NULL, NULL, 11, 5.00, 208.90, '0', 'kehu1', '2024-03-01 23:18:44', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (1, 10, '2024-03-12 21:29:25', '1', NULL, 1, NULL, 2000.00, 0.00, '0', 'agent1', '2024-03-12 21:29:25', 'agent1', '2024-03-12 21:31:25', NULL);
+INSERT INTO `sys_transaction_record` VALUES (2, 11, '2024-03-12 21:31:14', '0', 1, NULL, NULL, 1000.00, 6568.40, '0', 'agent1', '2024-03-12 21:31:14', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (3, 10, '2024-03-12 21:31:25', '7', NULL, 1, NULL, 1000.00, 1000.00, '0', 'agent1', '2024-03-12 21:31:25', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (4, 10, '2024-03-12 21:33:32', '1', NULL, 2, NULL, 500.00, 500.00, '0', 'agent1', '2024-03-12 21:33:32', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (5, 11, '2024-03-12 21:34:13', '0', 2, NULL, NULL, 500.00, 7068.40, '0', 'agent1', '2024-03-12 21:34:13', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (6, 10, '2024-03-12 21:35:10', '1', NULL, 3, NULL, 1500.00, 0.00, '9', 'agent1', '2024-03-12 21:35:10', 'agent1', '2024-03-13 19:30:06', NULL);
+INSERT INTO `sys_transaction_record` VALUES (7, 10, '2024-03-13 19:30:44', '1', NULL, 4, NULL, 1000.00, 500.00, '0', 'agent1', '2024-03-13 19:30:44', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (8, 11, '2024-03-13 22:09:00', '0', 7, NULL, NULL, 200.00, 7268.40, '0', 'liao3', '2024-03-13 22:09:00', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (9, 10, '2024-03-31 21:08:15', '1', NULL, 5, NULL, 300.00, 2200.00, '0', 'agent1', '2024-03-31 21:08:15', 'agent1', '2024-03-31 21:15:14', NULL);
+INSERT INTO `sys_transaction_record` VALUES (10, 11, '2024-03-31 21:11:54', '0', 8, NULL, NULL, 200.00, 7468.40, '0', 'agent1', '2024-03-31 21:11:54', '', NULL, NULL);
+INSERT INTO `sys_transaction_record` VALUES (11, 10, '2024-03-31 21:15:14', '7', NULL, 5, NULL, 100.00, 2300.00, '0', 'agent1', '2024-03-31 21:15:14', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1644,6 +1925,7 @@ CREATE TABLE `sys_user`  (
   `face_img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸图片路径',
   `wallet_address` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '钱包地址',
   `amount` float(10, 2) NULL DEFAULT 0.00 COMMENT '余额',
+  `sellable_amount` float(10, 2) NULL DEFAULT 0.00 COMMENT '可售金额',
   `invite_code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邀请码',
   `wechat_pay_remark` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信收款填充信息',
   `wechat_pay_img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信收款码图片地址',
@@ -1670,24 +1952,25 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '/profile/avatar/2024/01/07/头像_20240107111226A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 'a12c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-01 22:06:59', 'admin', '2024-01-02 21:22:09', '', '2024-03-01 22:06:59', '管理员');
-INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '01', 'r1@qq.com', '15666666666', '0', '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, '789c', NULL, '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', NULL, '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', NULL, '1231', '123', 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-01 22:05:41', 'admin', '2024-01-02 21:22:09', 'admin', '2024-03-01 22:05:41', '测试员');
-INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '02', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 'e7afd6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 15, 5, 0, '0', 10, 0, 1000, '0', '0', '127.0.0.1', '2024-01-21 10:47:11', 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-02-26 22:51:31', NULL);
-INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, '52541b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-01-04 23:41:52', 'admin', '2024-01-04 23:05:25', '', '2024-01-04 23:41:51', NULL);
-INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 208.90, '506309', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, 0, '1', 15, 0, 2000, '0', '0', '127.0.0.1', '2024-01-24 21:02:43', 'admin', '2024-01-04 23:20:30', '', '2024-01-24 21:02:42', NULL);
-INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', '', '$2a$10$VC.K8bUrw/VOw8lHiTzIW.gRzNgTuUa23QbVEcrCGsGLPReRRN/su', '$2a$10$xlssbvg5snLtsU5IH1bOa.katjFBryMYf20QkN1t95Aq0sJ61x4Ea', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 1346.90, '834d02', NULL, '/profile/upload/2024/01/06/image_20240106204519A001.jpeg', NULL, NULL, NULL, NULL, NULL, 7, 0, 0, 10, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-02-29 20:02:49', '', '2024-01-06 00:23:59', 'admin', '2024-03-01 22:23:04', NULL);
-INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户new1', '04', '', '15888888881', '0', '/profile/upload/2024/01/21/image_20240121170818A001.jpeg', '$2a$10$eCHngkkX93fWTLmH4iX0cu/WA.RiuQokpXft7ypl7NJ/KknX4KJey', '$2a$10$no4ZDhvNT7prNN8PF3w3reRdww7S.sdm1PA3/B0ak8bVZd2UKn7pW', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 1198.40, '0e9ace', '微信支付补充信息', '/profile/upload/2024/01/21/image_20240121165650A001.jpeg', NULL, NULL, NULL, NULL, NULL, 10, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-01 22:21:47', '', '2024-01-13 23:10:17', 'admin', '2024-03-01 22:22:20', 'hello');
-INSERT INTO `sys_user` VALUES (12, 219, 'liao4', '测试商户4', '02', '', '', '0', '', '$2a$10$wkffx1ddD7D3FXPh9FKTJeao8Zzzqbt0u9wmiEyze8v8nNKWmdr4S', NULL, NULL, NULL, NULL, NULL, NULL, '21648c3fabab84c3', 0.00, '750e5f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, 0, '0', 0, 0, 0, '0', '0', '', NULL, 'okadmin', '2024-01-19 22:53:21', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (13, 220, 'agent2', '测试代理2', '03', '', '15888888882', '0', '', '$2a$10$SGV242RHmdUlb15eH4xBp.HxGQoy2CRHqsMaMPrOMVuN1oWvlG.Wy', '$2a$10$2TnEyCbt/0u79ec4t91KuuAmY/u0tVCUzo7QeUMQ.b29qvRkF6IdO', '客', '123123121', '/profile/upload/2024/01/19/image_20240119225435A001.jpeg', '/profile/upload/2024/01/19/image_20240119225435A002.jpeg', NULL, '392a0c09a2d5cbbf', 0.00, '9b9e1c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-02-28 23:54:52', '', '2024-01-19 22:54:35', 'okadmin', '2024-02-28 23:54:52', NULL);
-INSERT INTO `sys_user` VALUES (14, 221, 'kehu2', '测试客户2', '04', '', '15888888883', '0', '', '$2a$10$JzhQ5X2k9YpDofOx0PdZ/enIJexzZ8DBLL9ngT5ulbm2rPP2MO29u', '$2a$10$gWqK.tYlf42quKXwTjabkunaL9nUYxx.XYA0WnsJiiYqS0SXFZA7y', '客2', '1231231211', '/profile/upload/2024/01/19/image_20240119225611A003.jpeg', '/profile/upload/2024/01/19/image_20240119225611A004.jpeg', NULL, '609c28593886f5a4', 0.00, '7df77f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-01-20 10:23:18', '', '2024-01-19 22:56:12', '', '2024-01-20 10:23:17', NULL);
-INSERT INTO `sys_user` VALUES (15, 217, 'agent3', '代理3', '03', '', '18788888880', '0', '', '$2a$10$7qHO4ZzBip/vbsf3Y2Nq4uBC5AFYUomh2SIeA30pfeASV62nIUoLC', '$2a$10$RFMljx1IMrTqrQECPJeWz.Xrq1VK3YZdY49i.lPPsebmTIYXfu0EC', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225825A001.jpeg', '/profile/upload/2024/03/01/image_20240301225829A002.jpeg', NULL, '4be5ab4eec46ff66', 0.00, '6d9ae2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 0, 0, 0, '0', 0, 0, 0, '0', '0', '', NULL, '', '2024-03-01 22:58:29', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (16, 218, 'kehu3', '客户3', '04', '', '18788888881', '0', '', '$2a$10$n6irqgjs2kqqSNtFxVFb6eGlkeUAzK5Fejo0cu4/OzfnN/3cQFnlK', '$2a$10$5MXDmPdMyXOIxf0sLDrmte/KHUsaVPvK5zTjDfXE5x1vPOnYzepRW', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225909A003.jpeg', '/profile/upload/2024/03/01/image_20240301225909A004.jpeg', NULL, '65cf4f1546abebe5', 0.00, 'fc6777', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-01 23:00:47', '', '2024-03-01 22:59:10', '', '2024-03-01 23:00:46', NULL);
-INSERT INTO `sys_user` VALUES (17, 218, 'kehu4', '客户4', '04', '', '18788888882', '0', '', '$2a$10$1IeKVledGhFpOXNGr3QFPedyzR/iBMLz.lr2Ze2NluqnI9flX28qS', '$2a$10$4W8QIOFsheVYkBs0gE2sBeHfTnIdYgps5VCQJZHX0Lkd4YBXc6uu2', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225927A005.jpeg', '/profile/upload/2024/03/01/image_20240301225928A006.jpeg', NULL, '5fd4d9ef3162f964', 0.00, 'f58cbc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 0, 0, 0, '0', 0, 0, 0, '0', '0', '', NULL, '', '2024-03-01 22:59:28', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '/profile/avatar/2024/01/07/头像_20240107111226A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 0.00, 'a12c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-04-10 23:57:17', 'admin', '2024-01-02 21:22:09', '', '2024-04-10 23:57:17', '管理员');
+INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '01', 'r1@qq.com', '15666666666', '0', '/profile/avatar/2024/01/07/头像2_20240107111704A002.png', '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, 0.00, '789c', NULL, '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', NULL, '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', NULL, '1231', '123', 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 23:40:08', 'admin', '2024-01-02 21:22:09', 'admin', '2024-03-31 23:40:08', '测试员');
+INSERT INTO `sys_user` VALUES (3, 200, 'liao1', '测试商户', '02', '', '', '0', '', '$2a$10$hcDdKFCeyLfYAB6vOVwzV.pTBfgv7HHC//RG7hgeN5fcJfW7M43WC', NULL, NULL, NULL, '/profile/upload/2024/01/03/身份证正面_20240103001027A005.png', '/profile/upload/2024/01/04/身份证反面_20240104224213A001.png', NULL, '96dd63595f287715', 0.00, 0.00, 'e7afd6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 15, 5, 0, '0', 10, 0, 1000, '0', '0', '127.0.0.1', '2024-03-09 00:44:32', 'testadmin', '2024-01-03 00:10:30', 'admin', '2024-03-09 00:44:31', NULL);
+INSERT INTO `sys_user` VALUES (4, 207, 'liao2', '测试商户2', '02', '', '', '0', '', '$2a$10$HU03gJI4V9HyUaXG83UmB.KYhPWLTucXF4wkQYTZwoicJjC8UA7py', NULL, NULL, NULL, NULL, NULL, NULL, '31dfd5da15491918', 0.00, 0.00, '52541b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 5, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 23:32:29', 'admin', '2024-01-04 23:05:25', '', '2024-03-31 23:32:29', NULL);
+INSERT INTO `sys_user` VALUES (7, 216, 'liao3', '测试商户3', '02', '', '', '0', '', '$2a$10$toRIxcMdTCYcPwmVwBNFTe/0gjep7mSU315FdsShpJeTmWucbZtAm', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 534.90, 0.00, '506309', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, '0', 15, 0, 2000, '0', '0', '127.0.0.1', '2024-03-31 23:39:55', 'admin', '2024-01-04 23:20:30', '', '2024-03-31 23:39:55', NULL);
+INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', '', '$2a$10$VC.K8bUrw/VOw8lHiTzIW.gRzNgTuUa23QbVEcrCGsGLPReRRN/su', '$2a$10$xlssbvg5snLtsU5IH1bOa.katjFBryMYf20QkN1t95Aq0sJ61x4Ea', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 2300.00, 0.00, '834d02', '微信支付补充信息', '/profile/upload/2024/03/09/image_20240309010839A006.jpeg', '333', '/profile/upload/2024/03/09/image_20240309010443A004.jpeg', NULL, NULL, NULL, 7, 0, 0, 10, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 21:06:51', '', '2024-01-06 00:23:59', 'admin', '2024-03-31 21:06:51', NULL);
+INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户new1', '04', '', '15888888881', '0', '/profile/upload/2024/01/21/image_20240121170818A001.jpeg', '$2a$10$eCHngkkX93fWTLmH4iX0cu/WA.RiuQokpXft7ypl7NJ/KknX4KJey', '$2a$10$no4ZDhvNT7prNN8PF3w3reRdww7S.sdm1PA3/B0ak8bVZd2UKn7pW', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 7468.40, 0.00, '0e9ace', '微信支付补充信息', '/profile/upload/2024/01/21/image_20240121165650A001.jpeg', NULL, NULL, NULL, NULL, NULL, 10, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 21:07:23', '', '2024-01-13 23:10:17', 'admin', '2024-03-31 21:07:22', 'hello');
+INSERT INTO `sys_user` VALUES (12, 219, 'liao4', '测试商户4', '02', '', '', '0', '', '$2a$10$wkffx1ddD7D3FXPh9FKTJeao8Zzzqbt0u9wmiEyze8v8nNKWmdr4S', NULL, NULL, NULL, NULL, NULL, NULL, '21648c3fabab84c3', 0.00, 0.00, '750e5f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 10, 5, 0, '0', 0, 0, 0, '0', '0', '', NULL, 'okadmin', '2024-01-19 22:53:21', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (13, 220, 'agent2', '测试代理2', '03', '', '15888888882', '0', '', '$2a$10$SGV242RHmdUlb15eH4xBp.HxGQoy2CRHqsMaMPrOMVuN1oWvlG.Wy', '$2a$10$2TnEyCbt/0u79ec4t91KuuAmY/u0tVCUzo7QeUMQ.b29qvRkF6IdO', '客', '123123121', '/profile/upload/2024/01/19/image_20240119225435A001.jpeg', '/profile/upload/2024/01/19/image_20240119225435A002.jpeg', NULL, '392a0c09a2d5cbbf', 0.00, 0.00, '9b9e1c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-02-28 23:54:52', '', '2024-01-19 22:54:35', 'okadmin', '2024-02-28 23:54:52', NULL);
+INSERT INTO `sys_user` VALUES (14, 221, 'kehu2', '测试客户2', '04', '', '15888888883', '0', '', '$2a$10$JzhQ5X2k9YpDofOx0PdZ/enIJexzZ8DBLL9ngT5ulbm2rPP2MO29u', '$2a$10$gWqK.tYlf42quKXwTjabkunaL9nUYxx.XYA0WnsJiiYqS0SXFZA7y', '客2', '1231231211', '/profile/upload/2024/01/19/image_20240119225611A003.jpeg', '/profile/upload/2024/01/19/image_20240119225611A004.jpeg', NULL, '609c28593886f5a4', 0.00, 0.00, '7df77f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-01-20 10:23:18', '', '2024-01-19 22:56:12', '', '2024-01-20 10:23:17', NULL);
+INSERT INTO `sys_user` VALUES (15, 217, 'agent3', '代理3', '03', '', '18788888880', '0', '', '$2a$10$7qHO4ZzBip/vbsf3Y2Nq4uBC5AFYUomh2SIeA30pfeASV62nIUoLC', '$2a$10$RFMljx1IMrTqrQECPJeWz.Xrq1VK3YZdY49i.lPPsebmTIYXfu0EC', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225825A001.jpeg', '/profile/upload/2024/03/01/image_20240301225829A002.jpeg', NULL, '4be5ab4eec46ff66', 0.00, 0.00, '6d9ae2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 0, 0, 0, '0', 0, 0, 0, '0', '0', '', NULL, '', '2024-03-01 22:58:29', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (16, 218, 'kehu3', '客户3', '04', '', '18788888881', '0', '', '$2a$10$n6irqgjs2kqqSNtFxVFb6eGlkeUAzK5Fejo0cu4/OzfnN/3cQFnlK', '$2a$10$5MXDmPdMyXOIxf0sLDrmte/KHUsaVPvK5zTjDfXE5x1vPOnYzepRW', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225909A003.jpeg', '/profile/upload/2024/03/01/image_20240301225909A004.jpeg', NULL, '65cf4f1546abebe5', 0.00, 0.00, 'fc6777', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-01 23:00:47', '', '2024-03-01 22:59:10', '', '2024-03-01 23:00:46', NULL);
+INSERT INTO `sys_user` VALUES (17, 218, 'kehu4', '客户4', '04', '', '18788888882', '0', '', '$2a$10$1IeKVledGhFpOXNGr3QFPedyzR/iBMLz.lr2Ze2NluqnI9flX28qS', '$2a$10$4W8QIOFsheVYkBs0gE2sBeHfTnIdYgps5VCQJZHX0Lkd4YBXc6uu2', '客2', '1231231211', '/profile/upload/2024/03/01/image_20240301225927A005.jpeg', '/profile/upload/2024/03/01/image_20240301225928A006.jpeg', NULL, '5fd4d9ef3162f964', 0.00, 0.00, 'f58cbc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 0, 0, 0, '0', 0, 0, 0, '0', '0', '', NULL, '', '2024-03-01 22:59:28', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (18, 222, 'ceshi4', '测试商户5', '02', '', '', '0', '', '$2a$10$DxNmTvme7H9gcV.cBFob3ecpU3VlfWF27QeTYzDhjqBXZ3hpEp6nS', NULL, NULL, NULL, NULL, NULL, NULL, 'ca77be83743768de', 0.00, 0.00, 'bb220e', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, '0', 0, 0, 1000, '0', '0', '127.0.0.1', '2024-04-10 23:57:35', 'admin', '2024-04-10 23:56:23', '', '2024-04-10 23:57:34', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_pay_type_approve
@@ -1709,11 +1992,15 @@ CREATE TABLE `sys_user_pay_type_approve`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`pay_type_approve_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户支付方式审核表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户支付方式审核表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_pay_type_approve
 -- ----------------------------
+INSERT INTO `sys_user_pay_type_approve` VALUES (1, 10, '1', '65165', '/profile/upload/2024/03/09/image_20240309010151A001.jpeg', '9', '0', '', NULL, 'agent1', '2024-03-09 01:01:51', 'liao3', '2024-03-09 01:02:03', NULL);
+INSERT INTO `sys_user_pay_type_approve` VALUES (2, 10, '1', '5465', '/profile/upload/2024/03/09/image_20240309010212A002.jpeg', '9', '0', '', NULL, 'agent1', '2024-03-09 01:02:12', 'liao3', '2024-03-09 01:04:18', NULL);
+INSERT INTO `sys_user_pay_type_approve` VALUES (3, 10, '0', '333', '/profile/upload/2024/03/09/image_20240309010443A004.jpeg', '1', '0', '', NULL, 'agent1', '2024-03-09 01:04:43', 'liao3', '2024-03-09 01:07:54', NULL);
+INSERT INTO `sys_user_pay_type_approve` VALUES (4, 10, '1', NULL, '/profile/upload/2024/03/09/image_20240309010839A006.jpeg', '1', '0', '', NULL, 'agent1', '2024-03-09 01:08:39', 'liao3', '2024-03-09 01:09:12', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1757,5 +2044,6 @@ INSERT INTO `sys_user_role` VALUES (14, 5);
 INSERT INTO `sys_user_role` VALUES (15, 4);
 INSERT INTO `sys_user_role` VALUES (16, 5);
 INSERT INTO `sys_user_role` VALUES (17, 5);
+INSERT INTO `sys_user_role` VALUES (18, 3);
 
 SET FOREIGN_KEY_CHECKS = 1;
