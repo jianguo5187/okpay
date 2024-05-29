@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.vo.resp.UserTransactionDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -133,11 +134,39 @@ public class SysTransactionRecordController extends BaseController
     public AjaxResult getUserTotalAmount(SysTransactionRecord sysTransactionRecord)
     {
         AjaxResult ajax = AjaxResult.success();
+        SysUser user = SecurityUtils.getLoginUser().getUser();
         if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
-            SysUser user = SecurityUtils.getLoginUser().getUser();
             sysTransactionRecord.setDeptId(user.getDeptId());
         }
-        ajax.put("totalAmount",sysTransactionRecordService.getUserTotalAmount(sysTransactionRecord));
+
+        List<UserTransactionDetailInfoRespVO> list = sysTransactionRecordService.selectUserTransactionMoneyList(sysTransactionRecord);
+        Float transactionTotalAmount = 0f;
+        Float transactionInAmount = 0f;
+        Float transactionOutAmount = 0f;
+        for(UserTransactionDetailInfoRespVO userTransactionDetailInfo : list){
+            transactionTotalAmount = transactionTotalAmount + userTransactionDetailInfo.getTransactionTotalAmount();
+            transactionInAmount = transactionInAmount + userTransactionDetailInfo.getTransactionBuyAmount();
+            transactionOutAmount = transactionOutAmount + userTransactionDetailInfo.getTransactionSaleAmount();
+        }
+        ajax.put("totalAmount",transactionTotalAmount);
+        ajax.put("totalInAmount",transactionInAmount);
+        ajax.put("totalOutAmount",transactionOutAmount);
         return ajax;
+    }
+
+
+    /**
+     * 查询交易记录列表
+     */
+    @GetMapping("/listUserTransactionMoney")
+    public TableDataInfo listUserTransactionMoney(SysTransactionRecord sysTransactionRecord)
+    {
+        startPage();
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
+        List<UserTransactionDetailInfoRespVO> list = sysTransactionRecordService.selectUserTransactionMoneyList(sysTransactionRecord);
+        return getDataTable(list);
     }
 }

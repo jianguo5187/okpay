@@ -418,7 +418,7 @@ export default {
       // 登录用户ID
       loginUserId: this.$store.state.user.id,
       // 登录用户Name
-      loginUserName: this.$store.state.user.name,
+      loginUserName: this.$store.state.user.nickName,
       // 选中数组
       ids: [],
       // 非单个禁用

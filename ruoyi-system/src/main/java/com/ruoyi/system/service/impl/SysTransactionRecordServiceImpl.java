@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.common.core.vo.resp.UserTransactionDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,5 +116,10 @@ public class SysTransactionRecordServiceImpl implements ISysTransactionRecordSer
             totalAmount += respVO.getRecordAmount();
         }
         return totalAmount;
+    }
+
+    @Override
+    public List<UserTransactionDetailInfoRespVO> selectUserTransactionMoneyList(SysTransactionRecord sysTransactionRecord) {
+        return sysTransactionRecordMapper.selectUserTransactionMoneyList(sysTransactionRecord);
     }
 }

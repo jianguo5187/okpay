@@ -46,6 +46,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="recordAmount"    column="record_amount"    />
     </resultMap>
 
+    <resultMap type="com.ruoyi.common.core.vo.resp.UserTransactionDetailInfoRespVO" id="UserTransactionDetailInfoResult">
+        <result property="userId"    column="user_id"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="transactionTotalAmount"    column="transaction_total_amount"    />
+        <result property="transactionBuyAmount"    column="transaction_buy_amount"    />
+        <result property="transactionSaleAmount"    column="transaction_sale_amount"    />
+    </resultMap>
+
     <sql id="selectSysTransactionRecordVo">
         select
             tr.record_id,
@@ -332,5 +341,282 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         GROUP BY
             tr.user_id
         </if>
+    </select>
+
+    <select id="selectUserTransactionMoneyList" parameterType="SysTransactionRecord" resultMap="UserTransactionDetailInfoResult">
+--         SELECT
+--         FROM
+--         (
+            SELECT
+                tr_temp1.user_id AS user_id
+                ,u.nick_name AS nick_name
+                ,u.user_type AS user_type
+                ,IFNULL(tr_temp1.transaction_total_amount,0) AS transaction_total_amount
+                ,IFNULL(tr_temp1.transaction_buy_amount,0) AS transaction_buy_amount
+                ,IFNULL(tr_temp1.transaction_sale_amount,0) AS transaction_sale_amount
+            FROM
+                (
+                SELECT
+                    tr1.user_id
+                ,SUM(
+                    CASE
+                    WHEN
+                        tr1.record_type = '0'
+                        OR tr1.record_type = '1'
+                    THEN
+                        tr1.record_amount
+                    WHEN
+                        tr1.record_type = '7'
+                    THEN
+                        tr1.record_amount *- 1
+                    ELSE
+                        0
+                END ) AS transaction_total_amount
+                ,SUM(
+                    CASE
+                    WHEN
+                        tr1.record_type = '0'
+                    THEN
+                        tr1.record_amount
+                    ELSE
+                        0
+                END ) AS transaction_buy_amount
+                ,SUM(
+                    CASE
+                    WHEN
+                        tr1.record_type = '1'
+                    THEN
+                        tr1.record_amount
+                    WHEN
+                        tr1.record_type = '7'
+                    THEN
+                        tr1.record_amount *- 1
+                    ELSE
+                    0
+                END ) AS transaction_sale_amount
+                FROM sys_transaction_record tr1
+                WHERE
+                    tr1.STATUS = '0'
+                AND tr1.record_type in('0','1','7')
+                <if test="startTime != null">
+                    AND date_format(tr1.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+                </if>
+                <if test="endTime != null">
+                    AND date_format(tr1.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
+                </if>
+                GROUP BY
+                    tr1.user_id
+            )tr_temp1
+            INNER JOIN sys_user u ON u.user_id = tr_temp1.user_id
+            WHERE
+            1 = 1
+            <if test="userId != null ">
+                AND tr_temp1.user_id = #{userId}
+            </if>
+            <if test="selfUserId != null ">
+                AND tr_temp1.user_id = #{selfUserId}
+            </if>
+            UNION ALL
+            SELECT
+                 u.user_id AS user_id
+                ,u.nick_name AS nick_name
+                ,u.user_type AS user_type
+                ,IFNULL(tr_temp1.transaction_total_amount,0)
+                    + IFNULL(tr_temp2.transaction_total_amount,0)
+                    + IFNULL(tr_temp3.transaction_total_amount,0)
+                AS transaction_total_amount
+                ,IFNULL(tr_temp1.transaction_buy_amount,0)
+                    + IFNULL(tr_temp2.transaction_buy_amount,0)
+                    + IFNULL(tr_temp3.transaction_buy_amount,0)
+                AS transaction_buy_amount
+                ,IFNULL(tr_temp1.transaction_sale_amount,0)
+                    + IFNULL(tr_temp2.transaction_sale_amount,0)
+                    + IFNULL(tr_temp3.transaction_sale_amount,0)
+                AS transaction_sale_amount
+            FROM
+            sys_user u
+            LEFT JOIN
+            (
+                SELECT
+                    tr1.user_id
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr1.record_type = '0'
+                            OR tr1.record_type = '1'
+                        THEN
+                            tr1.record_amount
+                        WHEN
+                            tr1.record_type = '7'
+                        THEN
+                            tr1.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_total_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr1.record_type = '0'
+                        THEN
+                            tr1.record_amount
+                        ELSE
+                            0
+                    END ) AS transaction_buy_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr1.record_type = '1'
+                        THEN
+                            tr1.record_amount
+                        WHEN
+                            tr1.record_type = '7'
+                        THEN
+                            tr1.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_sale_amount
+                FROM sys_transaction_record tr1
+                WHERE
+                    tr1.STATUS = '0'
+                    AND tr1.record_type in('0','1','7')
+                <if test="startTime != null">
+                    AND date_format(tr1.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+                </if>
+                <if test="endTime != null">
+                    AND date_format(tr1.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
+                </if>
+                GROUP BY
+                    tr1.user_id
+            )tr_temp1 ON u.user_id = tr_temp1.user_id
+            LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
+            LEFT JOIN
+            (
+                SELECT
+                    u2.parent_user_id
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr2.record_type = '0'
+                            OR tr2.record_type = '1'
+                        THEN
+                            tr2.record_amount
+                        WHEN
+                            tr2.record_type = '7'
+                        THEN
+                            tr2.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_total_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr2.record_type = '0'
+                        THEN
+                            tr2.record_amount
+                        ELSE
+                            0
+                    END ) AS transaction_buy_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr2.record_type = '1'
+                        THEN
+                            tr2.record_amount
+                        WHEN
+                            tr2.record_type = '7'
+                        THEN
+                            tr2.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_sale_amount
+                FROM sys_transaction_record tr2
+                INNER JOIN sys_user u2 ON u2.user_id = tr2.user_id
+                WHERE
+                    tr2.STATUS = '0'
+                    AND tr2.record_type in('0','1','7')
+                <if test="startTime != null">
+                    AND date_format(tr2.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+                </if>
+                <if test="endTime != null">
+                    AND date_format(tr2.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
+                </if>
+                GROUP BY
+                    u2.parent_user_id
+            )tr_temp2 ON tr_temp2.parent_user_id = u.user_id
+            LEFT JOIN
+            (
+                SELECT
+                    u4.parent_user_id
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr3.record_type = '0'
+                            OR tr3.record_type = '1'
+                        THEN
+                            tr3.record_amount
+                        WHEN
+                            tr3.record_type = '7'
+                        THEN
+                            tr3.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_total_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr3.record_type = '0'
+                        THEN
+                            tr3.record_amount
+                        ELSE
+                            0
+                    END ) AS transaction_buy_amount
+                    ,SUM(
+                        CASE
+                        WHEN
+                            tr3.record_type = '1'
+                        THEN
+                            tr3.record_amount
+                        WHEN
+                            tr3.record_type = '7'
+                        THEN
+                            tr3.record_amount *- 1
+                        ELSE
+                            0
+                    END ) AS transaction_sale_amount
+                FROM sys_transaction_record tr3
+                INNER JOIN sys_user u3 ON u3.user_id = tr3.user_id
+                INNER JOIN sys_user u4 ON u4.user_id = u3.parent_user_id
+                WHERE
+                    tr3.STATUS = '0'
+                    AND tr3.record_type in('0','1','7')
+                    AND u3.user_type = '04'
+                <if test="startTime != null">
+                    AND date_format(tr3.record_time,'%y%m%d') &gt;= STR_TO_DATE(#{startTime}, '%Y-%m-%d')
+                </if>
+                <if test="endTime != null">
+                    AND date_format(tr3.record_time,'%y%m%d') &lt;= STR_TO_DATE(#{endTime}, '%Y-%m-%d')
+                </if>
+                GROUP BY
+                u4.parent_user_id
+            )tr_temp3 ON tr_temp3.parent_user_id = u.user_id
+            WHERE
+            1 = 1
+            <if test="userId != null ">
+                AND u.user_id = #{userId}
+            </if>
+            <if test="parentUserId != null ">
+                AND u.parent_user_id = #{parentUserId}
+            </if>
+            <if test="transactionFlg != null and deptId != null">
+                AND
+                (
+                u.user_id = 1
+                or
+                d.dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set( #{deptId} , ancestors ) )
+                )
+            </if>
+            <if test="userType != null ">
+                AND u.user_type = #{userType}
+            </if>
     </select>
 </mapper>

@@ -76,6 +76,14 @@ public class SysTransactionRecord extends BaseEntity
 
     private Long deptId;
 
+    private String userType;
+
+    /** 上级用户ID */
+    private Long parentUserId;
+
+    /** 自身用户ID */
+    private Long selfUserId;
+
     public String getTransactionFlg() {
         return transactionFlg;
     }
@@ -220,6 +228,30 @@ public class SysTransactionRecord extends BaseEntity
 
     public void setUserRemainAmount(Float userRemainAmount) {
         this.userRemainAmount = userRemainAmount;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public Long getParentUserId() {
+        return parentUserId;
+    }
+
+    public void setParentUserId(Long parentUserId) {
+        this.parentUserId = parentUserId;
+    }
+
+    public Long getSelfUserId() {
+        return selfUserId;
+    }
+
+    public void setSelfUserId(Long selfUserId) {
+        this.selfUserId = selfUserId;
     }
 
     @Override

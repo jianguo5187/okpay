@@ -59,3 +59,12 @@ export function getUserTotalAmount(query) {
     params: query
   })
 }
+
+// 查询交易记录列表
+export function listUserTransactionMoney(query) {
+  return request({
+    url: '/system/transactionRecord/listUserTransactionMoney',
+    method: 'get',
+    params: query
+  })
+}

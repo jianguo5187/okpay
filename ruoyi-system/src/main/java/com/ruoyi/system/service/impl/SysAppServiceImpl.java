@@ -3,6 +3,7 @@ package com.ruoyi.system.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -1293,15 +1294,48 @@ public class SysAppServiceImpl implements ISysAppService {
     @Override
     public CashFlowRespVO getUserCashFlow(Long userId) {
         CashFlowRespVO respVO = new CashFlowRespVO();
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        String today = sd.format(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        String yesday = sd.format(cal.getTime());
+        Float totalAmount = 0f;
+        Float todayTotalAmount = 0f;
+        Float yesterdayTotalAmount = 0f;
+
         SysUser user = sysUserService.selectUserById(userId);
         SysTransactionRecord searchRecord = new SysTransactionRecord();
-        searchRecord.setUserId(userId);
+        searchRecord.setSelfUserId(userId);
         searchRecord.setStatus("0");
+        searchRecord.setTransactionFlg("1");
+        searchRecord.setDeptId(user.getDeptId());
+        searchRecord.setUserType("03");
+
+        List<UserTransactionDetailInfoRespVO> totalUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO totalUserTransaction : totalUserTransactionList){
+            totalAmount += totalUserTransaction.getTransactionTotalAmount();
+        }
+
+        searchRecord.setStartTime(today);
+        searchRecord.setEndTime(today);
+        List<UserTransactionDetailInfoRespVO> todayUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO todayUserTransaction : todayUserTransactionList){
+            todayTotalAmount += todayUserTransaction.getTransactionTotalAmount();
+        }
+
+        searchRecord.setStartTime(yesday);
+        searchRecord.setEndTime(yesday);
+        List<UserTransactionDetailInfoRespVO> yesdayUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO yeadayUserTransaction : yesdayUserTransactionList){
+            yesterdayTotalAmount += yeadayUserTransaction.getTransactionTotalAmount();
+        }
+
 //        List<SysTransactionRecord> list = sysTransactionRecordMapper.selectSysTransactionRecordList(searchRecord);
-        Float totalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,null);
+//        Float totalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,null);
 //        Float commissionAmount = 0f;
-        Float todayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),"0",null);
-        Float yesterdayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,"1");
+//        Float todayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),"0",null);
+//        Float yesterdayTotalAmount = sysTransactionRecordMapper.getTransactonAmountTotal(null,user.getDeptId(),null,"1");
 
 //        for(SysTransactionRecord transactionRecord : list){
 //            if(StringUtils.equals(transactionRecord.getRecordType(),"0")
@@ -1321,10 +1355,10 @@ public class SysAppServiceImpl implements ISysAppService {
 //            }
 //        }
 
-        respVO.setTotalAmount(totalAmount == null?0f : totalAmount);
+        respVO.setTotalAmount(totalAmount);
 //        respVO.setCommissionAmount(commissionAmount);
-        respVO.setTodayTotalAmount(todayTotalAmount == null?0f : todayTotalAmount);
-        respVO.setYesterdayTotalAmount(yesterdayTotalAmount == null?0f : yesterdayTotalAmount);
+        respVO.setTodayTotalAmount(todayTotalAmount);
+        respVO.setYesterdayTotalAmount(yesterdayTotalAmount);
         return respVO;
     }
 

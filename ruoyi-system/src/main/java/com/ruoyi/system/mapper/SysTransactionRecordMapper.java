@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
 import java.util.List;
 
 import com.ruoyi.common.core.vo.resp.TransactionDetailInfoRespVO;
+import com.ruoyi.common.core.vo.resp.UserTransactionDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -78,4 +79,6 @@ public interface SysTransactionRecordMapper
     public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
 
     public Float getTransactonAmountTotal(@Param("userId")Long userId, @Param("deptId")Long deptId, @Param("todayFlg")String todayFlg, @Param("yesterdayFlg")String yesterdayFlg);
+
+    public List<UserTransactionDetailInfoRespVO> selectUserTransactionMoneyList(SysTransactionRecord sysTransactionRecord);
 }

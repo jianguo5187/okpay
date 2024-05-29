@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysTransactionRecord;
+import com.ruoyi.common.core.vo.resp.UserTransactionDetailInfoRespVO;
 import com.ruoyi.common.core.vo.resp.UserTransactionTotalRespVO;
 
 /**
@@ -63,4 +64,6 @@ public interface ISysTransactionRecordService
     public List<UserTransactionTotalRespVO> selectUserTransactionlist(SysTransactionRecord sysTransactionRecord);
 
     public Float getUserTotalAmount (SysTransactionRecord sysTransactionRecord);
+
+    public List<UserTransactionDetailInfoRespVO> selectUserTransactionMoneyList(SysTransactionRecord sysTransactionRecord);
 }

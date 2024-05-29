@@ -158,7 +158,7 @@ export const dynamicRoutes = [
         path: 'index',
         component: () => import('@/views/system/transactionRecord/transactionSearch'),
         name: 'transactionSearch',
-        meta: { title: '流水明细', activeMenu: '/system/transactionRecord' }
+        meta: { title: '市场交易流水', activeMenu: '/system/transactionRecord' }
       }
     ]
   },

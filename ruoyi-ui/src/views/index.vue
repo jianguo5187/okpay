@@ -5,22 +5,22 @@
         <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_order" class="total-icon">
-            <div class="total-title">总收入</div>
+            <div class="total-title">市场交易总流水</div>
             <div class="total-value">{{ totalAmount }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_today_amount" class="total-icon">
-            <div class="total-title">今天收入总额</div>
-            <div class="total-value">￥{{ todayTotalAmount }}</div>
+            <div class="total-title">今天市场交易流水</div>
+            <div class="total-value">{{ todayTotalAmount }}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_yesterday_amount" class="total-icon">
-            <div class="total-title">昨日收入总额</div>
-            <div class="total-value">￥{{ yesterdayTotalAmount }}
+            <div class="total-title">昨日市场交易流水</div>
+            <div class="total-value">{{ yesterdayTotalAmount }}
             <a @click.prevent="handleLink('/system/transaction-search/index')" style="font-size: 8pt;color: blue;">更多</a>
             </div>
 <!--            <router-link :to="'/system/transaction-search/index'" class="link-type">-->
