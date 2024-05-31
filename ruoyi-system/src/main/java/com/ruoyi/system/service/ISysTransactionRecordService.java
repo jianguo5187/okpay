@@ -66,4 +66,6 @@ public interface ISysTransactionRecordService
     public Float getUserTotalAmount (SysTransactionRecord sysTransactionRecord);
 
     public List<UserTransactionDetailInfoRespVO> selectUserTransactionMoneyList(SysTransactionRecord sysTransactionRecord);
+
+    public List<UserTransactionDetailInfoRespVO> selectUserRechargeTransactionMoneyList(SysTransactionRecord sysTransactionRecord);
 }

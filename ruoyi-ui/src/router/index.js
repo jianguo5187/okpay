@@ -163,6 +163,20 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/system/recharge-search',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:transactionRecord:list'],
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/system/transactionRecord/rechargeTransactionSearch'),
+        name: 'rechargeSearch',
+        meta: { title: '转账流水', activeMenu: '/system/rechargeRecord' }
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,

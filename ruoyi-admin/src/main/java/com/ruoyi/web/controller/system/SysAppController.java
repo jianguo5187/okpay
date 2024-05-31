@@ -671,4 +671,18 @@ public class SysAppController extends BaseController {
         }
         return error("更新卖币状态失败，请联系管理员");
     }
+
+    /**
+     * 获取首页数据
+     *
+     * @return 用户信息
+     */
+    @GetMapping("getHomePageData")
+    public AjaxResult getHomePageData()
+    {
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("homePageData",sysAppService.getHomePageDate(user.getUserId()));
+        return ajax;
+    }
 }

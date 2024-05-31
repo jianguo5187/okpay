@@ -3,10 +3,10 @@ package com.ruoyi.system.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
@@ -1469,4 +1469,127 @@ public class SysAppServiceImpl implements ISysAppService {
 
 		return sysUserPayTypeApproveService.updateSysUserPayTypeApprove(userPayTypeApprove);
 	}
+
+    @Override
+    public HomePageDataRespVO getHomePageDate(Long userId) {
+
+        HomePageDataRespVO respVO = new HomePageDataRespVO();
+
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        String today = sd.format(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        String yesday = sd.format(cal.getTime());
+        Float totalAmount = 0f;
+        Float todayTotalAmount = 0f;
+        Float yesterdayTotalAmount = 0f;
+        Float todayTotalRechargeAmount = 0f;
+
+        SysUser user = sysUserService.selectUserById(userId);
+        SysTransactionRecord searchRecord = new SysTransactionRecord();
+        searchRecord.setSelfUserId(userId);
+        searchRecord.setStatus("0");
+        searchRecord.setTransactionFlg("1");
+        searchRecord.setDeptId(user.getDeptId());
+        searchRecord.setUserType("03");
+
+        List<UserTransactionDetailInfoRespVO> totalUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO totalUserTransaction : totalUserTransactionList){
+            totalAmount += totalUserTransaction.getTransactionTotalAmount();
+        }
+
+        searchRecord.setStartTime(today);
+        searchRecord.setEndTime(today);
+        List<UserTransactionDetailInfoRespVO> todayUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO todayUserTransaction : todayUserTransactionList){
+            todayTotalAmount += todayUserTransaction.getTransactionTotalAmount();
+        }
+
+        List<UserTransactionDetailInfoRespVO> todayTotalRechargeAmountList = sysTransactionRecordMapper.selectRechargeTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO todayTotalRecharge : todayTotalRechargeAmountList){
+            todayTotalRechargeAmount += todayTotalRecharge.getTransactionTotalAmount();
+        }
+
+        searchRecord.setStartTime(yesday);
+        searchRecord.setEndTime(yesday);
+        List<UserTransactionDetailInfoRespVO> yesdayUserTransactionList = sysTransactionRecordMapper.selectUserTransactionMoneyList(searchRecord);
+        for(UserTransactionDetailInfoRespVO yeadayUserTransaction : yesdayUserTransactionList){
+            yesterdayTotalAmount += yeadayUserTransaction.getTransactionTotalAmount();
+        }
+
+        respVO.setTotalAmount(totalAmount);
+        respVO.setTodayTotalAmount(todayTotalAmount);
+        respVO.setYesterdayTotalAmount(yesterdayTotalAmount);
+        respVO.setTodayTotalRechargeAmount(todayTotalRechargeAmount);
+
+        List<String> echartWeekTitle = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+        Calendar calWeek = Calendar.getInstance();
+        calWeek.add(Calendar.DATE,-7);
+        for(int i=1;i<=7;i++){
+            calWeek.add(Calendar.DATE,1);
+            echartWeekTitle.add(sdf.format(calWeek.getTime()));
+        }
+        respVO.setBuySaleTransactionEchartTitle(echartWeekTitle);
+        respVO.setRechargeTransactionEchartTitle(echartWeekTitle);
+
+        SysTransactionRecord weekSearchRecord = new SysTransactionRecord();
+        weekSearchRecord.setDeptId(user.getDeptId());
+
+        List<UserTransactionDetailInfoRespVO> weekTotalUserTransactionList = sysTransactionRecordMapper.selectWeekBuySaleTransactionMoneyList(weekSearchRecord);
+
+        Map<String , UserTransactionDetailInfoRespVO> weekTotalUserTransactionMap = weekTotalUserTransactionList.stream()
+                .collect(Collectors.toMap(
+                        UserTransactionDetailInfoRespVO::getCashDay,
+                        Function.identity(),
+                        (existing, replacement) -> existing // 保留现有的值，忽略替换值
+                ));
+
+        List<UserTransactionDetailInfoRespVO> weekRechargeTransactionList = sysTransactionRecordMapper.selectWeekRechargeTransactionMoneyList(weekSearchRecord);
+
+        Map<String , UserTransactionDetailInfoRespVO> weekRechargeTransactionMap = weekRechargeTransactionList.stream()
+                .collect(Collectors.toMap(
+                        UserTransactionDetailInfoRespVO::getCashDay,
+                        Function.identity(),
+                        (existing, replacement) -> existing // 保留现有的值，忽略替换值
+                ));
+        List<Float> totalRechargeTransactionEchartSeriesData = new ArrayList<>();
+        List<Float> fromRechargeTransactionEchartSeriesData = new ArrayList<>();
+        List<Float> toRechargeTransactionEchartSeriesData = new ArrayList<>();
+
+        List<Float> totalTransactionEchartSeriesData = new ArrayList<>();
+        List<Float> buyTransactionEchartSeriesData = new ArrayList<>();
+        List<Float> saleTransactionEchartSeriesData = new ArrayList<>();
+
+        for(String weekDay : echartWeekTitle){
+            if(weekTotalUserTransactionMap.containsKey(weekDay)){
+                totalTransactionEchartSeriesData.add(weekTotalUserTransactionMap.get(weekDay).getTransactionTotalAmount());
+                buyTransactionEchartSeriesData.add(weekTotalUserTransactionMap.get(weekDay).getTransactionBuyAmount());
+                saleTransactionEchartSeriesData.add(weekTotalUserTransactionMap.get(weekDay).getTransactionSaleAmount());
+            }else{
+                totalTransactionEchartSeriesData.add(0f);
+                buyTransactionEchartSeriesData.add(0f);
+                saleTransactionEchartSeriesData.add(0f);
+            }
+
+            if(weekRechargeTransactionMap.containsKey(weekDay)){
+                totalRechargeTransactionEchartSeriesData.add(weekRechargeTransactionMap.get(weekDay).getTransactionTotalAmount());
+                fromRechargeTransactionEchartSeriesData.add(weekRechargeTransactionMap.get(weekDay).getTransactionBuyAmount());
+                toRechargeTransactionEchartSeriesData.add(weekRechargeTransactionMap.get(weekDay).getTransactionSaleAmount());
+            }else{
+                totalRechargeTransactionEchartSeriesData.add(0f);
+                fromRechargeTransactionEchartSeriesData.add(0f);
+                toRechargeTransactionEchartSeriesData.add(0f);
+            }
+        }
+        respVO.setTotalTransactionEchartSeriesData(totalTransactionEchartSeriesData);
+        respVO.setBuyTransactionEchartSeriesData(buyTransactionEchartSeriesData);
+        respVO.setSaleTransactionEchartSeriesData(saleTransactionEchartSeriesData);
+        respVO.setTotalRechargeTransactionEchartSeriesData(totalRechargeTransactionEchartSeriesData);
+        respVO.setFromRechargeTransactionEchartSeriesData(fromRechargeTransactionEchartSeriesData);
+        respVO.setToRechargeTransactionEchartSeriesData(toRechargeTransactionEchartSeriesData);
+
+        return respVO;
+    }
 }

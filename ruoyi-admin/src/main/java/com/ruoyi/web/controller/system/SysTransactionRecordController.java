@@ -169,4 +169,48 @@ public class SysTransactionRecordController extends BaseController
         List<UserTransactionDetailInfoRespVO> list = sysTransactionRecordService.selectUserTransactionMoneyList(sysTransactionRecord);
         return getDataTable(list);
     }
+
+
+    /**
+     * 查询用户转账流水金额
+     */
+    @GetMapping(value = "/getUserRechargeTotalAmount")
+    public AjaxResult getUserRechargeTotalAmount(SysTransactionRecord sysTransactionRecord)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
+
+        List<UserTransactionDetailInfoRespVO> list = sysTransactionRecordService.selectUserRechargeTransactionMoneyList(sysTransactionRecord);
+        Float transactionTotalAmount = 0f;
+        Float transactionInAmount = 0f;
+        Float transactionOutAmount = 0f;
+        for(UserTransactionDetailInfoRespVO userTransactionDetailInfo : list){
+            transactionTotalAmount = transactionTotalAmount + userTransactionDetailInfo.getTransactionTotalAmount();
+            transactionInAmount = transactionInAmount + userTransactionDetailInfo.getTransactionBuyAmount();
+            transactionOutAmount = transactionOutAmount + userTransactionDetailInfo.getTransactionSaleAmount();
+        }
+        ajax.put("totalAmount",transactionTotalAmount);
+        ajax.put("totalInAmount",transactionInAmount);
+        ajax.put("totalOutAmount",transactionOutAmount);
+        return ajax;
+    }
+
+
+    /**
+     * 查询转账流水交易记录列表
+     */
+    @GetMapping("/listUserRechargeTransactionMoney")
+    public TableDataInfo listUserRechargeTransactionMoney(SysTransactionRecord sysTransactionRecord)
+    {
+        startPage();
+        SysUser user = SecurityUtils.getLoginUser().getUser();
+        if(StringUtils.equals(sysTransactionRecord.getTransactionFlg(),"1")){
+            sysTransactionRecord.setDeptId(user.getDeptId());
+        }
+        List<UserTransactionDetailInfoRespVO> list = sysTransactionRecordService.selectUserRechargeTransactionMoneyList(sysTransactionRecord);
+        return getDataTable(list);
+    }
 }

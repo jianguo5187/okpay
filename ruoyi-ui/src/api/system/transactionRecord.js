@@ -68,3 +68,20 @@ export function listUserTransactionMoney(query) {
     params: query
   })
 }
+
+// 查询用户转账流水金额
+export function getUserRechargeTotalAmount(query) {
+  return request({
+    url: '/system/transactionRecord/getUserRechargeTotalAmount',
+    method: 'get',
+    params: query
+  })
+}
+// 查询转账流水交易记录列表
+export function listUserRechargeTransactionMoney(query) {
+  return request({
+    url: '/system/transactionRecord/listUserRechargeTransactionMoney',
+    method: 'get',
+    params: query
+  })
+}

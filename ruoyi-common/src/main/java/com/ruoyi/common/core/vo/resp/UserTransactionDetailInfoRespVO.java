@@ -11,6 +11,9 @@ public class UserTransactionDetailInfoRespVO {
     /** 用户类型 */
     private String userType;
 
+    /** 资金流水时间 */
+    private String cashDay;
+
     /** 总流水金额 */
     private Float transactionTotalAmount;
 
@@ -42,6 +45,14 @@ public class UserTransactionDetailInfoRespVO {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getCashDay() {
+        return cashDay;
+    }
+
+    public void setCashDay(String cashDay) {
+        this.cashDay = cashDay;
     }
 
     public Float getTransactionTotalAmount() {

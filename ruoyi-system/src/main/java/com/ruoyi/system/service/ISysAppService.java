@@ -68,4 +68,6 @@ public interface ISysAppService {
     public void buyCoinAutoCancel(Long buyId);
 
     public void buyCoinAutoFinish(Long buyId);
+
+    public HomePageDataRespVO getHomePageDate(Long userId);
 }

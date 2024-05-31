@@ -122,4 +122,10 @@ public class SysTransactionRecordServiceImpl implements ISysTransactionRecordSer
     public List<UserTransactionDetailInfoRespVO> selectUserTransactionMoneyList(SysTransactionRecord sysTransactionRecord) {
         return sysTransactionRecordMapper.selectUserTransactionMoneyList(sysTransactionRecord);
     }
+
+    @Override
+    public List<UserTransactionDetailInfoRespVO> selectUserRechargeTransactionMoneyList(SysTransactionRecord sysTransactionRecord) {
+
+        return sysTransactionRecordMapper.selectRechargeTransactionMoneyList(sysTransactionRecord);
+    }
 }
