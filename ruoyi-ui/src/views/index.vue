@@ -150,18 +150,18 @@ export default {
         this.yesterdayTotalAmount = response.homePageData.yesterdayTotalAmount;
         this.todayTotalRechargeAmount = response.homePageData.todayTotalRechargeAmount;
 
-        this.buySaleTransactionEchartTitle = response.homePageData.buySaleTransactionEchartTitle;
-        this.totalTransactionEchartSeriesData = response.homePageData.totalTransactionEchartSeriesData;
-        this.buyTransactionEchartSeriesData = response.homePageData.buyTransactionEchartSeriesData;
-        this.saleTransactionEchartSeriesData = response.homePageData.saleTransactionEchartSeriesData;
+        // this.buySaleTransactionEchartTitle = response.homePageData.buySaleTransactionEchartTitle;
+        // this.totalTransactionEchartSeriesData = response.homePageData.totalTransactionEchartSeriesData;
+        // this.buyTransactionEchartSeriesData = response.homePageData.buyTransactionEchartSeriesData;
+        // this.saleTransactionEchartSeriesData = response.homePageData.saleTransactionEchartSeriesData;
 
-        this.rechargeTransactionEchartTitle = response.homePageData.rechargeTransactionEchartTitle;
-        this.totalRechargeTransactionEchartSeriesData = response.homePageData.totalRechargeTransactionEchartSeriesData;
-        this.fromRechargeTransactionEchartSeriesData = response.homePageData.fromRechargeTransactionEchartSeriesData;
-        this.toRechargeTransactionEchartSeriesData = response.homePageData.toRechargeTransactionEchartSeriesData;
+        // this.rechargeTransactionEchartTitle = response.homePageData.rechargeTransactionEchartTitle;
+        // this.totalRechargeTransactionEchartSeriesData = response.homePageData.totalRechargeTransactionEchartSeriesData;
+        // this.fromRechargeTransactionEchartSeriesData = response.homePageData.fromRechargeTransactionEchartSeriesData;
+        // this.toRechargeTransactionEchartSeriesData = response.homePageData.toRechargeTransactionEchartSeriesData;
 
-        this.upDownMoneyEchartInit();
-        this.gameRechargeEchartInit();
+        // this.upDownMoneyEchartInit();
+        // this.gameRechargeEchartInit();
       });
     },
     upDownMoneyEchartInit() {
